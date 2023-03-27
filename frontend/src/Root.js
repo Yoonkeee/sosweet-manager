@@ -7,7 +7,7 @@ export default function Root() {
   const intMainWidth = 1007
   const mainWidth = intMainWidth + 'px';
   return (
-    <Box maxW={mainWidth} m={'0 auto'} overflow={'hidden'}>
+    <Box w={mainWidth} m={'0 auto'} overflow={'hidden'}>
       <Box position="fixed" top={0} left={`calc((100% - ${mainWidth})/2)`} w={mainWidth}>
         <Header/>
       </Box>
