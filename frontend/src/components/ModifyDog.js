@@ -9,17 +9,36 @@ import {
   ModalOverlay, Select,
   Stack,
   Text,
-  useDisclosure, VStack
+  useDisclosure, useToast, VStack
 } from "@chakra-ui/react";
 import {useForm} from "react-hook-form";
+import {useMutation} from "react-query";
+import {addNewDog} from "../api";
 
 export default function ModifyDog({isOpen, onClose}) {
   // const {isOpen, onOpen, onClose} = useDisclosure()
-  const {register, handleSubmit, watch, formState:{errors}} = useForm();
-  const onSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    console.log(watch());
-    onClose();
+  const {register, reset, handleSubmit, formState:{errors}} = useForm();
+  const toast = useToast();
+  const mutation = useMutation(addNewDog, {
+    onSuccess: () => {
+      toast({
+        title: "댕댕이 수정에 성공했어요~~",
+        status: "success",
+        position: "top",
+        duration: 3000,
+        isClosable: true,
+      });
+      onClose();
+      // queryClient.refetchQueries(["me"]);
+      reset();
+    },
+    // onError: () => {
+    //   console.log("Mutation 에러낫음..ㅠ");
+    // },
+  });
+  const onSubmit = () => {
+    mutation.mutate();
+    // console.log(register);
   }
   return (
     <Modal isOpen={isOpen} onClose={onClose}>

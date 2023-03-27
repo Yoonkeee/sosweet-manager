@@ -17,7 +17,7 @@ import {useMutation} from "react-query";
 
 export default function NewDog({isOpen, onClose}) {
   // const {isOpen, onOpen, onClose} = useDisclosure()
-  const {register, reset,handleSubmit, formState:{errors}} = useForm();
+  const {register, reset, handleSubmit, formState:{errors}} = useForm();
   const toast = useToast();
   const mutation = useMutation(addNewDog, {
     onSuccess: () => {
@@ -36,8 +36,8 @@ export default function NewDog({isOpen, onClose}) {
     //   console.log("Mutation 에러낫음..ㅠ");
     // },
   });
-  const onSubmit = (register) => {
-    mutation.mutate(register);
+  const onSubmit = () => {
+    mutation.mutate();
     // console.log(register);
   }
   return (

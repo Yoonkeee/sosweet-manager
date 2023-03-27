@@ -4,15 +4,38 @@ import {
   Modal,
   ModalBody,
   ModalCloseButton,
-  ModalContent, ModalFooter,
+  ModalContent,
+  ModalFooter,
   ModalHeader,
-  ModalOverlay, PinInput, PinInputField, Select, Text,
+  ModalOverlay,
+  PinInput,
+  PinInputField,
+  Select,
+  Text,
   useDisclosure,
+  useToast,
   VStack
 } from "@chakra-ui/react";
+import {useForm} from "react-hook-form";
+import {useMutation} from "react-query";
+import {addNewDog} from "../api";
 
-export default function Checkin () {
+export default function Checkin() {
   const {isOpen, onOpen, onClose} = useDisclosure()
+  const {register, reset, handleSubmit, formState: {errors}} = useForm();
+  const toast = useToast();
+  const mutation = useMutation(addNewDog, {
+    onSuccess: () => {
+      toast({
+        title: "체크인 했어요~~", status: "success", position: "top", duration: 3000, isClosable: true,
+      });
+      onClose();
+      reset();
+    },
+  });
+  const onSubmit = (dog) => {
+    mutation.mutate(dog);
+  }
   return (<>
     {/*<Button onClick={onInOpen}>Open Modal</Button>*/}
     <Button
@@ -30,7 +53,7 @@ export default function Checkin () {
       <ModalContent>
         <ModalHeader>댕댕이 체크인!</ModalHeader>
         <ModalCloseButton/>
-        <ModalBody as={'form'}>
+        <ModalBody as={'form'} onSubmit={handleSubmit(onSubmit)}>
           <VStack spacing={3}>
             <HStack>
               <Select
@@ -49,19 +72,18 @@ export default function Checkin () {
               </HStack>
             </HStack>
           </VStack>
+          <ModalFooter>
+            <Button colorScheme='red' mr={3} onClick={onClose} rounded={'xl'} _hover={{
+              textDecoration: 'none', color: 'white', rounded: 'xl', transform: 'scale(1.2)'
+            }}>
+              취소
+            </Button>
+            <Button bg={'#1a2a52'} color={'white'} rounded={'xl'} type={'submit'}
+                    _hover={{
+                      textDecoration: 'none', color: 'white', bg: '#526491', rounded: 'xl', transform: 'scale(1.2)'
+                    }}>입장!</Button>
+          </ModalFooter>
         </ModalBody>
-        
-        <ModalFooter>
-          <Button colorScheme='red' mr={3} onClick={onClose} rounded={'xl'} _hover={{
-            textDecoration: 'none', color: 'white', rounded: 'xl', transform: 'scale(1.2)'
-          }}>
-            취소
-          </Button>
-          <Button bg={'#1a2a52'} color={'white'} rounded={'xl'}
-                  _hover={{
-                    textDecoration: 'none', color: 'white', bg: '#526491', rounded: 'xl', transform: 'scale(1.2)'
-                  }}>입장!</Button>
-        </ModalFooter>
       </ModalContent>
     </Modal>
   </>);

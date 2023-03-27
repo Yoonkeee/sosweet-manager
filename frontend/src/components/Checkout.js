@@ -25,20 +25,41 @@ import {
   PopoverHeader,
   PopoverTrigger,
   Portal,
-  Text,
+  Text, useToast,
   VStack
 } from "@chakra-ui/react";
 import {useRef} from "react";
+import {useForm} from "react-hook-form";
+import {useMutation} from "react-query";
+import {addNewDog} from "../api";
 
 export default function Checkout({isOpen, onClose}) {
   const ref = useRef(null)
+  const {register, reset,handleSubmit, formState:{errors}} = useForm();
+  const toast = useToast();
+  const mutation = useMutation(addNewDog, {
+    onSuccess: () => {
+      toast({
+        title: "체크아웃 했어요~~",
+        status: "success",
+        position: "top",
+        duration: 3000,
+        isClosable: true,
+      });
+      onClose();
+      reset();
+    },
+  });
+  const onSubmit = (dog) => {
+    mutation.mutate(dog);
+  }
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay/>
       <ModalContent ref={ref}>
         <ModalHeader>댕댕이 체크아웃!</ModalHeader>
         <ModalCloseButton/>
-        <ModalBody as={'form'}>
+        <ModalBody as={'form'} onSubmit={handleSubmit(onSubmit)}>
           <VStack spacing={3}>
             <HStack>
               <Text>김프로 퇴장시간</Text>
@@ -64,7 +85,6 @@ export default function Checkout({isOpen, onClose}) {
             </HStack>
           </VStack>
           <ModalFooter>
-  
             <Popover placement='top-start'>
               <PopoverTrigger>
                 <Button colorScheme='yellow' mr={3} rounded={'xl'} _hover={{
