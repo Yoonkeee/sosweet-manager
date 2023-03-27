@@ -40,9 +40,23 @@ import {addNewDog} from "../api";
 import {useForm} from "react-hook-form";
 import ModifyDog from "./ModifyDog";
 import AddPurchase from "./AddPurchase";
+import Cookies from "js-cookie";
+import axios from "axios";
 
 export default function Header() {
   const {isOpen, onToggle} = useDisclosure();
+  
+  const instance = axios.create({
+    baseURL: "/api", withCredentials: true,
+  });
+  const test = () => {
+    instance.get('test', {
+      headers: {
+        "X-CSRFToken": Cookies.get("csrftoken") || "",
+      },
+    }).then((response) => console.log(response.data));
+  }
+
   
   return (<Box h={'10vh'}>
     <Flex
@@ -65,6 +79,7 @@ export default function Header() {
       
       <Flex display={{base: 'none', md: 'flex'}} ml={10}>
         <DesktopNav/>
+        <Button bg={'none'} onClick={test}>CORS TEST</Button>
       </Flex>
     </Flex>
     

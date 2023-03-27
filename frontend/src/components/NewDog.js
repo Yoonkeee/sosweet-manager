@@ -1,47 +1,46 @@
 import {
   Box,
-  Button, Input, InputGroup,
+  Button,
+  Input,
+  InputGroup,
   Modal,
   ModalBody,
   ModalCloseButton,
-  ModalContent, ModalFooter,
+  ModalContent,
+  ModalFooter,
   ModalHeader,
-  ModalOverlay, Select,
+  ModalOverlay,
+  Select,
   Stack,
   Text,
-  useDisclosure, useToast, VStack
+  useDisclosure,
+  useToast,
+  VStack
 } from "@chakra-ui/react";
 import {useForm} from "react-hook-form";
 import {addNewDog} from "../api";
-import {useMutation} from "react-query";
+import {useMutation, useQuery} from "react-query";
+import {useParams} from "react-router-dom";
 
 export default function NewDog({isOpen, onClose}) {
   // const {isOpen, onOpen, onClose} = useDisclosure()
-  const {register, reset, handleSubmit, formState:{errors}} = useForm();
+  const {register, reset, handleSubmit} = useForm();
+  // const {params} = useParams();
+  // const {isLoading, data} = useQuery('', () => addNewDog(params));
   const toast = useToast();
   const mutation = useMutation(addNewDog, {
     onSuccess: () => {
       toast({
-        title: "댕댕이 등록에 성공했어요~~",
-        status: "success",
-        position: "top",
-        duration: 3000,
-        isClosable: true,
+        title: "댕댕이 등록에 성공했어요~~", status: "success", position: "top", duration: 3000, isClosable: true,
       });
       onClose();
-      // queryClient.refetchQueries(["me"]);
       reset();
     },
-    // onError: () => {
-    //   console.log("Mutation 에러낫음..ㅠ");
-    // },
   });
-  const onSubmit = () => {
-    mutation.mutate();
-    // console.log(register);
+  const onSubmit = (data) => {
+    mutation.mutate(data);
   }
-  return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+  return (<Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay/>
       <ModalContent>
         <ModalHeader>댕댕이 등록~</ModalHeader>
@@ -52,7 +51,7 @@ export default function NewDog({isOpen, onClose}) {
               variant={"filled"}
               required={true}
               placeholder={"댕댕이 이름(필수)"}
-              {...register("dogName", { required: "댕댕이 이름 입력해주세요!!" })}
+              {...register("dogName", {required: "댕댕이 이름 입력해주세요!!"})}
             />
             <Input
               variant={"filled"}
@@ -102,6 +101,5 @@ export default function NewDog({isOpen, onClose}) {
           </ModalFooter>
         </ModalBody>
       </ModalContent>
-    </Modal>
-  );
+    </Modal>);
 };
