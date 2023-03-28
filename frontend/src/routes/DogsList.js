@@ -11,11 +11,11 @@ import {
 } from '@chakra-ui/react'
 import TimetableRow from "../components/TimetableRow";
 import DogsListRow from "../components/DogsListRow";
-import {useQuery} from "react-query";
+import {useQuery, useQueryClient} from "react-query";
 import {dogsList} from "../api";
 
 export default function DogsList() {
-  const {isLoading, data} = useQuery(["dogsList"], dogsList);
+  const {isLoading, data} = useQuery(["dogs-list"], dogsList);
   console.log(data)
   return (
     <VStack w={'100%'}>

@@ -19,12 +19,13 @@ import {
 } from "@chakra-ui/react";
 import {useForm} from "react-hook-form";
 import {addNewDog} from "../api";
-import {useMutation, useQuery} from "react-query";
+import {useMutation, useQuery, useQueryClient} from "react-query";
 import {useParams} from "react-router-dom";
 
 export default function NewDog({isOpen, onClose}) {
   // const {isOpen, onOpen, onClose} = useDisclosure()
   const {register, reset, handleSubmit} = useForm();
+  const queryClient = useQueryClient();
   // const {params} = useParams();
   // const {isLoading, data} = useQuery('', () => addNewDog(params));
   const toast = useToast();
@@ -33,6 +34,7 @@ export default function NewDog({isOpen, onClose}) {
       toast({
         title: "댕댕이 등록에 성공했어요~~", status: "success", position: "top", duration: 3000, isClosable: true,
       });
+      queryClient.refetchQueries(["dogs-list"]);
       onClose();
       reset();
     },

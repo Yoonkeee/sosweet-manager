@@ -24,20 +24,42 @@ class Interface:
         self.getter = self.db.cursor()
 
     # dogs
-    def add_dog_info(self, name, breed='', note='', gender='', phone='', weight=''):
-        print('test')
+    def add_dog_info(self, data):
+    # data={'dogName': 'dsa', 'dogInfo': '', 'dogBreed': '', 'dogGender': '', 'phone': '', 'dogWeight': ''}
+        print(data)
+        duplicate_check_query = f"select count(*) from dogs where name = '{data['dogName']}'"
+        self.getter.execute(duplicate_check_query)
+        # return False
+        # print()
+        print(duplicate_check_query)
+        if self.getter.fetchone()[0] > 0:
+            return False
+
+        # print(f"""'{data['name']}',
+        # {data['breed']},
+        # {data['note']},
+        # {data['gender']},
+        # {data['phone']},
+        # {data['weight']}""")
+        # return
         insert_query = f"""
         INSERT INTO dogs VALUES (
-        '{name}', 
-        '{breed}',
-        '{note}',
-        '{gender}',
-        '{phone}',
-        '{weight}'
+        '{data['dogName']}',
+        '{data['dogBreed']}',
+        '{data['dogInfo']}',
+        '{data['dogGender']}',
+        '{data['phone']}',
+        '{data['dogWeight']}'
         )
         """
         self.setter.execute(insert_query)
         self.db.commit()
+        return True
+
+    def get_dogs_list(self):
+        query = f"select * from dogs"
+        self.getter.execute(query)
+        return self.getter.fetchall()
 
     def mod_dog_info(self, name, breed, note):
         pass
