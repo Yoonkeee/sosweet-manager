@@ -36,6 +36,11 @@ export default function NewDog({isOpen, onClose}) {
       onClose();
       reset();
     },
+    onError: () => {
+      toast({
+        title: "댕댕이 등록에 실패했어요ㅠ", status: "error", position: "top", duration: 3000, isClosable: true,
+      });
+    }
   });
   const onSubmit = (data) => {
     mutation.mutate(data);

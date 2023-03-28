@@ -5,6 +5,7 @@ import Timetable from "./routes/Timetable";
 import NewDog from "./components/NewDog";
 import GetMessage from "./routes/GetMessage";
 import History from "./routes/History";
+import DogsList from "./routes/DogsList";
 // import Home from "./routes/Home";
 // import Company from "./routes/Company";
 // import CompanyDetail from "./components/CompanyDetail";
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
       {
         path: 'history',
         element: <History/>
+      },
+      {
+        path: 'dogs-list',
+        element: <DogsList/>
       },
       
     ]

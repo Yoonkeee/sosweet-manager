@@ -42,6 +42,7 @@ import ModifyDog from "./ModifyDog";
 import AddPurchase from "./AddPurchase";
 import Cookies from "js-cookie";
 import axios from "axios";
+import DogsList from "../routes/DogsList";
 
 export default function Header() {
   const {isOpen, onToggle} = useDisclosure();
@@ -56,7 +57,7 @@ export default function Header() {
       },
     }).then((response) => console.log(response.data));
   }
-
+  
   
   return (<Box h={'10vh'}>
     <Flex
@@ -153,9 +154,10 @@ const ModDog = (child) => {
       p={2}
       rounded={'md'}
       _hover={{bg: '#526491'}}>
-      <Button onClick={onOpen} bg={'transparent'} _hover={''}>
+      <Button onClick={onOpen} bg={'transparent'} _hover={''} p={0}>
         <Stack direction={'row'} align={'center'}>
           {/*서브메뉴 - 라벨*/}
+          <VStack alignItems={'flex-start'}>
           <Text
             transition={'all .3s ease'}
             // _groupHover={{color: 'white'}}
@@ -165,6 +167,7 @@ const ModDog = (child) => {
           </Text>
           {/*서브메뉴 - 라벨 디스크립션*/}
           <Text fontSize={'md'} fontWeight={500}>{subLabel}</Text>
+          </VStack>
         </Stack>
       </Button>
     </Box>
@@ -183,9 +186,10 @@ const AddNewDog = (child) => {
       p={2}
       rounded={'md'}
       _hover={{bg: '#526491'}}>
-      <Button onClick={onOpen} bg={'transparent'} _hover={''}>
+      <Button onClick={onOpen} bg={'transparent'} _hover={''} p={0}>
         <Stack direction={'row'} align={'center'}>
           {/*서브메뉴 - 라벨*/}
+          <VStack alignItems={'flex-start'}>
           <Text
             transition={'all .3s ease'}
             // _groupHover={{color: 'white'}}
@@ -195,14 +199,13 @@ const AddNewDog = (child) => {
           </Text>
           {/*서브메뉴 - 라벨 디스크립션*/}
           <Text fontSize={'md'} fontWeight={500}>{subLabel}</Text>
+          </VStack>
         </Stack>
       </Button>
     </Box>
     <NewDog isOpen={isOpen} onClose={onClose}/>
   </>);
 }
-
-
 
 
 const AddNewPurchase = (child) => {
@@ -216,9 +219,10 @@ const AddNewPurchase = (child) => {
       p={2}
       rounded={'md'}
       _hover={{bg: '#526491'}}>
-      <Button onClick={onOpen} bg={'transparent'} _hover={''}>
+      <Button onClick={onOpen} bg={'transparent'} _hover={''} p={0}>
         <Stack direction={'row'} align={'center'}>
           {/*서브메뉴 - 라벨*/}
+          <VStack alignItems={'flex-start'}>
           <Text
             transition={'all .3s ease'}
             // _groupHover={{color: 'white'}}
@@ -228,6 +232,7 @@ const AddNewPurchase = (child) => {
           </Text>
           {/*서브메뉴 - 라벨 디스크립션*/}
           <Text fontSize={'md'} fontWeight={500}>{subLabel}</Text>
+          </VStack>
         </Stack>
       </Button>
     </Box>
@@ -245,20 +250,20 @@ const DesktopSubNav = ({label, subLink, subLabel}: NavItem) => {
       p={2}
       rounded={'md'}
       _hover={{bg: '#526491'}}>
-      <Stack direction={'row'} align={'center'}>
-        {/*<Button onClick={console.log(label)}>*/}
-        
+      <Stack>
         <Link to={subLink}>
           {/*서브메뉴 - 라벨*/}
-          <Text
-            transition={'all .3s ease'}
-            _groupHover={{color: 'white'}}
-            fontSize={'xl'}
-            fontWeight={800}>
-            {label}
-          </Text>
-          {/*서브메뉴 - 라벨 디스크립션*/}
-          <Text fontSize={'md'} fontWeight={500}>{subLabel}</Text>
+          <VStack alignItems={'flex-start'}>
+            <Text
+              transition={'all .3s ease'}
+              _groupHover={{color: 'white'}}
+              fontSize={'xl'}
+              fontWeight={800}>
+              {label}
+            </Text>
+            {/*서브메뉴 - 라벨 디스크립션*/}
+            <Text fontSize={'md'} fontWeight={500}>{subLabel}</Text>
+          </VStack>
         </Link>
       </Stack>
     </Box>);
@@ -326,7 +331,10 @@ const NAV_ITEMS: Array<NavItem> = [{label: '시간표', link: '/timetable',}, {
     label: '이용 내역', subLabel: '놀이방 이용 내역 확인 및 수정하기', subLink: '/history'
   },],
 }, {
-  label: '등록', children: [{label: '결제 내역 등록', subLabel: '놀이방 이용권 구매 등록', subLink: '/payment'}, {
-    label: '신규 등록', subLabel: '새로운 댕댕이 등록하기', subLink: '/new-dog'
-  }, {label: '등록정보 수정', subLabel: '기존 댕댕이 정보 변경하기', subLink: '/edit-dog'},],
+  label: '등록', children: [
+    {label: '결제 내역 등록', subLabel: '놀이방 이용권 구매 등록', subLink: '/payment'},
+    {label: '신규 등록', subLabel: '새로운 댕댕이 등록하기', subLink: '/new-dog'},
+    {label: '등록정보 수정', subLabel: '기존 댕댕이 정보 변경하기', subLink: '/edit-dog'},
+    {label: '댕댕이 목록', subLabel: '등록된 댕댕이 목록 확인하기', subLink: '/dogs-list'},
+  ],
 },];

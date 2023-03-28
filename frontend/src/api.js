@@ -36,11 +36,14 @@ export const test = () => {
 
 
 export const addNewDog = (data) => {
-  instance.post("/post/add-new-dog", {data},
+  return instance.post("/post/add-new-dog", {data},
     {
       headers: {
         "X-CSRFToken": Cookies.get("csrftoken") || "",
       },
-    }).then((response) => console.log(response.data));
+    }).then((response) => response.data);
 }
 
+export const dogsList = () => {
+  return instance.get("/get/dogs-list").then((response) => response.data);
+}
