@@ -7,14 +7,15 @@ import {
   Th,
   Td,
   TableCaption,
-  TableContainer, Box, Text, HStack, VStack,
+  TableContainer, Box, Text, HStack, VStack, Button, IconButton,
 } from '@chakra-ui/react'
 import TimetableRow from "../components/TimetableRow";
+import {ArrowBackIcon, ArrowForwardIcon} from "@chakra-ui/icons";
 
 export default function Timetable() {
   let today = new Date();
   const options = {
-    year: 'numeric',
+    // year: 'numeric',
     month: 'long',
     day: 'numeric',
     weekday: 'long'
@@ -23,9 +24,19 @@ export default function Timetable() {
   
   return (
     <VStack w={'100%'}>
-      <Text mt={'2vh'} fontSize={'2xl'} fontWeight={'bold'} textAlign={'center'}>
-        {formattedDate}
-      </Text>
+      <HStack w={'100%'} justifyContent={'center'}>
+        <IconButton rounded={'xl'} w={'10%'} bg={'#1a2a52'} color={'white'} isRound={true}
+                    _hover={{
+                    textDecoration: 'none', color: 'white', bg: '#526491', rounded: 'xl', transform: 'scale(1.2)'
+                  }}  aria-label={''} icon={<ArrowBackIcon />}/>
+        <Text mt={'2vh'} fontSize={'2xl'} fontWeight={'bold'} textAlign={'center'}>
+          {formattedDate}
+        </Text>
+        <IconButton rounded={'xl'} w={'10%'} bg={'#1a2a52'} color={'white'}
+                    _hover={{
+                      textDecoration: 'none', color: 'white', bg: '#526491', rounded: 'xl', transform: 'scale(1.2)'
+                    }}  aria-label={''} icon={<ArrowForwardIcon />}/>
+      </HStack>
       <TableContainer w={'100%'}>
         <Table variant='striped' colorScheme='blue'>
           {/*<TableCaption>Imperial to metric conversion factors</TableCaption>*/}

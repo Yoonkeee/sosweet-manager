@@ -14,32 +14,32 @@ export default function DogsListRow(data) {
   console.log(name, breed, note, gender, phone, weight);
   return (<>
     <Tr textAlign={'center'}>
-      <Td>
+      <Td textAlign={'center'} p={2}>
         <Text fontSize={'md'} textAlign={'center'} fontWeight={'semibold'} textColor={'#1a2a52'}>
           {name}
         </Text>
       </Td>
-      <Td textAlign={'center'}>
+      <Td textAlign={'center'} p={2}>
         <Text fontSize={'md'} textAlign={'center'} fontWeight={'semibold'} textColor={'#1a2a52'}>
           {note}
         </Text>
       </Td>
-      <Td textAlign={'center'}>
+      <Td textAlign={'center'} p={0}>
         <Text fontSize={'md'} textAlign={'center'} fontWeight={'semibold'} textColor={'#1a2a52'}>
           {breed}
         </Text>
       </Td>
-      <Td textAlign={'center'}>
+      <Td textAlign={'center'} p={2}>
         <Text fontSize={'md'} textAlign={'center'} fontWeight={'semibold'} textColor={'#1a2a52'}>
           {gender}
         </Text>
       </Td>
-      <Td textAlign={'center'}>
+      <Td textAlign={'center'} p={2}>
         <Text fontSize={'md'} textAlign={'center'} fontWeight={'semibold'} textColor={'#1a2a52'}>
           {phone}
         </Text>
       </Td>
-      <Td textAlign={'center'}>
+      <Td textAlign={'center'} p={2}>
         <Text fontSize={'md'} textAlign={'center'} fontWeight={'semibold'} textColor={'#1a2a52'}>
           {weight}
         </Text>
