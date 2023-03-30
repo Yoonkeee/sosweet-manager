@@ -17,10 +17,12 @@ import {
   VStack
 } from "@chakra-ui/react";
 import {useForm} from "react-hook-form";
-import {useMutation} from "react-query";
-import {addNewDog} from "../api";
+import {useMutation, useQuery} from "react-query";
+import {addNewDog, dogsList} from "../api";
+import {useEffect, useState} from "react";
 
 export default function Checkin() {
+  const {isLoading, data} = useQuery(["dogs-list"], dogsList);
   const {isOpen, onOpen, onClose} = useDisclosure()
   const {register, reset, handleSubmit, formState: {errors}} = useForm();
   const toast = useToast();
@@ -36,15 +38,15 @@ export default function Checkin() {
   const onSubmit = (dog) => {
     mutation.mutate(dog);
   }
+  const options = data?.map(item => ({
+    value: item.name,
+    label: item.name,
+  }));
+  
   return (<>
-    {/*<Button onClick={onInOpen}>Open Modal</Button>*/}
     <Button
       onClick={onOpen}
       colorScheme={'white'}
-      // w={'80%'}
-      // h={'5vh'}
-      // borderRadius={'20px'}
-      // mt={'1vh'}
       fontSize={'1.5rem'}>
       체크인
     </Button>
@@ -56,11 +58,20 @@ export default function Checkin() {
         <ModalBody as={'form'} onSubmit={handleSubmit(onSubmit)}>
           <VStack spacing={3}>
             <HStack>
-              <Select
-                w={'40%'}
-                mr={5}
-                placeholder={"댕댕이 선택"}
-              />
+              {isLoading ? <Text>Loading options...</Text> :
+                  (
+                <Select
+                  w={'40%'}
+                  mr={5}
+                  placeholder={"댕댕이 선택"}
+                >
+                  {options && options.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </Select>
+                  )}
               <HStack>
                 <PinInput placeholder='0'>
                   <PinInputField/>

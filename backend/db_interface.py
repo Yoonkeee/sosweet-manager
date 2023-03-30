@@ -11,6 +11,7 @@ class Interface:
     db: pymysql.connections.Connection = None
     setter: pymysql.Connection.cursor = None
     getter: pymysql.Connection.cursor = None
+
     # column_names: List[str] = ''
 
     def __init__(self):
@@ -23,9 +24,12 @@ class Interface:
         self.setter = self.db.cursor()
         self.getter = self.db.cursor()
 
+
+    def test(self):
+        return {'message': 'CORS TEST SUCCESSFUL'}
+
     # dogs
     def add_dog_info(self, data):
-    # data={'dogName': 'dsa', 'dogInfo': '', 'dogBreed': '', 'dogGender': '', 'phone': '', 'dogWeight': ''}
         print(data)
         duplicate_check_query = f"select count(*) from dogs where name = '{data['dogName']}'"
         self.getter.execute(duplicate_check_query)
@@ -35,13 +39,6 @@ class Interface:
         if self.getter.fetchone()[0] > 0:
             return False
 
-        # print(f"""'{data['name']}',
-        # {data['breed']},
-        # {data['note']},
-        # {data['gender']},
-        # {data['phone']},
-        # {data['weight']}""")
-        # return
         insert_query = f"""
         INSERT INTO dogs VALUES (
         '{data['dogName']}',
@@ -59,7 +56,9 @@ class Interface:
     def get_dogs_list(self):
         query = f"select * from dogs"
         self.getter.execute(query)
-        return self.getter.fetchall()
+        columns = [col[0] for col in self.getter.description]  # Get column names
+        return [dict(zip(columns, row)) for row in self.getter.fetchall()]
+
 
     def mod_dog_info(self, name, breed, note):
         pass
@@ -68,10 +67,23 @@ class Interface:
         pass
 
     # timetable
-    def add_table_dog_in(self, name, date, in_time):
-        pass
+    def get_table(self, date):
+        select_query = f"select * from timetable where date = '{date}' order by in_time"
+        self.getter.execute(select_query)
+        return self.getter.fetchall()
 
-    def add_table_dog_out(self, name, date, in_time, out_time):
+    def add_table_dog_in(self, name, date, in_time):
+        # in_time 15:55
+        # date 2021-08-01
+        insert_query = f"""
+        insert into timetable (name, in_time, date, belts)
+        values ('{name}',
+        '{in_time}',
+        str_to_date('{date}', '%Y-%m-%d'),
+        0);
+        """
+
+    def add_table_dog_out(self, name, date, in_time, out_time, belts):
         pass
 
     def mod_table_dog_in(self, name, date, in_time):
@@ -93,36 +105,4 @@ class Interface:
 
     def mod_history(self, name, date, in_time, out_time):
         pass
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

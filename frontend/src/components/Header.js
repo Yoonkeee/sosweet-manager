@@ -28,7 +28,7 @@ import {
   SelectField,
   HStack,
   Select,
-  Switch,
+  Switch, useToast,
 } from '@chakra-ui/react';
 import {
   HamburgerIcon, CloseIcon, ChevronDownIcon, ChevronRightIcon,
@@ -46,7 +46,7 @@ import DogsList from "../routes/DogsList";
 
 export default function Header() {
   const {isOpen, onToggle} = useDisclosure();
-  
+  const toast = useToast();
   const instance = axios.create({
     baseURL: "/api", withCredentials: true,
   });
@@ -55,7 +55,25 @@ export default function Header() {
       headers: {
         "X-CSRFToken": Cookies.get("csrftoken") || "",
       },
-    }).then((response) => console.log(response.data));
+    }).then((response) => {
+      if(response) {
+        toast({
+          title: "CORS 테스트 성공",
+          description: "CORS 테스트 성공",
+          status: "success",
+          duration: 500,
+          isClosable: true,
+        })
+      } else {
+        toast({
+          title: "CORS 테스트 실패",
+          description: "CORS 테스트 실패",
+          status: "error",
+          duration: 500,
+          isClosable: true,
+        })
+      }
+    })
   }
   
   

@@ -29,6 +29,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+db_interface = db_interface.Interface()
+
 
 @app.get("/")
 async def root():
@@ -38,8 +40,7 @@ async def root():
 
 @app.get("/api/test")
 async def test():
-    print('log')
-    return {"message": "Hello test"}
+    return db_interface.test()
 
 
 class NewDog(BaseModel):
@@ -56,7 +57,7 @@ class NewDog(BaseModel):
 @app.post("/api/post/add-new-dog")
 async def add_new_dog(request: NewDog):
     data = json.loads(request.json())
-    response = db_interface.Interface().add_dog_info(*data.values())
+    response = db_interface.add_dog_info(*data.values())
     print(response)
     if not response:
         return Response(status_code=status.HTTP_400_BAD_REQUEST)
@@ -64,9 +65,9 @@ async def add_new_dog(request: NewDog):
         return Response(status_code=status.HTTP_200_OK)
 
 
-@app.get("/api/get/dogs-list/")
+@app.get("/api/get/dogs-list")
 async def get_dogs_list():
-    return db_interface.Interface().get_dogs_list()
+    return db_interface.get_dogs_list()
 
 # @app.get("/api/post/add-new-dog/")
 # async def add_new_dog():

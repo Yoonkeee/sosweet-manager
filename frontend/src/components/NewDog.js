@@ -40,7 +40,7 @@ export default function NewDog({isOpen, onClose}) {
     },
     onError: () => {
       toast({
-        title: "댕댕이 등록에 실패했어요ㅠ", status: "error", position: "top", duration: 3000, isClosable: true,
+        title: "댕댕이 등록에 실패했어요ㅠ 이름이 중복이거나 서버의 에러에요ㅠ", status: "error", position: "top", duration: 3000, isClosable: true,
       });
     }
   });

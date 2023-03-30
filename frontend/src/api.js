@@ -47,3 +47,25 @@ export const addNewDog = (data) => {
 export const dogsList = () => {
   return instance.get("/get/dogs-list").then((response) => response.data);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
