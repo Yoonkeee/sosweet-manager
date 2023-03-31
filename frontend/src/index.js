@@ -5,7 +5,8 @@ import {ChakraProvider} from "@chakra-ui/react";
 import {RouterProvider} from "react-router-dom";
 import router from "./router";
 import {QueryClient, QueryClientProvider} from "react-query";
-
+import {Provider} from "react-redux";
+import store from "./store";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const queryClient = new QueryClient();
@@ -13,7 +14,9 @@ const queryClient = new QueryClient();
 root.render(// <React.StrictMode>
   <QueryClientProvider client={queryClient}>
     <ChakraProvider>
-      <RouterProvider router={router}/>
+      <Provider store={store}>
+        <RouterProvider router={router}/>
+      </Provider>
     </ChakraProvider>
   </QueryClientProvider>
   // </React.StrictMode>

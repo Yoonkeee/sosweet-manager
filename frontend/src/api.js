@@ -48,7 +48,14 @@ export const dogsList = () => {
   return instance.get("/get/dogs-list").then((response) => response.data);
 }
 
-
+export const checkIn = (data) => {
+  return instance.post("/post/check-in", {data},
+    {
+      headers: {
+        "X-CSRFToken": Cookies.get("csrftoken") || "",
+      },
+    }).then((response) => response.data);
+}
 
 
 

@@ -18,26 +18,54 @@ import {
 } from "@chakra-ui/react";
 import {useForm} from "react-hook-form";
 import {useMutation, useQuery} from "react-query";
-import {addNewDog, dogsList} from "../api";
+import {addNewDog, checkIn, dogsList} from "../api";
 import {useEffect, useState} from "react";
+import {createStore} from "redux";
+import {useSelector} from "react-redux";
+import moment from "moment";
 
 export default function Checkin() {
   const {isLoading, data} = useQuery(["dogs-list"], dogsList);
   const {isOpen, onOpen, onClose} = useDisclosure()
   const {register, reset, handleSubmit, formState: {errors}} = useForm();
   const toast = useToast();
-  const mutation = useMutation(addNewDog, {
+  
+  let date = useSelector((state) => state.currentDate);
+  const [dogData, setDogData] = useState([]);
+  // let formattedDate = moment.utc(date, 'YYYYMMDD').format('M월 D일 dddd');
+  const mutation = useMutation(checkIn,{
     onSuccess: () => {
       toast({
-        title: "체크인 했어요~~", status: "success", position: "top", duration: 3000, isClosable: true,
+        title: (
+          <>
+            체크인! <br/>
+            댕댕이 : {dogData.name} <br/>
+            입장시간 : {dogData.in_time}
+            </>),
+        status: "success",
+        position: "top",
+        duration: 3000,
+        isClosable: true,
       });
       onClose();
       reset();
     },
   });
-  const onSubmit = (dog) => {
-    mutation.mutate(dog);
-  }
+  const onSubmit = (data) => {
+    // console.log(data)
+    const pinNumber = data.pinNumber.join("").replace(/(\d{2})(\d{2})/, "$1:$2");
+    console.log(pinNumber); // outputs "12:34"
+  
+    // const pinNumber = data.pinNumber.join(':').padStart(5, '0');
+    setDogData({
+      name: data.dogName,
+      in_time: pinNumber,
+      date: date,
+      id: Date.now()
+    });
+    console.log(dogData)
+    mutation.mutate(dogData);
+  };
   const options = data?.map(item => ({
     value: item.name,
     label: item.name,
@@ -64,6 +92,8 @@ export default function Checkin() {
                   w={'40%'}
                   mr={5}
                   placeholder={"댕댕이 선택"}
+                  required={true}
+                  {...register("dogName")}
                 >
                   {options && options.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -73,12 +103,12 @@ export default function Checkin() {
                 </Select>
                   )}
               <HStack>
-                <PinInput placeholder='0'>
-                  <PinInputField/>
-                  <PinInputField/>
+                <PinInput placeholder='0' id={'test'}>
+                  <PinInputField {...register("pinNumber[0]")} required={true}/>
+                  <PinInputField {...register("pinNumber[1]")} required={true}/>
                   <Text>:</Text>
-                  <PinInputField/>
-                  <PinInputField/>
+                  <PinInputField {...register("pinNumber[2]")} required={true}/>
+                  <PinInputField {...register("pinNumber[3]")} required={true}/>
                 </PinInput>
               </HStack>
             </HStack>

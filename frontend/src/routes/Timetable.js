@@ -11,28 +11,31 @@ import {
 } from '@chakra-ui/react'
 import TimetableRow from "../components/TimetableRow";
 import {ArrowBackIcon, ArrowForwardIcon} from "@chakra-ui/icons";
+import {useSelector} from "react-redux";
+import moment from "moment/moment";
+import 'moment/locale/ko'
 
 export default function Timetable() {
-  let today = new Date();
+  let nowDate = new Date();
   const options = {
     // year: 'numeric',
     month: 'long',
     day: 'numeric',
     weekday: 'long'
   };
-  let formattedDate = today.toLocaleDateString('ko-KR', options);
-  
+  let date = useSelector((state) => state.currentDate);
+  let formattedDate = moment.utc(date, 'YYYYMMDD').format('M월 D일 dddd');
   return (
     <VStack w={'100%'}>
       <HStack w={'100%'} justifyContent={'center'}>
-        <IconButton rounded={'xl'} w={'10%'} bg={'#1a2a52'} color={'white'} isRound={true}
+        <IconButton rounded={'xl'} w={'10%'} bg={'#1a2a52'} color={'white'} isRound={true} position={'inherit'}
                     _hover={{
                     textDecoration: 'none', color: 'white', bg: '#526491', rounded: 'xl', transform: 'scale(1.2)'
                   }}  aria-label={''} icon={<ArrowBackIcon />}/>
-        <Text mt={'2vh'} fontSize={'2xl'} fontWeight={'bold'} textAlign={'center'}>
+        <Text mt={'2vh'} fontSize={'2xl'} fontWeight={'bold'} textAlign={'center'} id={'formattedNowDate'}>
           {formattedDate}
         </Text>
-        <IconButton rounded={'xl'} w={'10%'} bg={'#1a2a52'} color={'white'}
+        <IconButton rounded={'xl'} w={'10%'} bg={'#1a2a52'} color={'white'} isRound={true} position={'inherit'}
                     _hover={{
                       textDecoration: 'none', color: 'white', bg: '#526491', rounded: 'xl', transform: 'scale(1.2)'
                     }}  aria-label={''} icon={<ArrowForwardIcon />}/>

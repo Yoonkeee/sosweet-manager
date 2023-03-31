@@ -9,8 +9,9 @@ import Checkout from "./Checkout";
 import CheckinTimeModify from "./CheckinTimeModify";
 
 export default function DogsListRow(data) {
-  const [name, breed, note, gender, phone, weight] = data.data
-  console.log(data)
+  console.log(data.data)
+  const {breed, gender, name, note, phone, weight} = data.data
+  // const [name, breed, note, gender, phone, weight] = data.data
   console.log(name, breed, note, gender, phone, weight);
   return (<>
     <Tr textAlign={'center'}>
