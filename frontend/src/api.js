@@ -57,7 +57,12 @@ export const checkIn = (data) => {
     }).then((response) => response.data);
 }
 
-
+// get timetable from fast api server. url is /get/timetable and passing date for parameter.
+export const getTimeTable = ({queryKey}) => {
+  const [_, date] = queryKey;
+  console.log(date);
+  return instance.get(`/get/timetable/${date}`).then((response) => response.data);
+}
 
 
 

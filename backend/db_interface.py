@@ -66,19 +66,31 @@ class Interface:
 
     # timetable
     def get_table(self, date):
-        select_query = f"select * from timetable where date = '{date}' order by in_time"
+        select_query = f"SELECT * FROM timetable WHERE date = '{date}' ORDER BY in_time"
+        print(select_query)
         self.getter.execute(select_query)
-        return self.getter.fetchall()
+        columns = [col[0] for col in self.getter.description]  # Get column names
+        data = [dict(zip(columns, row)) for row in self.getter.fetchall()]
+        return [{'name': row['name'],
+                 'in_time': row['in_time'].strftime('%H:%M'),
+                 'out_time': row['out_time'].strftime('%H:%M') if row['out_time'] is not None else '',
+                 'date': row['date'],
+                 'belts': row['belts'],
+                 'id': row['id']}
+                for row in data]
+
+        # return [dict(zip(columns, row)) for row in self.getter.fetchall()]
 
     def check_in(self, data):
         name, date, in_time, row_id = data['name'], data['date'], data['in_time'], data['id']
         # in_time 15:55
         # date 2021-08-01
+        in_time = date + ' ' + in_time
         insert_query = f"""
         insert into timetable (name, in_time, date, id, belts)
         values ('{name}',
         '{in_time}',
-        STR_TO_DATE('20230331', '%Y%m%d'),
+        STR_TO_DATE('{date.replace('-', '')}', '%Y%m%d'),
         {row_id},
         0
         );

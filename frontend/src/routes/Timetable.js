@@ -14,6 +14,9 @@ import {ArrowBackIcon, ArrowForwardIcon} from "@chakra-ui/icons";
 import {useSelector} from "react-redux";
 import moment from "moment/moment";
 import 'moment/locale/ko'
+import {useState} from "react";
+import {useQuery} from "react-query";
+import {dogsList, getTimeTable} from "../api";
 
 export default function Timetable() {
   let nowDate = new Date();
@@ -24,7 +27,16 @@ export default function Timetable() {
     weekday: 'long'
   };
   let date = useSelector((state) => state.currentDate);
-  let formattedDate = moment.utc(date, 'YYYYMMDD').format('M월 D일 dddd');
+  let formattedDate = moment.utc(date, 'YYYY-MM-DD').format('M월 D일 dddd');
+  // request /get/timetable and put date for parameter
+  const {isLoading, data} = useQuery(["timetable", date], getTimeTable);
+  // const [table, setTable] = useState();
+  // setTable with data if loading is false
+  // if (!isLoading) {
+  //   setTable(data);
+  // }
+  console.log(data)
+  
   return (
     <VStack w={'100%'}>
       <HStack w={'100%'} justifyContent={'center'}>
@@ -42,14 +54,7 @@ export default function Timetable() {
       </HStack>
       <TableContainer w={'100%'}>
         <Table variant='striped' colorScheme='blue'>
-          {/*<TableCaption>Imperial to metric conversion factors</TableCaption>*/}
           <Thead w={'100%'} borderBottomColor={'black'} borderBottomWidth={5} textAlign={'center'}>
-            {/*<Box w={'100%'}>*/}
-            {/*<HStack w={'100%'}>*/}
-            {/*<Text></Text>*/}
-            {/*<Text></Text>*/}
-            {/*</HStack>*/}
-            {/*</Box>*/}
             <Tr textAlign={'center'}>
               <Td textAlign={'center'} fontSize={'xl'}>이름</Td>
               <Th textAlign={'center'} fontSize={'xl'}>입장시간</Th>
@@ -59,24 +64,15 @@ export default function Timetable() {
             </Tr>
           </Thead>
           <Tbody>
-            <TimetableRow/>
-            <TimetableRow/>
-            <TimetableRow/>
-            <TimetableRow/>
-            <TimetableRow/>
-            <TimetableRow/>
-            <TimetableRow/>
-            <TimetableRow/>
-            <TimetableRow/>
-            <TimetableRow/>
-            <TimetableRow/>
-            <TimetableRow/>
-            <TimetableRow/>
-            <TimetableRow/>
-            <TimetableRow/>
-            <TimetableRow/>
-            <TimetableRow/>
-            <TimetableRow/>
+            {data && data.map((item) => (
+              <TimetableRow
+                key={item.id}
+                name={item.name}
+                in_time={item.in_time}
+                out_time={item.out_time}
+                // belts={item.belts}
+              />
+            ))}
           </Tbody>
         </Table>
       </TableContainer>

@@ -17,7 +17,7 @@ import {
   VStack
 } from "@chakra-ui/react";
 import {useForm} from "react-hook-form";
-import {useMutation, useQuery} from "react-query";
+import {useMutation, useQuery, useQueryClient} from "react-query";
 import {addNewDog, checkIn, dogsList} from "../api";
 import {useEffect, useState} from "react";
 import {createStore} from "redux";
@@ -29,6 +29,7 @@ export default function Checkin() {
   const {isOpen, onOpen, onClose} = useDisclosure()
   const {register, reset, handleSubmit, formState: {errors}} = useForm();
   const toast = useToast();
+  const queryClient = useQueryClient();
   
   let date = useSelector((state) => state.currentDate);
   const [dogData, setDogData] = useState([]);
@@ -49,6 +50,7 @@ export default function Checkin() {
       });
       onClose();
       reset();
+      queryClient.refetchQueries(["timetable"]);
     },
   });
   const onSubmit = (data) => {

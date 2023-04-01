@@ -75,6 +75,7 @@ class CheckIn(BaseModel):
     # name: str
     # date: str
     # in_time: str
+    # id: int
 
 
 @app.post("/api/post/check-in")
@@ -83,6 +84,14 @@ async def check_in(request: CheckIn):
     print(*data.values())
     response = db_interface.check_in(*data.values())
     return {"message": "check-in"}
+
+
+@app.get('/api/get/timetable/{date}')
+async def get_table(date: str):
+    print(date)
+    return db_interface.get_table(date)
+
+
 
 # @app.get("/api/post/add-new-dog/")
 # async def add_new_dog():

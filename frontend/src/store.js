@@ -1,7 +1,7 @@
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 import moment from 'moment';
 
-let today = moment(new Date()).format('YYYYMMDD');
+let today = moment(new Date()).format('YYYY-MM-DD');
 let currentDate = createSlice({
   name: 'date',
   initialState: today,

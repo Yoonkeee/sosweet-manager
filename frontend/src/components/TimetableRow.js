@@ -8,7 +8,7 @@ import {BiPlus} from "react-icons/bi";
 import Checkout from "./Checkout";
 import CheckinTimeModify from "./CheckinTimeModify";
 
-export default function TimetableRow() {
+export default function TimetableRow({key, name, in_time, out_time}) {
   const [belts, setBelts] = useState(0);
   const {
     isOpen: isOutOpen, onOpen: onOutOpen, onClose: onOutClose
@@ -16,18 +16,19 @@ export default function TimetableRow() {
   const {
     isOpen: checkinModIsOpen, onOpen: checkinModOnOpen, onClose: checkinModOnClose
   } = useDisclosure()
+  
   return (<>
     <Tr textAlign={'center'}>
       <Td>
         <Text fontSize={'xl'} textAlign={'center'} fontWeight={'bold'} textColor={'1a2a52'}>
-          김프로
+          {name}
         </Text>
       </Td>
       <Td textAlign={'center'}>
         <Tooltip hasArrow label='체크인 시간 수정' fontSize={'md'} bg='yellow.300' color='black'>
           <Button fontSize={'xl'} fontWeight={'bold'} textColor={'#1a2a52'} colorScheme={'white'}
                   onClick={checkinModOnOpen}>
-            13:55
+            {in_time}
             <CheckinTimeModify isOpen={checkinModIsOpen} onClose={checkinModOnClose}/>
           </Button>
         </Tooltip>
