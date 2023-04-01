@@ -24,7 +24,6 @@ class Interface:
         self.setter = self.db.cursor()
         self.getter = self.db.cursor()
 
-
     def test(self):
         return {'message': 'CORS TEST SUCCESSFUL'}
 
@@ -59,7 +58,6 @@ class Interface:
         columns = [col[0] for col in self.getter.description]  # Get column names
         return [dict(zip(columns, row)) for row in self.getter.fetchall()]
 
-
     def mod_dog_info(self, name, breed, note):
         pass
 
@@ -72,16 +70,22 @@ class Interface:
         self.getter.execute(select_query)
         return self.getter.fetchall()
 
-    def add_table_dog_in(self, name, date, in_time):
+    def check_in(self, data):
+        name, date, in_time, row_id = data['name'], data['date'], data['in_time'], data['id']
         # in_time 15:55
         # date 2021-08-01
         insert_query = f"""
-        insert into timetable (name, in_time, date, belts)
+        insert into timetable (name, in_time, date, id, belts)
         values ('{name}',
         '{in_time}',
-        str_to_date('{date}', '%Y-%m-%d'),
-        0);
+        STR_TO_DATE('20230331', '%Y%m%d'),
+        {row_id},
+        0
+        );
         """
+        print(insert_query)
+        self.setter.execute(insert_query)
+        self.db.commit()
 
     def add_table_dog_out(self, name, date, in_time, out_time, belts):
         pass
@@ -105,4 +109,3 @@ class Interface:
 
     def mod_history(self, name, date, in_time, out_time):
         pass
-

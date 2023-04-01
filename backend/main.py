@@ -69,6 +69,21 @@ async def add_new_dog(request: NewDog):
 async def get_dogs_list():
     return db_interface.get_dogs_list()
 
+
+class CheckIn(BaseModel):
+    data: dict
+    # name: str
+    # date: str
+    # in_time: str
+
+
+@app.post("/api/post/check-in")
+async def check_in(request: CheckIn):
+    data = json.loads(request.json())
+    print(*data.values())
+    response = db_interface.check_in(*data.values())
+    return {"message": "check-in"}
+
 # @app.get("/api/post/add-new-dog/")
 # async def add_new_dog():
 #     return {"message": "/api/post/add-new_dog/"}
