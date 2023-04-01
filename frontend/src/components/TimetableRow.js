@@ -8,7 +8,7 @@ import {BiPlus} from "react-icons/bi";
 import Checkout from "./Checkout";
 import CheckinTimeModify from "./CheckinTimeModify";
 
-export default function TimetableRow({key, name, in_time, out_time}) {
+export default function TimetableRow({id, name, in_time, out_time}) {
   const [belts, setBelts] = useState(0);
   const {
     isOpen: isOutOpen, onOpen: onOutOpen, onClose: onOutClose
@@ -75,6 +75,9 @@ export default function TimetableRow({key, name, in_time, out_time}) {
         {belts > 0 ? <Text>{belts}</Text> : ''}
       </Td>
     </Tr>
-    <Checkout isOpen={isOutOpen} onClose={onOutClose}/>
+    {/*name, in_time, out_time*/}
+    <Checkout isOpen={isOutOpen} onClose={onOutClose} id={id}
+              name={name} in_time={in_time} belts={belts}
+    />
   </>)
 }

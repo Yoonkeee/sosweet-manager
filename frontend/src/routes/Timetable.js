@@ -66,10 +66,9 @@ export default function Timetable() {
           <Tbody>
             {data && data.map((item) => (
               <TimetableRow
-                key={item.id}
+                id={item.id}
                 name={item.name}
                 in_time={item.in_time}
-                out_time={item.out_time}
                 // belts={item.belts}
               />
             ))}

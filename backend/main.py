@@ -70,7 +70,7 @@ async def get_dogs_list():
     return db_interface.get_dogs_list()
 
 
-class CheckIn(BaseModel):
+class CheckInOut(BaseModel):
     data: dict
     # name: str
     # date: str
@@ -79,17 +79,39 @@ class CheckIn(BaseModel):
 
 
 @app.post("/api/post/check-in")
-async def check_in(request: CheckIn):
+async def check_in(request: CheckInOut):
     data = json.loads(request.json())
     print(*data.values())
     response = db_interface.check_in(*data.values())
     return {"message": "check-in"}
+
+# check_out is post request and data will be {
+#     "id": 1680347566755,
+#     "name": "나나1",
+#     "in_time": "14:14",
+#     "out_time": "16:55",
+#     "belts": "2",
+#     "date": "2023-04-01",
+#     "minutes": 161
+# }
+
+
+@app.post("/api/post/check-out")
+async def check_out(request: CheckInOut):
+    data = json.loads(request.json())
+    print(*data.values())
+    response = db_interface.check_out(*data.values())
+    return {"message": "check-out"}
+
+
+
 
 
 @app.get('/api/get/timetable/{date}')
 async def get_table(date: str):
     print(date)
     return db_interface.get_table(date)
+
 
 
 

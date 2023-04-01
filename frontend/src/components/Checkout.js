@@ -28,19 +28,41 @@ import {
   Text, useToast,
   VStack
 } from "@chakra-ui/react";
-import {useRef} from "react";
+import {useRef, useState} from "react";
 import {useForm} from "react-hook-form";
-import {useMutation} from "react-query";
-import {addNewDog} from "../api";
+import {useMutation, useQueryClient} from "react-query";
+import {addNewDog, checkOut} from "../api";
+import {useSelector} from "react-redux";
+import moment from "moment/moment";
 
-export default function Checkout({isOpen, onClose}) {
+
+function minutesToHHMM(minutes) {
+  const hours = Math.floor(minutes / 60);
+  const remainderMinutes = minutes % 60;
+  const formattedHours = hours.toString().padStart(2, '0');
+  const formattedMinutes = remainderMinutes.toString().padStart(2, '0');
+  return `${formattedHours}:${formattedMinutes}`;
+}
+
+
+export default function Checkout({isOpen, onClose, id, name, in_time, belts}) {
   const ref = useRef(null)
+  let checkoutData = {};
   const {register, reset,handleSubmit, formState:{errors}} = useForm();
   const toast = useToast();
-  const mutation = useMutation(addNewDog, {
-    onSuccess: () => {
+  let date = useSelector((state) => state.currentDate);
+  const queryClient = useQueryClient();
+  const mutation = useMutation(checkOut, {
+    onSuccess: (data) => {
       toast({
-        title: "체크아웃 했어요~~",
+        title: (
+          <>
+            체크아웃! <br/>
+            댕댕이 : {checkoutData.name} <br/>
+            입장시간 : {checkoutData.in_time} <br/>
+            퇴장시간 : {checkoutData.out_time} <br/>
+            이용시간 : {minutesToHHMM(checkoutData.minutes)} <br/>
+          </>),
         status: "success",
         position: "top",
         duration: 3000,
@@ -48,10 +70,47 @@ export default function Checkout({isOpen, onClose}) {
       });
       onClose();
       reset();
+      queryClient.refetchQueries(["timetable"]);
     },
   });
-  const onSubmit = (dog) => {
-    mutation.mutate(dog);
+  const onSubmit = (data) => {
+    const pinNumber = data.pinNumber.join("").replace(/(\d{2})(\d{2})/, "$1:$2");
+    
+    // const moment = require('moment');
+    const inTime = moment(in_time, 'HH:mm');
+    const outTime = moment(pinNumber, 'HH:mm');
+    if (!outTime.isValid()) {
+      toast({
+        title: "퇴장 시간이 올바른 형식이 아닙니다.",
+        status: "error",
+        position: "top",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+    if (inTime >= outTime) {
+      toast({
+        title: "퇴장 시간이 입장 시간보다 빠릅니다.",
+        status: "error",
+        position: "top",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+    const diffMinutes = outTime.diff(inTime, 'minutes');
+    checkoutData = {
+      id: id,
+      name: name,
+      in_time: in_time,
+      out_time: pinNumber,
+      belts: data.belts,
+      date: date,
+      minutes: diffMinutes
+    }
+    console.log(checkoutData);
+    mutation.mutate(checkoutData);
   }
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -62,20 +121,20 @@ export default function Checkout({isOpen, onClose}) {
         <ModalBody as={'form'} onSubmit={handleSubmit(onSubmit)}>
           <VStack spacing={3}>
             <HStack>
-              <Text>김프로 퇴장시간</Text>
+              <Text>{name} 퇴장시간</Text>
               <HStack>
                 <PinInput placeholder='0'>
-                  <PinInputField w={'40px'}/>
-                  <PinInputField w={'40px'}/>
+                  <PinInputField w={'40px'} {...register("pinNumber[0]")} required={true}/>
+                  <PinInputField w={'40px'} {...register("pinNumber[1]")} required={true}/>
                   <Text fontSize={'3xl'} fontWeight={'bold'}>:</Text>
-                  <PinInputField w={'40px'}/>
-                  <PinInputField w={'40px'}/>
+                  <PinInputField w={'40px'} {...register("pinNumber[2]")} required={true}/>
+                  <PinInputField w={'40px'} {...register("pinNumber[3]")} required={true}/>
                 </PinInput>
               </HStack>
             </HStack>
             <HStack>
               <Text>매너벨트 사용량</Text>
-              <NumberInput size='md' maxW={'30%'} defaultValue={0} min={0}>
+              <NumberInput size='md' maxW={'30%'} defaultValue={belts} min={0} {...register('belts')}>
                 <NumberInputField/>
                 <NumberInputStepper>
                   <NumberIncrementStepper/>

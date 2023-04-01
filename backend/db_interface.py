@@ -30,7 +30,7 @@ class Interface:
     # dogs
     def add_dog_info(self, data):
         print(data)
-        duplicate_check_query = f"select count(*) from dogs where name = '{data['dogName']}'"
+        duplicate_check_query = f"select count(*) from dogs where name = '{data['name']}'"
         self.getter.execute(duplicate_check_query)
         # return False
         # print()
@@ -66,7 +66,7 @@ class Interface:
 
     # timetable
     def get_table(self, date):
-        select_query = f"SELECT * FROM timetable WHERE date = '{date}' ORDER BY in_time"
+        select_query = f"SELECT * FROM timetable WHERE date = '{date}' and out_time is NULL ORDER BY in_time"
         print(select_query)
         self.getter.execute(select_query)
         columns = [col[0] for col in self.getter.description]  # Get column names
@@ -98,6 +98,42 @@ class Interface:
         print(insert_query)
         self.setter.execute(insert_query)
         self.db.commit()
+        return True
+
+    def check_out(self, data):
+        name, date, in_time, out_time, belts, row_id = \
+            data['name'], data['date'], data['in_time'], data['out_time'], data['belts'], data['id']
+        # insert data into used
+        insert_query = f"""
+        insert into used_time (name, date, used_minutes, id, belts, checked, in_time, out_time)
+        values (
+        '{name}',
+        STR_TO_DATE('{date.replace('-', '')}', '%Y%m%d'),
+        {data['minutes']},
+        {row_id},
+        {belts},
+        0,
+        '{date + ' ' + in_time}',
+        '{date + ' ' + out_time}'
+        );
+        """
+        print(insert_query)
+        self.setter.execute(insert_query)
+        self.db.commit()
+
+        # set timetable out_time, belts with id
+        update_query = f"""
+        update timetable
+        set out_time = '{date + ' ' + out_time}'
+        , belts = {belts}
+        where id = {row_id};
+        """
+        print(update_query)
+        self.setter.execute(update_query)
+        self.db.commit()
+        return True
+        
+    
 
     def add_table_dog_out(self, name, date, in_time, out_time, belts):
         pass

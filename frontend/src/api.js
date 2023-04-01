@@ -57,6 +57,16 @@ export const checkIn = (data) => {
     }).then((response) => response.data);
 }
 
+
+export const checkOut = (data) => {
+  return instance.post("/post/check-out", {data},
+    {
+      headers: {
+        "X-CSRFToken": Cookies.get("csrftoken") || "",
+      },
+    }).then((response) => response.data);
+}
+
 // get timetable from fast api server. url is /get/timetable and passing date for parameter.
 export const getTimeTable = ({queryKey}) => {
   const [_, date] = queryKey;

@@ -20,9 +20,7 @@ import {useForm} from "react-hook-form";
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import {addNewDog, checkIn, dogsList} from "../api";
 import {useEffect, useState} from "react";
-import {createStore} from "redux";
 import {useSelector} from "react-redux";
-import moment from "moment";
 
 export default function Checkin() {
   const {isLoading, data} = useQuery(["dogs-list"], dogsList);
@@ -32,8 +30,8 @@ export default function Checkin() {
   const queryClient = useQueryClient();
   
   let date = useSelector((state) => state.currentDate);
-  const [dogData, setDogData] = useState([]);
-  // let formattedDate = moment.utc(date, 'YYYYMMDD').format('M월 D일 dddd');
+  // const [dogData, setDogData] = useState([]);
+  let dogData = {};
   const mutation = useMutation(checkIn,{
     onSuccess: () => {
       toast({
@@ -59,12 +57,12 @@ export default function Checkin() {
     console.log(pinNumber); // outputs "12:34"
   
     // const pinNumber = data.pinNumber.join(':').padStart(5, '0');
-    setDogData({
+    dogData = {
       name: data.dogName,
       in_time: pinNumber,
       date: date,
       id: Date.now()
-    });
+    };
     console.log(dogData)
     mutation.mutate(dogData);
   };
@@ -105,12 +103,12 @@ export default function Checkin() {
                 </Select>
                   )}
               <HStack>
-                <PinInput placeholder='0' id={'test'}>
-                  <PinInputField {...register("pinNumber[0]")} required={true}/>
-                  <PinInputField {...register("pinNumber[1]")} required={true}/>
-                  <Text>:</Text>
-                  <PinInputField {...register("pinNumber[2]")} required={true}/>
-                  <PinInputField {...register("pinNumber[3]")} required={true}/>
+                <PinInput placeholder='0'>
+                  <PinInputField w={'40px'} {...register("pinNumber[0]")} required={true}/>
+                  <PinInputField w={'40px'} {...register("pinNumber[1]")} required={true}/>
+                  <Text fontSize={'3xl'} fontWeight={'bold'}>:</Text>
+                  <PinInputField w={'40px'} {...register("pinNumber[2]")} required={true}/>
+                  <PinInputField w={'40px'} {...register("pinNumber[3]")} required={true}/>
                 </PinInput>
               </HStack>
             </HStack>
