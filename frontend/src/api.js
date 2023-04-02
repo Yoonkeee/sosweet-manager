@@ -67,6 +67,17 @@ export const checkOut = (data) => {
     }).then((response) => response.data);
 }
 
+// change check-in time
+export const changeCheckIn = (data) => {
+  return instance.post("/post/change-check-in", {data},
+    {
+      headers: {
+        "X-CSRFToken": Cookies.get("csrftoken") || "",
+      },
+    }).then((response) => response.data);
+}
+
+
 // get timetable from fast api server. url is /get/timetable and passing date for parameter.
 export const getTimeTable = ({queryKey}) => {
   const [_, date] = queryKey;

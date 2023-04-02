@@ -6,7 +6,7 @@ import {useState} from "react";
 // import "react-icons/all";
 import {BiPlus} from "react-icons/bi";
 import Checkout from "./Checkout";
-import CheckinTimeModify from "./CheckinTimeModify";
+import ChangeCheckInTime from "./ChangeCheckInTime";
 
 export default function DogsListRow(data) {
   console.log(data.data)

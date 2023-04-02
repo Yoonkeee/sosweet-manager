@@ -103,6 +103,19 @@ async def check_out(request: CheckInOut):
     response = db_interface.check_out(*data.values())
     return {"message": "check-out"}
 
+# change check-in time. url will be /api/post/change-check-in
+# data will be {
+#     "id": 1680347566755,
+#     "check_in_time": "14:14"
+# }
+
+
+@app.post("/api/post/change-check-in")
+async def change_check_in(request: CheckInOut):
+    data = json.loads(request.json())
+    print(*data.values())
+    response = db_interface.change_check_in_time(*data.values())
+    return {"message": "change-check-in"}
 
 
 

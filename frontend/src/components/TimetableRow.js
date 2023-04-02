@@ -6,7 +6,7 @@ import {useState} from "react";
 // import "react-icons/all";
 import {BiPlus} from "react-icons/bi";
 import Checkout from "./Checkout";
-import CheckinTimeModify from "./CheckinTimeModify";
+import ChangeCheckInTime from "./ChangeCheckInTime";
 
 export default function TimetableRow({id, name, in_time, out_time}) {
   const [belts, setBelts] = useState(0);
@@ -29,7 +29,8 @@ export default function TimetableRow({id, name, in_time, out_time}) {
           <Button fontSize={'xl'} fontWeight={'bold'} textColor={'#1a2a52'} colorScheme={'white'}
                   onClick={checkinModOnOpen}>
             {in_time}
-            <CheckinTimeModify isOpen={checkinModIsOpen} onClose={checkinModOnClose}/>
+            <ChangeCheckInTime isOpen={checkinModIsOpen} onClose={checkinModOnClose}
+            id={id} name={name} in_time={in_time}/>
           </Button>
         </Tooltip>
       </Td>

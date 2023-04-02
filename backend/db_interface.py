@@ -132,7 +132,22 @@ class Interface:
         self.setter.execute(update_query)
         self.db.commit()
         return True
-        
+
+    # change check-in time
+    def change_check_in_time(self, data):
+        name, date, in_time, row_id = data['name'], data['date'], data['in_time'], data['id']
+        # in_time 15:55
+        # date 2021-08-01
+        in_time = date + ' ' + in_time
+        update_query = f"""
+        update timetable
+        set in_time = '{in_time}'
+        where id = {row_id};
+        """
+        print(update_query)
+        self.setter.execute(update_query)
+        self.db.commit()
+        return True
     
 
     def add_table_dog_out(self, name, date, in_time, out_time, belts):
