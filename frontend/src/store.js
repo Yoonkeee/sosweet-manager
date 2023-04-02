@@ -7,12 +7,16 @@ let currentDate = createSlice({
   initialState: today,
   reducers: {
     tomorrow: state => {
-      const nextDate = moment(state).add(1, 'day');
-      return nextDate.toDate();
+      console.log('before tomorrow' + state);
+      const nextDate = moment(state).add(1, 'day').format("YYYY-MM-DD");
+      console.log('after tomorrow' + nextDate);
+      return nextDate;
     },
     yesterday: state => {
-      const prevDate = moment(state).subtract(1, 'day');
-      return prevDate.toDate();
+      console.log('before yesterday' + state);
+      const prevDate = moment(state).subtract(1, 'day').format("YYYY-MM-DD");
+      console.log('after yesterday' + prevDate);
+      return prevDate;
     },
     setDate: (state, action) => {
       const dateObject = moment(action.payload, 'YYYYMMDD').toDate();
@@ -40,3 +44,5 @@ let currentDate = createSlice({
 export default configureStore({
   reducer: { currentDate: currentDate.reducer }
 });
+
+export let { yesterday, tomorrow, setDate } = currentDate.actions;
