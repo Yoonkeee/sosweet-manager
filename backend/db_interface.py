@@ -81,6 +81,19 @@ class Interface:
 
         # return [dict(zip(columns, row)) for row in self.getter.fetchall()]
 
+    # used_table
+    def get_history(self, name):
+        select_query = f"SELECT * FROM used_table WHERE name = '{name}' ORDER BY date DESC"
+        # print(select_query)
+        self.getter.execute(select_query)
+        columns = [col[0] for col in self.getter.description]
+        data = [dict(zip(columns, row)) for row in self.getter.fetchall()]
+        # print(data)
+        return data
+
+
+
+
     def check_in(self, data):
         name, date, in_time, row_id = data['name'], data['date'], data['in_time'], data['id']
         # in_time 15:55
@@ -105,7 +118,7 @@ class Interface:
             data['name'], data['date'], data['in_time'], data['out_time'], data['belts'], data['id']
         # insert data into used
         insert_query = f"""
-        insert into used_time (name, date, used_minutes, id, belts, checked, in_time, out_time)
+        insert into used_table (name, date, used_minutes, id, belts, checked, in_time, out_time)
         values (
         '{name}',
         STR_TO_DATE('{date.replace('-', '')}', '%Y%m%d'),

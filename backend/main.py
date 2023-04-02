@@ -118,14 +118,19 @@ async def change_check_in(request: CheckInOut):
     return {"message": "change-check-in"}
 
 
-
-
 @app.get('/api/get/timetable/{date}')
 async def get_table(date: str):
     print(date)
     return db_interface.get_table(date)
 
 
+# get data from used_table table with input name
+@app.get('/api/get/history/{name}')
+async def get_history(name: str):
+    print(name)
+    result = db_interface.get_history(name)
+    print(result)
+    return result
 
 
 # @app.get("/api/post/add-new-dog/")
