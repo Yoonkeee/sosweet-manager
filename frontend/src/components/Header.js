@@ -34,12 +34,12 @@ import {
   HamburgerIcon, CloseIcon, ChevronDownIcon, ChevronRightIcon,
 } from '@chakra-ui/icons';
 import {Link} from 'react-router-dom';
-import NewDog from "./NewDog";
+import NewDog from "../modals/NewDog";
 import {useMutation} from "react-query";
 import {addNewDog} from "../api";
 import {useForm} from "react-hook-form";
-import ModifyDog from "./ModifyDog";
-import AddPurchase from "./AddPurchase";
+import ModifyDog from "../modals/ModifyDog";
+import AddPurchase from "../modals/AddPurchase";
 import Cookies from "js-cookie";
 import axios from "axios";
 import DogsList from "../routes/DogsList";

@@ -22,35 +22,50 @@ import {
   VStack
 } from "@chakra-ui/react";
 import {useForm} from "react-hook-form";
-import {useMutation} from "react-query";
-import {addNewDog} from "../api";
+import {useMutation, useQuery, useQueryClient} from "react-query";
+import {addNewDog, checkIn, dogsList, getHistory, testAPI} from "../api";
+import {useDispatch, useSelector} from "react-redux";
+import {setDog} from "../store";
+import {useNavigate} from "react-router-dom";
 
-export default function SelectDog() {
+export default function SelectDog({setter}) {
+  const navigate = useNavigate();
   const {isOpen, onOpen, onClose} = useDisclosure();
   const {register, reset, handleSubmit, formState: {errors}} = useForm();
+  const {isLoading, data} = useQuery(["dogs-list"], dogsList);
   const toast = useToast();
-  const mutation = useMutation(addNewDog, {
+  let name = '';
+  const mutation = useMutation(getHistory,{
     onSuccess: () => {
       toast({
-        title: "이용내역을 불러왔어요~~",
+        title: (
+          <>
+            {name}의 이용 내역을 불러왔어요! <br/>
+          </>),
         status: "success",
         position: "top",
-        duration: 2000,
+        duration: 3000,
         isClosable: true,
       });
       onClose();
-      // queryClient.refetchQueries(["me"]);
       reset();
-    }, // onError: () => {
-    //   console.log("Mutation 에러낫음..ㅠ");
-    // },
+    },
   });
-  const onSubmit = (register) => {
-    mutation.mutate(register);
-    // console.log(register);
-  }
+  const onSubmit = (dogName) => {
+    name = dogName.name
+    onClose();
+    reset();
+    // console.log(name);
+    setter(name);
+    // navigate(`/history/${name.name}`)
+    // mutation.mutate(name);
+  };
+  const options = data?.map(item => ({
+    value: item.name,
+    label: item.name,
+  }));
   return (<>
-    <Button colorScheme={'white'} fontSize={'1.5rem'} onClick={onOpen}>
+    <Button onClick={onOpen}>
       댕댕이 선택
     </Button>
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -61,18 +76,22 @@ export default function SelectDog() {
         <ModalBody as={'form'} onSubmit={handleSubmit(onSubmit)}>
           <VStack spacing={3}>
             <HStack w={'100%'}>
-              <Select
-                w={'40%'}
-                mr={5}
-                placeholder={"댕댕이 선택"}
-              >
-                <option>김프로</option>
-                <option>하로</option>
-                <option>박프로</option>
-                <option>요미</option>
-                <option>꼬미</option>
-                <option>감자</option>
-              </Select>
+              {isLoading ? <Text>Loading options...</Text> :
+                (
+                  <Select
+                    w={'40%'}
+                    mr={5}
+                    placeholder={"댕댕이 선택"}
+                    required={true}
+                    {...register("name")}
+                  >
+                    {options && options.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </Select>
+                )}
             </HStack>
           </VStack>
         <ModalFooter>

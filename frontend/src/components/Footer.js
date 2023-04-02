@@ -23,9 +23,9 @@ import {
 import {Link, useLocation} from "react-router-dom";
 import GetMessage from "../routes/GetMessage";
 import History from "../routes/History";
-import SelectDog from "./SelectDog";
-import Checkin from "./Checkin";
-import MakeMessageModal from "./MakeMessageModal";
+import SelectDog from "../modals/SelectDog";
+import Checkin from "../modals/Checkin";
+import MakeMessage from "../modals/MakeMessage";
 
 export default function Footer() {
   const location = useLocation().pathname;
@@ -38,16 +38,7 @@ export default function Footer() {
     background={'#1a2a52'}
   >
     <Spacer/>
-    <Box w={'10vw'}>
-      {location === '/get-message' ? (
-        <>
-          <Button colorScheme={'white'} fontSize={'1.5rem'} onClick={onOpen}>메세지 생성</Button>
-        <MakeMessageModal isOpen={isOpen} onClose={onClose}/>
-        </>)
-        :
-        (<></>)
-      }
-    </Box>
+    <Box w={'10vw'} />
     <Box>
       <Image
         h={'8vh'}
@@ -57,13 +48,15 @@ export default function Footer() {
     </Box>
     <Box w={'10vw'}>
       {location === '/timetable' ? (
-        <Checkin/>) :
+          <Checkin/>) :
         (location === '/get-message' ? (
-          <SelectDog/>) :
-          (location === '/history' ? (
-            <SelectDog/>) :
-            (<></>)))
-      }
+              <>
+                <Button colorScheme={'white'} fontSize={'1.5rem'} onClick={onOpen}>메세지 생성</Button>
+                <MakeMessage isOpen={isOpen} onClose={onClose}/>
+              </>)
+            :
+            (<></>)
+        )}
     </Box>
     <Spacer/>
   </Flex>)

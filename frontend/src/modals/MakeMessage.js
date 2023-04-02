@@ -22,7 +22,7 @@ import {useEffect, useRef, useState} from "react";
 import {useMutation} from "react-query";
 import {addNewDog} from "../api";
 
-export default function MakeMessageModal({isOpen, onClose}) {
+export default function MakeMessage({isOpen, onClose}) {
   // const {isOpen, onOpen, onClose} = useDisclosure()
   const toast = useToast()
   const [text, setText] = useState('')

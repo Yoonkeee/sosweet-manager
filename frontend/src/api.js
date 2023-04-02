@@ -86,10 +86,21 @@ export const getTimeTable = ({queryKey}) => {
 }
 
 
+// get history from fast api server. url is /get/history and passing dog name for parameter.
+export const getHistory = ({queryKey}) => {
+  const [_, name] = queryKey;
+  console.log(name);
+  
+  if(name === undefined || name === null || typeof name === "object")
+    return null
+  console.log('in api ' + name);
+  return instance.get(`/get/history/${name}`).then((response) => response.data);
+}
 
 
-
-
+export const testAPI = (data) => {
+  return data;
+}
 
 
 

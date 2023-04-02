@@ -5,39 +5,64 @@ import {MinusIcon, PlusSquareIcon, SearchIcon} from "@chakra-ui/icons";
 import {useState} from "react";
 // import "react-icons/all";
 import {BiPlus} from "react-icons/bi";
-import Checkout from "./Checkout";
+import Checkout from "../modals/Checkout";
+import moment from "moment/moment";
 
-export default function HistoryRow() {
-  const [belts, setBelts] = useState(0);
-  const {
-    isOpen: isOutOpen,
-    onOpen: onOutOpen,
-    onClose: onOutClose
-  } = useDisclosure()
-  return (
-    <>
-      <Tr>
-        <Td>
-          <Text fontSize='xl' fontWeight='bold' textColor='#1a2a52'>
-            김프로
-          </Text>
-        </Td>
-        <Td>
-          <Text fontSize={'md'} textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>3월15일</Text>
-        </Td>
-        <Td>
-          <Text fontSize='lg' textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>13:55</Text>
-        </Td>
-        <Td>
-          <Text fontSize='lg' textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>15:55</Text>
-        </Td>
-        <Td>
-          <Text fontSize='lg' textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>2:00</Text>
-        </Td>
-        <Td>
+export default function HistoryRow(data) {
+  console.log('in history row');
+  console.log(data);
+  const formatDate = (dateStr) => {
+    let formattedDate = moment.utc(date, 'YYYY-MM-DD').format('M월 D일');
+    return formattedDate
+  };
+  const formatTime = (timeStr) => {
+    return moment(timeStr, 'YYYY-MM-DDTHH:mm:ss').format('HH:mm');
+  };
+  const formatTimeFromMinutes = (minutes) => {
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    return moment().startOf('day').add(hours, 'hours').add(mins, 'minutes').format('HH:mm');
+  };
+  const {belts, checked, checked_date, date, id, in_time, name, out_time, used_minutes} = data;
+  return (<>
+    <Tr>
+      <Td>
+        <Text fontSize='xl' fontWeight='bold' textColor='#1a2a52'>
+          {name}
+        </Text>
+      </Td>
+      <Td>
+        <Text fontSize={'md'} textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>
+          {formatDate(date)}
+        </Text>
+      </Td>
+      {/*<Td>*/}
+      {/*  <Text fontSize='lg' textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>*/}
+      {/*    {formatTime(in_time)}*/}
+      {/*  </Text>*/}
+      {/*</Td>*/}
+      {/*<Td>*/}
+      {/*  <Text fontSize='lg' textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>*/}
+      {/*    {formatTime(out_time)}*/}
+      {/*  </Text>*/}
+      {/*</Td>*/}
+      <Td>
+        <Text fontSize='lg' textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>
+          {formatTimeFromMinutes(used_minutes)}
+        </Text>
+      </Td>
+      <Td>
+        <Text fontSize='lg' textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>
           {belts > 0 ? <Text fontSize='lg'>{belts}</Text> : ''}
-        </Td>
-      </Tr>
-    </>
-  )
+        </Text>
+      </Td>
+      <Td>
+        {checked ?
+          <Text fontSize='lg' textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>
+            {checked_date}
+          </Text>
+          : (<></>)}
+      </Td>
+    </Tr>
+  </>)
 }

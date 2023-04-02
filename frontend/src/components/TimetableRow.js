@@ -5,8 +5,8 @@ import {MinusIcon, PlusSquareIcon, SearchIcon} from "@chakra-ui/icons";
 import {useState} from "react";
 // import "react-icons/all";
 import {BiPlus} from "react-icons/bi";
-import Checkout from "./Checkout";
-import ChangeCheckInTime from "./ChangeCheckInTime";
+import Checkout from "../modals/Checkout";
+import ChangeCheckInTime from "../modals/ChangeCheckInTime";
 
 export default function TimetableRow({id, name, in_time, out_time}) {
   const [belts, setBelts] = useState(0);

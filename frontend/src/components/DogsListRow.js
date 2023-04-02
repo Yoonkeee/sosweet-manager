@@ -5,14 +5,14 @@ import {MinusIcon, PlusSquareIcon, SearchIcon} from "@chakra-ui/icons";
 import {useState} from "react";
 // import "react-icons/all";
 import {BiPlus} from "react-icons/bi";
-import Checkout from "./Checkout";
-import ChangeCheckInTime from "./ChangeCheckInTime";
+import Checkout from "../modals/Checkout";
+import ChangeCheckInTime from "../modals/ChangeCheckInTime";
 
 export default function DogsListRow(data) {
   console.log(data.data)
   const {breed, gender, name, note, phone, weight} = data.data
   // const [name, breed, note, gender, phone, weight] = data.data
-  console.log(name, breed, note, gender, phone, weight);
+  // console.log(name, breed, note, gender, phone, weight);
   return (<>
     <Tr textAlign={'center'}>
       <Td textAlign={'center'} p={2}>

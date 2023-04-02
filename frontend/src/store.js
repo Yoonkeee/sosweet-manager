@@ -41,8 +41,22 @@ let currentDate = createSlice({
   }
 });
 
+const selectedDog = createSlice({
+  name: 'name',
+  initialState: '',
+  reducers: {
+    setDog: (state, action) => {
+      console.log(state);
+      console.log('setDog ' + action.payload.name);
+      return action.payload.name;
+    }
+  }
+});
+
 export default configureStore({
-  reducer: { currentDate: currentDate.reducer }
+  reducer: { currentDate: currentDate.reducer,
+       selectedDog: selectedDog.reducer}
 });
 
 export let { yesterday, tomorrow, setDate } = currentDate.actions;
+export let { setDog } = selectedDog.actions;

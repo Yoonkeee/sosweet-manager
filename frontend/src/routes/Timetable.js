@@ -22,7 +22,6 @@ import {tomorrow, yesterday} from "../store";
 export default function Timetable() {
   let nowDate = new Date();
   const options = {
-    // year: 'numeric',
     month: 'long',
     day: 'numeric',
     weekday: 'long'
@@ -30,13 +29,7 @@ export default function Timetable() {
   let date = useSelector((state) => state.currentDate);
   const dispatch = useDispatch();
   let formattedDate = moment.utc(date, 'YYYY-MM-DD').format('M월 D일 dddd');
-  // request /get/timetable and put date for parameter
   const {isLoading, data} = useQuery(["timetable", date], getTimeTable);
-  // const [table, setTable] = useState();
-  // setTable with data if loading is false
-  // if (!isLoading) {
-  //   setTable(data);
-  // }
   console.log(data)
   const queryClient = useQueryClient();
   
