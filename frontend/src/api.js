@@ -78,6 +78,11 @@ export const changeCheckIn = (data) => {
 }
 
 
+export const cancelCheckin = (id) => {
+  return instance.get(`/get/cancel-checkin/${id}`).then((response) => response.data);
+}
+
+
 // get timetable from fast api server. url is /get/timetable and passing date for parameter.
 export const getTimeTable = ({queryKey}) => {
   const [_, date] = queryKey;
@@ -96,6 +101,9 @@ export const getHistory = ({queryKey}) => {
   console.log('in api ' + name);
   return instance.get(`/get/history/${name}`).then((response) => response.data);
 }
+
+
+
 
 
 export const testAPI = (data) => {

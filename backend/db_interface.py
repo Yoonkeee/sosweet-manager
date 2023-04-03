@@ -91,9 +91,6 @@ class Interface:
         # print(data)
         return data
 
-
-
-
     def check_in(self, data):
         name, date, in_time, row_id = data['name'], data['date'], data['in_time'], data['id']
         # in_time 15:55
@@ -161,7 +158,16 @@ class Interface:
         self.setter.execute(update_query)
         self.db.commit()
         return True
-    
+
+    def cancel_checkin(self, row_id):
+        delete_query = f"""
+        delete from timetable
+        where id = {row_id};
+        """
+        print(delete_query)
+        self.setter.execute(delete_query)
+        self.db.commit()
+        return True
 
     def add_table_dog_out(self, name, date, in_time, out_time, belts):
         pass

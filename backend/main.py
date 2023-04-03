@@ -133,6 +133,18 @@ async def get_history(name: str):
     return result
 
 
+# cancel checkin with given id. url will be /api/post/cancel-checkin
+# data will be { id: int }
+@app.get("/api/get/cancel-checkin/{row_id}")
+async def cancel_checkin(row_id: int):
+    print(row_id)
+    # data = json.loads(request.json())
+    # print(*data.values())
+    response = db_interface.cancel_checkin(row_id)
+    return {"message": "cancel-checkin"}
+
+
+
 # @app.get("/api/post/add-new-dog/")
 # async def add_new_dog():
 #     return {"message": "/api/post/add-new_dog/"}

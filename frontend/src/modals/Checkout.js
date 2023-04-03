@@ -1,6 +1,6 @@
 import {
   Box,
-  Button, Heading,
+  Button, FormControl, FormLabel, Heading,
   HStack,
   Modal,
   ModalBody,
@@ -24,14 +24,14 @@ import {
   PopoverFooter,
   PopoverHeader,
   PopoverTrigger,
-  Portal,
+  Portal, Switch,
   Text, useToast,
   VStack
 } from "@chakra-ui/react";
 import {useRef, useState} from "react";
 import {useForm} from "react-hook-form";
 import {useMutation, useQueryClient} from "react-query";
-import {addNewDog, checkOut} from "../api";
+import {addNewDog, cancelCheckin, checkOut} from "../api";
 import {useSelector} from "react-redux";
 import moment from "moment/moment";
 
@@ -112,6 +112,13 @@ export default function Checkout({isOpen, onClose, id, name, in_time, belts}) {
     console.log(checkoutData);
     mutation.mutate(checkoutData);
   }
+  const cancel = () => {
+    cancelCheckin(id);
+    // console.log(id);
+    onClose();
+    reset();
+    queryClient.refetchQueries(["timetable"]);
+  };
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay/>
@@ -119,9 +126,9 @@ export default function Checkout({isOpen, onClose, id, name, in_time, belts}) {
         <ModalHeader>댕댕이 체크아웃!</ModalHeader>
         <ModalCloseButton/>
         <ModalBody as={'form'} onSubmit={handleSubmit(onSubmit)}>
-          <VStack spacing={3}>
+          <VStack spacing={3} alignItems={'flex-start'}>
             <HStack>
-              <Text>{name} 퇴장시간</Text>
+              <Text w={'15vw'}>{name} 퇴장시간</Text>
               <HStack>
                 <PinInput placeholder='0'>
                   <PinInputField w={'40px'} {...register("pinNumber[0]")} required={true}/>
@@ -133,7 +140,7 @@ export default function Checkout({isOpen, onClose, id, name, in_time, belts}) {
               </HStack>
             </HStack>
             <HStack>
-              <Text>매너벨트 사용량</Text>
+              <Text w={'15vw'}>매너벨트 사용량</Text>
               <NumberInput size='md' maxW={'30%'} defaultValue={belts} min={0} {...register('belts')}>
                 <NumberInputField/>
                 <NumberInputStepper>
@@ -142,6 +149,12 @@ export default function Checkout({isOpen, onClose, id, name, in_time, belts}) {
                 </NumberInputStepper>
               </NumberInput>
             </HStack>
+            <FormControl display='flex' alignItems='center'>
+              <FormLabel mb='0' w={'14.5vw'}>
+                당일 결제
+              </FormLabel>
+              <Switch size={'lg'} id='payToday' />
+            </FormControl>
           </VStack>
           <ModalFooter>
             <Popover placement='top-start'>
@@ -159,7 +172,7 @@ export default function Checkout({isOpen, onClose, id, name, in_time, belts}) {
                   <PopoverCloseButton />
                   <PopoverBody>
                     <Heading fontSize={'2xl'} my={'3vh'}>체크인 취소할까요?</Heading>
-                    <Button colorScheme='yellow' onClick={onClose}>취소할게요!</Button>
+                    <Button colorScheme='yellow' onClick={cancel}>취소할게요!</Button>
                   </PopoverBody>
                 </PopoverContent>
               </Portal>
