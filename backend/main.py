@@ -1,4 +1,7 @@
-from fastapi import FastAPI, Request, Response, status
+import asyncio
+import time
+import schedule
+from fastapi import FastAPI, Request, Response, status, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 import db_interface
 from pydantic import BaseModel
@@ -41,6 +44,35 @@ async def root():
 @app.get("/api/test")
 async def test():
     return db_interface.test()
+
+
+# def execute_keep_alive():
+#     print('!')
+#     return db_interface.keep_alive()
+#
+# schedule.every(10).seconds.do(execute_keep_alive)
+# while True:
+#     schedule.run_pending()
+
+
+# async def execute_keep_alive():
+#     # Do something every 10 minutes
+#     db_interface.keep_alive()
+#     print('keep alive on main.py')
+#     while True:
+#         await asyncio.sleep(2)  # 600 seconds = 10 minutes
+
+
+# @app.get("/keep-alive")
+# async def keep_alive(background_tasks: BackgroundTasks):
+#     # Add the function to the background tasks to run every 10 minutes
+#     loop = asyncio.new_event_loop()
+#     asyncio.set_event_loop(loop)
+#     loop.create_task(execute_keep_alive())
+#
+#     # background_tasks.add_task(execute_keep_alive)
+#     # Return a message indicating that the task has been scheduled
+#     return 'Keep alive task scheduled'
 
 
 class NewDog(BaseModel):
@@ -144,6 +176,29 @@ async def cancel_checkin(row_id: int):
     return {"message": "cancel-checkin"}
 
 
+@app.post('/api/post/purchase')
+async def purchase(request: CheckInOut):
+    data = json.loads(request.json())
+    print(*data.values())
+    response = db_interface.purchase(*data.values())
+    return {"message": "purchase"}
+
+
+@app.get('/api/get/get-used-belts/{name}')
+async def get_used_belts(name: str):
+    print(name)
+    result = db_interface.get_used_belts(name)
+    print(result)
+    return result
+
+
+# check_used_belts
+@app.get('/api/get/check-used-belts/{name}')
+async def check_used_belts(name: str):
+    print(name)
+    result = db_interface.check_used_belts(name)
+    print(result)
+    return result
 
 # @app.get("/api/post/add-new-dog/")
 # async def add_new_dog():

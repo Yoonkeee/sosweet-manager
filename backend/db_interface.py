@@ -27,6 +27,11 @@ class Interface:
     def test(self):
         return {'message': 'CORS TEST SUCCESSFUL'}
 
+    def keep_alive(self):
+        self.getter.execute("SELECT 1")
+        print('db connection keep alive')
+        return self.getter.fetchone()
+
     # dogs
     def add_dog_info(self, data):
         print(data)
@@ -146,8 +151,8 @@ class Interface:
     # change check-in time
     def change_check_in_time(self, data):
         name, date, in_time, row_id = data['name'], data['date'], data['in_time'], data['id']
-        # in_time 15:55
-        # date 2021-08-01
+        # in_time form 15:55
+        # date form 2021-08-01
         in_time = date + ' ' + in_time
         update_query = f"""
         update timetable
@@ -169,25 +174,46 @@ class Interface:
         self.db.commit()
         return True
 
-    def add_table_dog_out(self, name, date, in_time, out_time, belts):
-        pass
+    def purchase(self, data):
+        name, hours, date = data['name'], data['hours'], data['date']
+        # date form 2021-08-01
+        # hours form 1
+        # name form 'test'
+        insert_query = f"""
+        insert into purchased (name, date, minutes)
+        values (
+        '{name}',
+        STR_TO_DATE('{date.replace('-', '')}', '%Y%m%d'),
+        {int(hours) * 60}
+        );
+        """
+        print(insert_query)
+        self.setter.execute(insert_query)
+        self.db.commit()
+        return True
 
-    def mod_table_dog_in(self, name, date, in_time):
-        pass
+    def get_used_belts(self, name):
+        select_query = f"""
+        select sum(belts) as belts from used_table
+        where name = '{name}' and
+        checked_belts is null
+        """
+        self.getter.execute(select_query)
+        columns = [col[0] for col in self.getter.description]
+        data = [dict(zip(columns, row)) for row in self.getter.fetchall()]
+        belts = data[0]['belts']
+        if not belts:
+            return 0
+        return belts
 
-    # payment
-    def add_purchase(self, name, date, hours):
-        pass
+    def check_used_belts(self, name):
+        update_query = f"""
+        update used_table
+        set checked_belts = 1
+        where name = '{name}' and
+        checked_belts is null
+        """
+        self.setter.execute(update_query)
+        self.db.commit()
+        return True
 
-    def mod_purchase(self, name, date, hours):
-        pass
-
-    def del_purchase(self, name, date):
-        pass
-
-    # 이용시간 - 이용내역
-    def used_hitory(self, name):
-        pass
-
-    def mod_history(self, name, date, in_time, out_time):
-        pass

@@ -62,6 +62,7 @@ export default function Checkout({isOpen, onClose, id, name, in_time, belts}) {
             입장시간 : {checkoutData.in_time} <br/>
             퇴장시간 : {checkoutData.out_time} <br/>
             이용시간 : {minutesToHHMM(checkoutData.minutes)} <br/>
+            매너벨트 : {checkoutData.belts}개 <br/>
           </>),
         status: "success",
         position: "top",
@@ -141,7 +142,9 @@ export default function Checkout({isOpen, onClose, id, name, in_time, belts}) {
             </HStack>
             <HStack>
               <Text w={'15vw'}>매너벨트 사용량</Text>
-              <NumberInput size='md' maxW={'30%'} defaultValue={belts} min={0} {...register('belts')}>
+              <NumberInput size='md' maxW={'30%'} min={0}
+                           value={parseInt(localStorage.getItem(id))}
+                           {...register('belts')}>
                 <NumberInputField/>
                 <NumberInputStepper>
                   <NumberIncrementStepper/>

@@ -2,21 +2,25 @@ import {
   Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, TableContainer, Button, HStack, IconButton, Text, useDisclosure, Tooltip,
 } from '@chakra-ui/react'
 import {MinusIcon, PlusSquareIcon, SearchIcon} from "@chakra-ui/icons";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 // import "react-icons/all";
 import {BiPlus} from "react-icons/bi";
 import Checkout from "../modals/Checkout";
 import ChangeCheckInTime from "../modals/ChangeCheckInTime";
 
 export default function TimetableRow({id, name, in_time, out_time}) {
-  const [belts, setBelts] = useState(0);
+  const [belts, setBelts] = useState(parseInt(localStorage.getItem(id)) || 0);
   const {
     isOpen: isOutOpen, onOpen: onOutOpen, onClose: onOutClose
   } = useDisclosure()
   const {
     isOpen: checkinModIsOpen, onOpen: checkinModOnOpen, onClose: checkinModOnClose
   } = useDisclosure()
+  useEffect(() => {
+      localStorage.setItem(id, belts)
+  }, [belts]);
   
+  // localStorage.setItem('belts', belts)
   return (<>
     <Tr textAlign={'center'}>
       <Td>

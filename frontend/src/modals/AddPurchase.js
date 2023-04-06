@@ -1,6 +1,6 @@
 import {useForm} from "react-hook-form";
 import {
-  Button, HStack,
+  Button, HStack, IconButton,
   Input,
   InputGroup,
   Modal,
@@ -12,13 +12,31 @@ import {
   ModalOverlay, Select, Switch, Text, useToast,
   VStack
 } from "@chakra-ui/react";
-import {useMutation} from "react-query";
-import {addNewDog} from "../api";
+import {useMutation, useQuery} from "react-query";
+import {addNewDog, dogsList, getUsedBelts, purchase} from "../api";
+import {useEffect, useState} from "react";
+import moment from "moment";
+import {ArrowBackIcon, ArrowForwardIcon} from "@chakra-ui/icons";
+import {tomorrow, yesterday} from "../store";
 
 export default function AddPurchase({isOpen, onClose}) {
   const {register, reset,handleSubmit, formState:{errors}} = useForm();
   const toast = useToast();
-  const mutation = useMutation(addNewDog, {
+  const {isLoading, data} = useQuery(["dogs-list"], dogsList);
+  const [name, setName] = useState();
+  const [belts, setBelts] = useState();
+  const [nowDate, setNowDate] = useState(new Date());
+  const [formattedDate, setFormattedDate] = useState();
+  useEffect(() => {
+    setFormattedDate(moment.utc(nowDate, 'YYYY-MM-DD').format('M월 D일 dddd'));
+  }, [nowDate]);
+  const timeOtions = {
+    month: 'long',
+    day: 'numeric',
+    weekday: 'long'
+  };
+  console.log(formattedDate);
+  const mutation = useMutation(purchase, {
     onSuccess: () => {
       toast({
         title: "결제 내역 등록에 성공했어요~~",
@@ -28,7 +46,6 @@ export default function AddPurchase({isOpen, onClose}) {
         isClosable: true,
       });
       onClose();
-      // queryClient.refetchQueries(["me"]);
       reset();
     },
     // onError: () => {
@@ -36,44 +53,91 @@ export default function AddPurchase({isOpen, onClose}) {
     // },
   });
   const onSubmit = (register) => {
+    register.date = nowDate.format('YYYY-MM-DD');
     mutation.mutate(register);
-    // console.log(register);
   }
+  const options = data?.map(item => ({
+    value: item.name,
+    label: item.name,
+  }));
+  useEffect(() => {
+    getUsedBelts(name).then((res) => {
+      console.log(res);
+      setBelts(res)
+    });
+  }, [name]);
+  
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay/>
       <ModalContent>
         <ModalHeader>결제 등록!</ModalHeader>
         <ModalCloseButton/>
+        <HStack w={'100%'} justifyContent={'center'} mb={'2vh'} alignContent={'center'} alignItems={'center'}>
+          <IconButton rounded={'xl'} w={'6%'} h={'80%'} bg={'#1a2a52'} color={'white'} isRound={true} position={'inherit'}
+                      _hover={{
+                        textDecoration: 'none', color: 'white', bg: '#526491', rounded: 'xl', transform: 'scale(1.2)'
+                      }}  aria-label={''} icon={
+            <ArrowBackIcon fontSize={'3xl'} fontWeight={'extrabold'}/>}
+                      onClick={() => {
+                        setNowDate(moment(nowDate).subtract(1, 'day'))
+                        console.log(nowDate)
+                      }}
+          />
+          <Text mt={'2vh'} fontSize={'2xl'} fontWeight={'semibold'} textAlign={'center'}
+                id={'formattedNowDate'}>
+            {formattedDate}
+          </Text>
+          <IconButton rounded={'xl'} w={'6%'} h={'80%'} bg={'#1a2a52'} color={'white'} isRound={true} position={'inherit'}
+                      _hover={{
+                        textDecoration: 'none', color: 'white', bg: '#526491', rounded: 'xl', transform: 'scale(1.2)'
+                      }}  aria-label={''} icon={
+            <ArrowForwardIcon  fontSize={'3xl'} fontWeight={'extrabold'}/>}
+                      onClick={() => {
+                        setNowDate(moment(nowDate).add(1, 'day'))
+                        console.log(nowDate)
+                      }}
+          />
+        </HStack>
         <ModalBody as={'form'} onSubmit={handleSubmit(onSubmit)}>
           <VStack spacing={3}>
             <HStack>
-              <Select
-                w={'40%'}
-                mr={5}
-                placeholder={"댕댕이 선택"}
-              >
-                <option>김프로</option>
-                <option>하로</option>
-                <option>박프로</option>
-                <option>요미</option>
-                <option>꼬미</option>
-                <option>감자</option>
-              </Select>
+              {isLoading ? <Text>Loading options...</Text> :
+                (
+                  <Select
+                    w={'40%'}
+                    mr={5}
+                    placeholder={"댕댕이 선택"}
+                    required={true}
+                    {...register("name")}
+                    onChange={(e) => setName(e.target.value)}
+                  >
+                    {options && options.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </Select>
+                )}
               <Input
                 w={'30%'}
                 type={'number'}
                 variant={"filled"}
                 placeholder={"결제 시간"}
-                {...register("time", {required: true})}
+                {...register("hours", {required: true})}
               />
               <Text>
                 시간
               </Text>
             </HStack>
             <HStack>
-              <Text>매너벨트 15개 같이 결제</Text>
-              <Switch size='lg'/>
+              {
+                belts === 0 ? <></>:
+                <>
+                <Text fontWeight={'semibold'}>매너벨트 {belts}개 같이 결제</Text>
+                <Switch size='lg'/>
+                </>
+              }
             </HStack>
           </VStack>
           <ModalFooter>
@@ -82,7 +146,7 @@ export default function AddPurchase({isOpen, onClose}) {
               취소
             </Button>
             <Button bg={'#1a2a52'} color={'white'} rounded={'xl'} type={'submit'}
-                    _hover={{textDecoration: 'none', color: 'white', bg: '#526491', rounded: 'xl', transform: 'scale(1.2)'}}>구매!</Button>
+                    _hover={{textDecoration: 'none', color: 'white', bg: '#526491', rounded: 'xl', transform: 'scale(1.2)'}}>결제!</Button>
           </ModalFooter>
         </ModalBody>
       </ModalContent>
