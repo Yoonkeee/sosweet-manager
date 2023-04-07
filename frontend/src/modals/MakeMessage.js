@@ -20,13 +20,17 @@ import {
 import {useForm} from "react-hook-form";
 import {useEffect, useRef, useState} from "react";
 import {useMutation} from "react-query";
-import {addNewDog} from "../api";
+import {addNewDog, makeMessage} from "../api";
 
-export default function MakeMessage({isOpen, onClose}) {
+export default function MakeMessage({isOpen, onClose, checked}) {
   // const {isOpen, onOpen, onClose} = useDisclosure()
   const toast = useToast()
   const [text, setText] = useState('')
   const {register, reset,handleSubmit, formState:{errors}} = useForm();
+  makeMessage(checked).then((res) => {
+    setText(res.data)
+  })
+  console.log(text)
   const mutation = useMutation(addNewDog, {
     onSuccess: () => {
       toast({
@@ -48,17 +52,17 @@ export default function MakeMessage({isOpen, onClose}) {
     mutation.mutate(register);
     // console.log(register);
   }
-  useEffect(() => {
-      setText('\n' + '안녕하세요~쏘스윗펫입니다😊\n'
-        + '❤프로❤놀이방 이용 내역 알려드립니다. \n'
-        + '놀이방 남은 시간:18시간45분 \n'
-        + '\n' + '2월17일 16:10-19:05(2:55) \n'
-        + '2월19일 11:00-12:40(1:40) \n'
-        + '2월22일 17:30-20:05(2:35) \n'
-        + '\n' + '총 사용시간:7시간10분 \n'
-        + '차감 후 남은 시간:11시간35분입니다. \n'
-        + '감사합니다🐶❤\n')
-  }, []);
+  // useEffect(() => {
+  //     setText('\n' + '안녕하세요~쏘스윗펫입니다😊\n'
+  //       + '❤프로❤놀이방 이용 내역 알려드립니다. \n'
+  //       + '놀이방 남은 시간:18시간45분 \n'
+  //       + '\n' + '2월17일 16:10-19:05(2:55) \n'
+  //       + '2월19일 11:00-12:40(1:40) \n'
+  //       + '2월22일 17:30-20:05(2:35) \n'
+  //       + '\n' + '총 사용시간:7시간10분 \n'
+  //       + '차감 후 남은 시간:11시간35분입니다. \n'
+  //       + '감사합니다🐶❤\n')
+  // }, []);
   const ref = useRef(null)
   
   const handleCopy = () => {

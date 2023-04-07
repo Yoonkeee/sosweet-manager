@@ -102,16 +102,16 @@ async def get_dogs_list():
     return db_interface.get_dogs_list()
 
 
-class CheckInOut(BaseModel):
+class DictModel(BaseModel):
     data: dict
-    # name: str
-    # date: str
-    # in_time: str
-    # id: int
+
+
+class ArrayModel(BaseModel):
+    data: list
 
 
 @app.post("/api/post/check-in")
-async def check_in(request: CheckInOut):
+async def check_in(request: DictModel):
     data = json.loads(request.json())
     print(*data.values())
     response = db_interface.check_in(*data.values())
@@ -129,7 +129,7 @@ async def check_in(request: CheckInOut):
 
 
 @app.post("/api/post/check-out")
-async def check_out(request: CheckInOut):
+async def check_out(request: DictModel):
     data = json.loads(request.json())
     print(*data.values())
     response = db_interface.check_out(*data.values())
@@ -143,7 +143,7 @@ async def check_out(request: CheckInOut):
 
 
 @app.post("/api/post/change-check-in")
-async def change_check_in(request: CheckInOut):
+async def change_check_in(request: DictModel):
     data = json.loads(request.json())
     print(*data.values())
     response = db_interface.change_check_in_time(*data.values())
@@ -177,11 +177,20 @@ async def cancel_checkin(row_id: int):
 
 
 @app.post('/api/post/purchase')
-async def purchase(request: CheckInOut):
+async def purchase(request: DictModel):
     data = json.loads(request.json())
     print(*data.values())
     response = db_interface.purchase(*data.values())
     return {"message": "purchase"}
+
+
+# add belt +1
+@app.get('/api/get/set-belt/{row_id}/{belts}')
+async def set_belt(row_id: int, belts: int):
+    print(row_id)
+    result = db_interface.set_belt(row_id, belts)
+    print(result)
+    return result
 
 
 @app.get('/api/get/get-used-belts/{name}')
@@ -199,6 +208,15 @@ async def check_used_belts(name: str):
     result = db_interface.check_used_belts(name)
     print(result)
     return result
+
+
+# post. make message with data coming. data is array of row_id
+@app.post('/api/post/make-message')
+async def make_message(request: ArrayModel):
+    data = json.loads(request.json())
+    print(*data.values())
+    response = db_interface.make_message(*data.values())
+    return {"message": "make-message"}
 
 # @app.get("/api/post/add-new-dog/")
 # async def add_new_dog():

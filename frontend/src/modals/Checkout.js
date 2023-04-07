@@ -143,7 +143,7 @@ export default function Checkout({isOpen, onClose, id, name, in_time, belts}) {
             <HStack>
               <Text w={'15vw'}>매너벨트 사용량</Text>
               <NumberInput size='md' maxW={'30%'} min={0}
-                           value={parseInt(localStorage.getItem(id))}
+                           value={belts}
                            {...register('belts')}>
                 <NumberInputField/>
                 <NumberInputStepper>

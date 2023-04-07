@@ -24,31 +24,15 @@ import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import SelectDog from "../modals/SelectDog";
+import MakeMessage from "../modals/MakeMessage";
 
 export default function GetMessage() {
   const toast = useToast();
-  // const {register, reset, handleSubmit, formState: {errors}} = useForm();
-  // const dispatch = useDispatch();
-  // const {isOpen, onOpen, onClose} = useDisclosure();
+  const {isOpen, onOpen, onClose} = useDisclosure();
   const queryClient = useQueryClient();
   const {isLoading: selectIsLoading, data: selectData} = useQuery(["dogs-list"], dogsList);
   const [name, setName] = useState('');
   const {isLoading, data} = useQuery(["history", name], getHistory);
-  const mutation = useMutation(getHistory, {
-    onSuccess: (response) => {
-      toast({
-        title: (
-          <>
-            {name}의 이용 내역을 불러왔어요! <br/>
-          </>),
-        status: "success",
-        position: "top",
-        duration: 3000,
-        isClosable: true,
-      });
-      // console.log(response);
-    },
-  });
   const options = selectData?.map(item => ({
     value: item.name,
     label: item.name,
@@ -56,11 +40,10 @@ export default function GetMessage() {
   // if Select option is changed, set mutation
   useEffect(() => {
     if (name) {
-      console.log('mutated '+name);
       queryClient.refetchQueries(["history", name]);
-      // mutation.mutate(name);
     }
   }, [name]);
+  const [checked, setChecked] = useState([]);
   
   return (
     <VStack w={'100%'}>
@@ -97,7 +80,11 @@ export default function GetMessage() {
               <Th textAlign={'center'} fontSize={'xl'}>퇴장시간</Th>
               <Th textAlign={'center'} fontSize={'xl'}>이용시간</Th>
               <Th textAlign={'center'} fontSize={'xl'}>매너벨트</Th>
-              <Th textAlign={'center'} fontSize={'xl'}>전송</Th>
+              <Th p={0} textAlign={'center'} fontSize={'xl'}>
+                <Button onClick={onOpen}>메세지생성</Button>
+                <MakeMessage isOpen={isOpen} onClose={onClose}
+                checked={checked}/>
+              </Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -113,6 +100,7 @@ export default function GetMessage() {
                   out_time={item.out_time}
                   checked_date={item.checked_date}
                   belts={item.belts}
+                  state={[checked, setChecked]}
                 />
               </>
             ))}

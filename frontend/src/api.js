@@ -114,6 +114,12 @@ export const getHistory = ({queryKey}) => {
 // print(result)
 // return result
 
+// set belt with post
+export const setBelt = ([id, belt]) => {
+  console.log('in api addBelt ' + id + ' ' + belt);
+return instance.get(`/get/set-belt/${id}/${belt}`).then((response) => response.data);
+}
+
 
 export const getUsedBelts = (name) => {
   console.log('in api getUsedBelts ' + name);
@@ -141,6 +147,22 @@ export const purchase = (data) => {
     return response.data
   });
 }
+
+export const makeMessage = (data) => {
+  console.log('in api makeMessage ' + data);
+  console.log(data);
+  return instance.post("/post/make-message", {data}, {
+    headers: {
+      "X-CSRFToken": Cookies.get("csrftoken") || "",
+    },
+  }).then((response) => response.data);
+}
+
+
+
+
+
+
 
 
 export const testAPI = (data) => {

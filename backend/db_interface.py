@@ -3,6 +3,7 @@ import environ
 import os
 from pathlib import Path
 from typing import *
+from datetime import datetime, timedelta
 
 
 class Interface:
@@ -192,6 +193,18 @@ class Interface:
         self.db.commit()
         return True
 
+    def set_belt(self, row_id, belt):
+        update_query = f"""
+        update timetable
+        set belts = {belt}
+        where id = {row_id};
+        """
+        print(update_query)
+        self.setter.execute(update_query)
+        self.db.commit()
+        return True
+
+
     def get_used_belts(self, name):
         select_query = f"""
         select sum(belts) as belts from used_table
@@ -216,4 +229,92 @@ class Interface:
         self.setter.execute(update_query)
         self.db.commit()
         return True
+
+    def make_message(self, row_ids):
+        today = datetime.today().strftime('%Y-%m-%d')
+        update_query = f"""
+        update used_table
+        set checked = 1
+        , checked_date = '{today}'
+        where id in ({row_ids});
+        """
+        self.setter.execute(update_query)
+        self.db.commit()
+
+        # get date, in_time, out_time, used_minutes from used_table with row_ids
+        # transform used_minutes to format 'HH:MM'
+        # make a message with data form like
+        # '안녕하세요~쏘스윗펫입니다😊\n'
+        #         + '❤{name}❤놀이방 이용 내역 알려드립니다. \n'
+        # there will be remaining minutes and show it like
+        # + '놀이방 남은 시간:18시간45분 \n'
+        # '2월17일 16:10-19:05(2:55) \n'
+        #         + '2월19일 11:00-12:40(1:40) \n'
+        #         + '2월22일 17:30-20:05(2:35) \n'
+        # and footer message will be added in sum of used_minutes format like 'H시간 M분'.
+        # like + '\n' + '총 사용시간:7시간10분 \n'
+        # add message remaining minutes - sum of used_minutes will be shown as
+        # + '차감 후 남은 시간:11시간35분입니다. \n'
+        # if result is negative, add message
+        # + '다음에 오시면 충전부탁드려요~ \n'
+
+        select_query = f"""
+        select name, date, in_time, out_time, used_minutes, belts from used_table
+        where id in ({row_ids});
+        """
+        print(select_query)
+        self.getter.execute(select_query)
+        columns = [col[0] for col in self.getter.description]
+        data = [dict(zip(columns, row)) for row in self.getter.fetchall()]
+        name = data[0]['name']
+
+        select_query = f"select minutes from remaining_time where name = '{name}';"
+        print(select_query)
+        self.getter.execute(select_query)
+        remaining_minutes = self.getter.fetchone()[0]
+
+        message = '안녕하세요~쏘스윗펫입니다😊\n'
+        message += f'❤{data[0]["name"]}❤놀이방 이용 내역 알려드립니다. \n'
+        # + '놀이방 남은 시간:18시간45분 \n' with remaining_minutes format like H시간 M분
+        remaining_time = str(timedelta(minutes=remaining_minutes))
+        message += f'놀이방 남은 시간:{remaining_time} \n'
+
+        for row in data:
+            date = row['date'].strftime('%m월%d일')
+            in_time = row['in_time'].strftime('%H:%M')
+            out_time = row['out_time'].strftime('%H:%M')
+            used_minutes = row['used_minutes']
+            belts = row['belts']
+            used_time = str(timedelta(minutes=used_minutes))
+            message += f'{date} {in_time}-{out_time}({used_time}) \n'
+
+        total_used_minutes = sum([row['used_minutes'] for row in data])
+        total_used_time = str(timedelta(minutes=total_used_minutes))
+        remaining_minutes -= total_used_minutes
+        remaining_time = str(timedelta(minutes=remaining_minutes))
+
+        message += f'\n총 사용시간:{total_used_time} \n'
+        message += f'차감 후 남은 시간:{remaining_time}입니다. \n'
+        if remaining_minutes < 0:
+            message += f'\n다음에 오시면 충전부탁드려요~ \n'
+
+        return message
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

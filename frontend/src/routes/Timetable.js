@@ -78,7 +78,7 @@ export default function Timetable() {
                 id={item.id}
                 name={item.name}
                 in_time={item.in_time}
-                // belts={item.belts}
+                loaded_belts={item.belts}
               />
             ))}
           </Tbody>

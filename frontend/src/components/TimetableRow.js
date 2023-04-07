@@ -7,9 +7,10 @@ import {useEffect, useState} from "react";
 import {BiPlus} from "react-icons/bi";
 import Checkout from "../modals/Checkout";
 import ChangeCheckInTime from "../modals/ChangeCheckInTime";
+import {setBelt} from "../api";
 
-export default function TimetableRow({id, name, in_time, out_time}) {
-  const [belts, setBelts] = useState(parseInt(localStorage.getItem(id)) || 0);
+export default function TimetableRow({id, name, in_time, out_time, loaded_belts}) {
+  const [belts, setBelts] = useState(loaded_belts)
   const {
     isOpen: isOutOpen, onOpen: onOutOpen, onClose: onOutClose
   } = useDisclosure()
@@ -17,10 +18,9 @@ export default function TimetableRow({id, name, in_time, out_time}) {
     isOpen: checkinModIsOpen, onOpen: checkinModOnOpen, onClose: checkinModOnClose
   } = useDisclosure()
   useEffect(() => {
-      localStorage.setItem(id, belts)
+    setBelt([id, belts])
   }, [belts]);
   
-  // localStorage.setItem('belts', belts)
   return (<>
     <Tr textAlign={'center'}>
       <Td>
