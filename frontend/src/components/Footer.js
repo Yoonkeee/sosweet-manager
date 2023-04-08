@@ -48,15 +48,7 @@ export default function Footer() {
     </Box>
     <Box w={'10vw'}>
       {location === '/timetable' ? (
-          <Checkin/>) :
-        (location === '/get-message' ? (
-              <>
-                <Button colorScheme={'white'} fontSize={'1.5rem'} onClick={onOpen}>메세지 생성</Button>
-                <MakeMessage isOpen={isOpen} onClose={onClose}/>
-              </>)
-            :
-            (<></>)
-        )}
+          <Checkin/>) : <></>}
     </Box>
     <Spacer/>
   </Flex>)

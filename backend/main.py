@@ -88,6 +88,7 @@ class NewDog(BaseModel):
 
 @app.post("/api/post/add-new-dog")
 async def add_new_dog(request: NewDog):
+    print('in add_new_dog')
     data = json.loads(request.json())
     response = db_interface.add_dog_info(*data.values())
     print(response)
@@ -99,6 +100,7 @@ async def add_new_dog(request: NewDog):
 
 @app.get("/api/get/dogs-list")
 async def get_dogs_list():
+    print('in get_dogs_list')
     return db_interface.get_dogs_list()
 
 
@@ -112,6 +114,7 @@ class ArrayModel(BaseModel):
 
 @app.post("/api/post/check-in")
 async def check_in(request: DictModel):
+    print('in check_in')
     data = json.loads(request.json())
     print(*data.values())
     response = db_interface.check_in(*data.values())
@@ -130,6 +133,7 @@ async def check_in(request: DictModel):
 
 @app.post("/api/post/check-out")
 async def check_out(request: DictModel):
+    print('in check_out')
     data = json.loads(request.json())
     print(*data.values())
     response = db_interface.check_out(*data.values())
@@ -144,6 +148,7 @@ async def check_out(request: DictModel):
 
 @app.post("/api/post/change-check-in")
 async def change_check_in(request: DictModel):
+    print('in change_check_in')
     data = json.loads(request.json())
     print(*data.values())
     response = db_interface.change_check_in_time(*data.values())
@@ -152,6 +157,7 @@ async def change_check_in(request: DictModel):
 
 @app.get('/api/get/timetable/{date}')
 async def get_table(date: str):
+    print('in get_table')
     print(date)
     return db_interface.get_table(date)
 
@@ -159,6 +165,7 @@ async def get_table(date: str):
 # get data from used_table table with input name
 @app.get('/api/get/history/{name}')
 async def get_history(name: str):
+    print('in get_history')
     print(name)
     result = db_interface.get_history(name)
     print(result)
@@ -169,7 +176,8 @@ async def get_history(name: str):
 # data will be { id: int }
 @app.get("/api/get/cancel-checkin/{row_id}")
 async def cancel_checkin(row_id: int):
-    print(row_id)
+    print('in cancel_checkin')
+    print('row_id' + str(row_id))
     # data = json.loads(request.json())
     # print(*data.values())
     response = db_interface.cancel_checkin(row_id)
@@ -178,6 +186,7 @@ async def cancel_checkin(row_id: int):
 
 @app.post('/api/post/purchase')
 async def purchase(request: DictModel):
+    print('in purchase')
     data = json.loads(request.json())
     print(*data.values())
     response = db_interface.purchase(*data.values())
@@ -187,6 +196,7 @@ async def purchase(request: DictModel):
 # add belt +1
 @app.get('/api/get/set-belt/{row_id}/{belts}')
 async def set_belt(row_id: int, belts: int):
+    print('in set_belt')
     print(row_id)
     result = db_interface.set_belt(row_id, belts)
     print(result)
@@ -195,6 +205,7 @@ async def set_belt(row_id: int, belts: int):
 
 @app.get('/api/get/get-used-belts/{name}')
 async def get_used_belts(name: str):
+    print('in get_used_belts')
     print(name)
     result = db_interface.get_used_belts(name)
     print(result)
@@ -204,6 +215,7 @@ async def get_used_belts(name: str):
 # check_used_belts
 @app.get('/api/get/check-used-belts/{name}')
 async def check_used_belts(name: str):
+    print('in check_used_belts')
     print(name)
     result = db_interface.check_used_belts(name)
     print(result)
@@ -214,9 +226,21 @@ async def check_used_belts(name: str):
 @app.post('/api/post/make-message')
 async def make_message(request: ArrayModel):
     data = json.loads(request.json())
+    print('in make_message')
     print(*data.values())
     response = db_interface.make_message(*data.values())
-    return {"message": "make-message"}
+    return response
+
+
+# post. check_used_date with data incoming. data is array of row_id
+@app.post('/api/post/check-used-date')
+async def check_used_date(request: ArrayModel):
+    print('in check_used_date')
+    data = json.loads(request.json())
+    print(*data.values())
+    response = db_interface.check_used_date(*data.values())
+    return response
+
 
 # @app.get("/api/post/add-new-dog/")
 # async def add_new_dog():

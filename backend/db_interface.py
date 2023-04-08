@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 from typing import *
 from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
 
 
 class Interface:
@@ -204,7 +205,6 @@ class Interface:
         self.db.commit()
         return True
 
-
     def get_used_belts(self, name):
         select_query = f"""
         select sum(belts) as belts from used_table
@@ -231,36 +231,9 @@ class Interface:
         return True
 
     def make_message(self, row_ids):
-        today = datetime.today().strftime('%Y-%m-%d')
-        update_query = f"""
-        update used_table
-        set checked = 1
-        , checked_date = '{today}'
-        where id in ({row_ids});
-        """
-        self.setter.execute(update_query)
-        self.db.commit()
-
-        # get date, in_time, out_time, used_minutes from used_table with row_ids
-        # transform used_minutes to format 'HH:MM'
-        # make a message with data form like
-        # '안녕하세요~쏘스윗펫입니다😊\n'
-        #         + '❤{name}❤놀이방 이용 내역 알려드립니다. \n'
-        # there will be remaining minutes and show it like
-        # + '놀이방 남은 시간:18시간45분 \n'
-        # '2월17일 16:10-19:05(2:55) \n'
-        #         + '2월19일 11:00-12:40(1:40) \n'
-        #         + '2월22일 17:30-20:05(2:35) \n'
-        # and footer message will be added in sum of used_minutes format like 'H시간 M분'.
-        # like + '\n' + '총 사용시간:7시간10분 \n'
-        # add message remaining minutes - sum of used_minutes will be shown as
-        # + '차감 후 남은 시간:11시간35분입니다. \n'
-        # if result is negative, add message
-        # + '다음에 오시면 충전부탁드려요~ \n'
-
         select_query = f"""
         select name, date, in_time, out_time, used_minutes, belts from used_table
-        where id in ({row_ids});
+        where id in ({', '.join([str(row_id) for row_id in row_ids])});
         """
         print(select_query)
         self.getter.execute(select_query)
@@ -275,32 +248,62 @@ class Interface:
 
         message = '안녕하세요~쏘스윗펫입니다😊\n'
         message += f'❤{data[0]["name"]}❤놀이방 이용 내역 알려드립니다. \n'
-        # + '놀이방 남은 시간:18시간45분 \n' with remaining_minutes format like H시간 M분
-        remaining_time = str(timedelta(minutes=remaining_minutes))
-        message += f'놀이방 남은 시간:{remaining_time} \n'
-
+        duration = relativedelta(minutes=remaining_minutes)
+        print(duration)
+        message += f'놀이방 남은 시간 : {abs(duration.days) * 24 + duration.hours}시간 {abs(duration.minutes)}분 \n\n'
+        #안녕하세요~쏘스윗펫입니다😊
+        # ❤프로❤놀이방 이용 내역 알려드립니다.
+        # 놀이방 남은 시간:19시간20분
+        #
+        # 3월25일 14:15-18:05(3:50)
+        # 3월26일 15:00-19:00(4:00)
+        # 4월1일 12:40-17:10(4:30)
+        # 4월2일 14:00-16:10(2:10)
+        #
+        # 총 사용시간:14시간30분
+        # 차감 후 남은 시간:4시간50분입니다.
+        # 감사합니다🐶❤
         for row in data:
-            date = row['date'].strftime('%m월%d일')
+            date = row['date'].strftime('%-m월%-d일')
             in_time = row['in_time'].strftime('%H:%M')
             out_time = row['out_time'].strftime('%H:%M')
             used_minutes = row['used_minutes']
             belts = row['belts']
             used_time = str(timedelta(minutes=used_minutes))
-            message += f'{date} {in_time}-{out_time}({used_time}) \n'
+            used_time = used_time[:-3]
+            message += f'{date} {in_time}-{out_time} ({used_time}) \n'
 
         total_used_minutes = sum([row['used_minutes'] for row in data])
-        total_used_time = str(timedelta(minutes=total_used_minutes))
-        remaining_minutes -= total_used_minutes
-        remaining_time = str(timedelta(minutes=remaining_minutes))
+        print(total_used_minutes)
+        duration = relativedelta(minutes=total_used_minutes)
+        print(duration)
+        message += f'\n총 사용시간 : {abs(duration.days) * 24 + duration.hours}시간 {abs(duration.minutes)}분 \n'
 
-        message += f'\n총 사용시간:{total_used_time} \n'
-        message += f'차감 후 남은 시간:{remaining_time}입니다. \n'
+        remaining_minutes -= total_used_minutes
+        duration = relativedelta(minutes=remaining_minutes)
+
+        message += f'차감 후 남은 시간 : {abs(duration.days) * 24 + duration.hours}시간 {abs(duration.minutes)}분 입니다. \n'
         if remaining_minutes < 0:
-            message += f'\n다음에 오시면 충전부탁드려요~ \n'
+            message += f'다음에 오시면 충전부탁드려요~ \n'
+        message += f'감사합니다🐶❤ \n'
+        print(message)
 
         return message
 
-
+    def check_used_date(self, row_ids):
+        today = datetime.today().strftime('%Y-%m-%d')
+        if not row_ids:
+            return None
+        update_query = f"""
+        update used_table
+        set checked = 1
+        , checked_date = '{today}'
+        where id in ({', '.join([str(row_id) for row_id in row_ids])});
+        """
+        print(update_query)
+        self.setter.execute(update_query)
+        self.db.commit()
+        return True
 
 
 
