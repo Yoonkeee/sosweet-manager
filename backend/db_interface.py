@@ -37,7 +37,7 @@ class Interface:
     # dogs
     def add_dog_info(self, data):
         print(data)
-        duplicate_check_query = f"select count(*) from dogs where name = '{data['name']}'"
+        duplicate_check_query = f"select count(*) from dogs where name = '{data['dogName']}'"
         self.getter.execute(duplicate_check_query)
         # return False
         # print()
@@ -46,13 +46,15 @@ class Interface:
             return False
 
         insert_query = f"""
-        INSERT INTO dogs VALUES (
+        INSERT INTO dogs (name, breed, note, gender, phone, weight, official_name)
+        VALUES (
         '{data['dogName']}',
         '{data['dogBreed']}',
         '{data['dogInfo']}',
         '{data['dogGender']}',
         '{data['phone']}',
-        '{data['dogWeight']}'
+        '{data['dogWeight']}',
+        '{data['officialName']}'
         )
         """
         self.setter.execute(insert_query)
@@ -243,6 +245,12 @@ class Interface:
         self.db.commit()
         return True
 
+    def get_official_name(self, name):
+        select_query = f"select official_name from dogs where name = '{name}';"
+        self.getter.execute(select_query)
+        official_name = self.getter.fetchone()[0]
+        return official_name
+
     def make_message(self, row_ids):
         select_query = f"""
         select name, date, in_time, out_time, used_minutes, belts from used_table
@@ -253,6 +261,7 @@ class Interface:
         columns = [col[0] for col in self.getter.description]
         data = [dict(zip(columns, row)) for row in self.getter.fetchall()]
         name = data[0]['name']
+        official_name = self.get_official_name(name)
 
         select_query = f"select minutes from remaining_time where name = '{name}';"
         print(select_query)
@@ -260,7 +269,7 @@ class Interface:
         remaining_minutes = self.getter.fetchone()[0]
 
         message = '안녕하세요~쏘스윗펫입니다😊\n'
-        message += f'❤{data[0]["name"]}❤놀이방 이용 내역 알려드립니다. \n'
+        message += f'❤{official_name}❤놀이방 이용 내역 알려드립니다. \n'
         duration = relativedelta(minutes=remaining_minutes)
         print(duration)
         message += f'놀이방 남은 시간 : {abs(duration.days) * 24 + duration.hours}시간 {abs(duration.minutes)}분 \n\n'
