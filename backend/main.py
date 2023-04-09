@@ -1,6 +1,4 @@
-import asyncio
 import time
-import schedule
 from fastapi import FastAPI, Request, Response, status, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 import db_interface
@@ -8,7 +6,6 @@ from pydantic import BaseModel
 from typing import Optional
 import json
 from apscheduler.schedulers.background import BackgroundScheduler
-import time
 
 app = FastAPI()
 
