@@ -67,8 +67,23 @@ class Interface:
         columns = [col[0] for col in self.getter.description]  # Get column names
         return [dict(zip(columns, row)) for row in self.getter.fetchall()]
 
-    def mod_dog_info(self, name, breed, note):
-        pass
+    def mod_dog_info(self, data):
+        # update table
+        update_query = f"""
+        UPDATE dogs
+        SET
+        breed = '{data['dogBreed']}',
+        note = '{data['dogInfo']}',
+        gender = '{data['dogGender']}',
+        phone = '{data['phone']}',
+        weight = '{data['dogWeight']}',
+        official_name = '{data['officialName']}'
+        WHERE name='{data['name']}'
+        """
+        print(update_query)
+        self.setter.execute(update_query)
+        self.db.commit()
+        return True
 
     def del_dog_info(self, name):
         pass
