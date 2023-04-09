@@ -7,6 +7,8 @@ import db_interface
 from pydantic import BaseModel
 from typing import Optional
 import json
+from apscheduler.schedulers.background import BackgroundScheduler
+import time
 
 app = FastAPI()
 
@@ -46,33 +48,13 @@ async def test():
     return db_interface.test()
 
 
-# def execute_keep_alive():
-#     print('!')
-#     return db_interface.keep_alive()
-#
-# schedule.every(10).seconds.do(execute_keep_alive)
-# while True:
-#     schedule.run_pending()
+def execute_keep_alive():
+    print(db_interface.keep_alive())
 
 
-# async def execute_keep_alive():
-#     # Do something every 10 minutes
-#     db_interface.keep_alive()
-#     print('keep alive on main.py')
-#     while True:
-#         await asyncio.sleep(2)  # 600 seconds = 10 minutes
-
-
-# @app.get("/keep-alive")
-# async def keep_alive(background_tasks: BackgroundTasks):
-#     # Add the function to the background tasks to run every 10 minutes
-#     loop = asyncio.new_event_loop()
-#     asyncio.set_event_loop(loop)
-#     loop.create_task(execute_keep_alive())
-#
-#     # background_tasks.add_task(execute_keep_alive)
-#     # Return a message indicating that the task has been scheduled
-#     return 'Keep alive task scheduled'
+scheduler = BackgroundScheduler()
+scheduler.add_job(execute_keep_alive, 'interval', minutes=60)
+scheduler.start()
 
 
 class NewDog(BaseModel):
