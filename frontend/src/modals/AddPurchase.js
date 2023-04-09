@@ -53,7 +53,10 @@ export default function AddPurchase({isOpen, onClose}) {
     // },
   });
   const onSubmit = (register) => {
-    register.date = nowDate.format('YYYY-MM-DD');
+    // console.log(register);
+    // console.log(moment.utc(nowDate).format('YYYY-MM-DD'));
+    register.date = moment.utc(nowDate).format('YYYY-MM-DD');
+    // register.date = nowDate.format('YYYY-MM-DD');
     mutation.mutate(register);
   }
   const options = data?.map(item => ({
@@ -61,7 +64,7 @@ export default function AddPurchase({isOpen, onClose}) {
     label: item.name,
   }));
   useEffect(() => {
-    getUsedBelts(name).then((res) => {
+    getUsedBelts(name)?.then((res) => {
       console.log(res);
       setBelts(res)
     });

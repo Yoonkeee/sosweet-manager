@@ -191,7 +191,20 @@ class Interface:
         """
         print(insert_query)
         self.setter.execute(insert_query)
-        self.db.commit()
+        if self.add_remaining_time(data):
+            self.db.commit()
+        return True
+
+    def add_remaining_time(self, data):
+        # there are name and minutes in data. update it to remaining_time. sum it.
+        name, minutes = data['name'], int(data['hours']) * 60
+        update_query = f"""
+        update remaining_time
+        set minutes = minutes + {minutes}
+        where name = '{name}';
+        """
+        print(update_query)
+        self.setter.execute(update_query)
         return True
 
     def set_belt(self, row_id, belt):
