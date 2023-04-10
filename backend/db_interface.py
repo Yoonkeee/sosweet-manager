@@ -287,7 +287,7 @@ class Interface:
         select_query = f"select minutes from remaining_time where name = '{name}';"
         print(select_query)
         self.getter.execute(select_query)
-        remaining_minutes = self.getter.fetchone()[0]
+        remaining_minutes = self.getter.fetchall()[0][0]
 
         message = '안녕하세요~쏘스윗펫입니다😊\n'
         message += f'❤{official_name}❤놀이방 이용 내역 알려드립니다. \n'

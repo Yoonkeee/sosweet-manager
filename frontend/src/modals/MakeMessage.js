@@ -35,9 +35,14 @@ export default function MakeMessage({isOpen, onClose, checked}) {
   const queryClient = useQueryClient()
   const toast = useToast()
   const [text, setText] = useState('')
-  if (isOpen) makeMessage(checked)?.then((res) => {
-    setText(res)
-  })
+  useEffect(() => {
+    if (isOpen)
+      makeMessage(checked)?.then((res) => {
+        setText(res)
+      })
+    else setText('')
+  }, [isOpen]);
+  
   const sendButton = () => {
     onClose()
     checkUsedDate(checked).then((res) => {

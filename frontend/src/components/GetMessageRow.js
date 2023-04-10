@@ -8,7 +8,7 @@ import {BiPlus} from "react-icons/bi";
 import Checkout from "../modals/Checkout";
 import moment from "moment/moment";
 
-export default function GetMessageRow(data) {
+export default function GetMessageRow(props) {
   const formatDate = (dateStr) => {
     let formattedDate = moment.utc(date, 'YYYY-MM-DD').format('M월 D일');
     return formattedDate
@@ -21,13 +21,8 @@ export default function GetMessageRow(data) {
     const mins = minutes % 60;
     return moment().startOf('day').add(hours, 'hours').add(mins, 'minutes').format('HH:mm');
   };
-  const {belts, date, id, in_time, name, out_time, used_minutes, state} = data;
-  const [checked, setChecked] = state;
-  // const [checked, setChecked] = useState([]);
-  // useEffect(() => {
-  //   console.log('in use effect');
-  //   console.log(checked);
-  // }, [checked]);
+  const {belts, date, id, in_time, name, out_time, used_minutes} = props.data;
+  const [checked, setChecked] = props.state;
   
   return (<>
     <Tr>
@@ -63,7 +58,8 @@ export default function GetMessageRow(data) {
       </Td>
       <Td>
         <Text textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>
-          <Checkbox size={'lg'} borderColor={'black'}
+          <Checkbox size={'lg'} borderColor={'black'} position={'inherit'}
+                    // checked={checked.includes(id)}
                     onChange={(e) => {
                       if (e.target.checked) {
                         setChecked([...checked, id]);
