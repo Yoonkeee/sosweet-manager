@@ -90,6 +90,7 @@ export default function Checkin() {
                   (
                 <Select
                   w={'40%'}
+                  icon={<></>}
                   mr={5}
                   placeholder={"댕댕이 선택"}
                   required={true}

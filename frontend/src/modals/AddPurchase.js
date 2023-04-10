@@ -23,7 +23,7 @@ export default function AddPurchase({isOpen, onClose}) {
   const {register, reset,handleSubmit, formState:{errors}} = useForm();
   const toast = useToast();
   const {isLoading, data} = useQuery(["dogs-list"], dogsList);
-  const [name, setName] = useState();
+  const [name, setName] = useState(0);
   const [belts, setBelts] = useState();
   const [nowDate, setNowDate] = useState(new Date());
   const [formattedDate, setFormattedDate] = useState();
@@ -35,7 +35,6 @@ export default function AddPurchase({isOpen, onClose}) {
     day: 'numeric',
     weekday: 'long'
   };
-  console.log(formattedDate);
   const mutation = useMutation(purchase, {
     onSuccess: () => {
       toast({
@@ -47,16 +46,11 @@ export default function AddPurchase({isOpen, onClose}) {
       });
       onClose();
       reset();
+      setBelts(0)
     },
-    // onError: () => {
-    //   console.log("Mutation 에러낫음..ㅠ");
-    // },
   });
   const onSubmit = (register) => {
-    // console.log(register);
-    // console.log(moment.utc(nowDate).format('YYYY-MM-DD'));
     register.date = moment.utc(nowDate).format('YYYY-MM-DD');
-    // register.date = nowDate.format('YYYY-MM-DD');
     mutation.mutate(register);
   }
   const options = data?.map(item => ({
@@ -71,7 +65,11 @@ export default function AddPurchase({isOpen, onClose}) {
   }, [name]);
   
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={() => {
+      onClose()
+      reset()
+      setBelts(0)
+    }}>
       <ModalOverlay/>
       <ModalContent>
         <ModalHeader>결제 등록!</ModalHeader>
@@ -109,6 +107,7 @@ export default function AddPurchase({isOpen, onClose}) {
                 (
                   <Select
                     w={'40%'}
+                    icon={<></>}
                     mr={5}
                     placeholder={"댕댕이 선택"}
                     required={true}
@@ -135,7 +134,7 @@ export default function AddPurchase({isOpen, onClose}) {
             </HStack>
             <HStack>
               {
-                belts === 0 ? <></>:
+                belts === 0 || belts === undefined? <></>:
                 <>
                 <Text fontWeight={'semibold'}>매너벨트 {belts}개 같이 결제</Text>
                 <Switch size='lg'/>
@@ -144,7 +143,11 @@ export default function AddPurchase({isOpen, onClose}) {
             </HStack>
           </VStack>
           <ModalFooter>
-            <Button colorScheme='red' mr={3} onClick={onClose} rounded={'xl'}
+            <Button colorScheme='red' mr={3} onClick={() => {
+              onClose()
+            reset()
+              setBelts(0)
+            }} rounded={'xl'}
                     _hover={{textDecoration: 'none', color: 'white', rounded: 'xl', transform: 'scale(1.2)'}}>
               취소
             </Button>

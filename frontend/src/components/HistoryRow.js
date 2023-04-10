@@ -1,19 +1,12 @@
-import {
-  Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, TableContainer, Button, HStack, IconButton, Text, useDisclosure, Checkbox,
-} from '@chakra-ui/react'
-import {MinusIcon, PlusSquareIcon, SearchIcon} from "@chakra-ui/icons";
-import {useState} from "react";
+import {Td, Text, Tr,} from '@chakra-ui/react'
 // import "react-icons/all";
-import {BiPlus} from "react-icons/bi";
-import Checkout from "../modals/Checkout";
 import moment from "moment/moment";
 
 export default function HistoryRow(data) {
   console.log('in history row');
   console.log(data);
   const formatDate = (dateStr) => {
-    let formattedDate = moment.utc(date, 'YYYY-MM-DD').format('M월 D일');
-    return formattedDate
+    return moment.utc(dateStr, 'YYYY-MM-DD').format('M월 D일')
   };
   const formatTime = (timeStr) => {
     return moment(timeStr, 'YYYY-MM-DDTHH:mm:ss').format('HH:mm');
@@ -36,16 +29,6 @@ export default function HistoryRow(data) {
           {formatDate(date)}
         </Text>
       </Td>
-      {/*<Td>*/}
-      {/*  <Text fontSize='lg' textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>*/}
-      {/*    {formatTime(in_time)}*/}
-      {/*  </Text>*/}
-      {/*</Td>*/}
-      {/*<Td>*/}
-      {/*  <Text fontSize='lg' textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>*/}
-      {/*    {formatTime(out_time)}*/}
-      {/*  </Text>*/}
-      {/*</Td>*/}
       <Td>
         <Text fontSize='lg' textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>
           {formatTimeFromMinutes(used_minutes)}
@@ -59,7 +42,7 @@ export default function HistoryRow(data) {
       <Td>
         {checked ?
           <Text fontSize='lg' textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>
-            {checked_date}
+            {formatDate(checked_date)}
           </Text>
           : (<></>)}
       </Td>

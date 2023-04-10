@@ -39,17 +39,17 @@ export default function GetMessage() {
       <Table variant='striped' colorScheme='blue' layout={'fixed'}>
         <Thead w={'100%'} borderBottomColor={'black'} borderBottomWidth={5} alignItems={'center'}>
           <Tr textAlign={'center'}>
-            <Th textAlign={'center'} fontSize={'xl'} px={0}>
+            <Th textAlign={'center'} fontSize={'xl'} px={0} w={'15%'}>
               {selectIsLoading ? <Text>Loading options...</Text> : (<Select
-                // w={'40%'}
                 p={0}
                 mr={5}
                 placeholder={"댕댕이 선택"}
                 required={true}
                 position={'inherit'}
                 id={'name'}
+                icon={<></>}
+                // iconSize={0}
                 onChange={(e) => {
-                  // console.log(e.target.value);
                   document.getElementById('name').style.position = 'inherit'
                   setName(prev => e.target.value);
                 }}
@@ -68,7 +68,11 @@ export default function GetMessage() {
             <Th textAlign={'center'} fontSize={'xl'}>이용시간</Th>
             <Th textAlign={'center'} fontSize={'xl'}>매너벨트</Th>
             <Th p={0} textAlign={'center'} fontSize={'xl'}>
-              <Button onClick={onOpen} position={'inherit'}>메세지생성</Button>
+              <Button onClick={onOpen} position={'inherit'} bg={'#1a2a52'} color={'white'} rounded={'xl'}
+                      _hover={{
+                          textDecoration: 'none', color: 'white', bg: '#526491', rounded: 'xl', transform: 'scale(1.2)'
+                        }}>
+                          메세지생성</Button>
               <MakeMessage isOpen={isOpen} onClose={onClose}
                            checked={checked}/>
             </Th>

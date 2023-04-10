@@ -141,8 +141,8 @@ class Interface:
         return True
 
     def check_out(self, data):
-        name, date, in_time, out_time, belts, row_id = \
-            data['name'], data['date'], data['in_time'], data['out_time'], data['belts'], data['id']
+        name, date, in_time, out_time, belts, row_id, check_today = \
+            data['name'], data['date'], data['in_time'], data['out_time'], data['belts'], data['id'], data['check_today']
         # insert data into used
         insert_query = f"""
         insert into used_table (name, date, used_minutes, id, belts, checked, in_time, out_time)

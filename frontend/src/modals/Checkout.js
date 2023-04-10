@@ -52,6 +52,7 @@ export default function Checkout({isOpen, onClose, id, name, in_time, belts}) {
   const toast = useToast();
   let date = useSelector((state) => state.currentDate);
   const queryClient = useQueryClient();
+  const [payToday, setPayToday] = useState(false);
   const mutation = useMutation(checkOut, {
     onSuccess: (data) => {
       toast({
@@ -108,7 +109,8 @@ export default function Checkout({isOpen, onClose, id, name, in_time, belts}) {
       out_time: pinNumber,
       belts: data.belts,
       date: date,
-      minutes: diffMinutes
+      minutes: diffMinutes,
+      payToday: payToday
     }
     console.log(checkoutData);
     mutation.mutate(checkoutData);
@@ -156,7 +158,14 @@ export default function Checkout({isOpen, onClose, id, name, in_time, belts}) {
               <FormLabel mb='0' w={'14.5vw'}>
                 당일 결제
               </FormLabel>
-              <Switch size={'lg'} id='payToday' />
+              <Switch size={'lg'} onChange={(e) => {
+                if (e.target.checked) {
+                  setPayToday(true);
+                } else {
+                  setPayToday(false);
+                }
+              }
+              }/>
             </FormControl>
           </VStack>
           <ModalFooter>

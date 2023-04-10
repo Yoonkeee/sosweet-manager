@@ -80,15 +80,16 @@ export default function ModifyDog({isOpen, onClose}) {
           {selectIsLoading ? <Text>Loading options...</Text> : (<Select
             // w={'40%'}
             placeholder={"댕댕이 선택"}
+            icon={<></>}
             required={true}
             position={'inherit'}
+            {...register("name")}
             id={'name'}
             onChange={(e) => {
               // console.log(e.target.value);
               document.getElementById('name').style.position = 'inherit'
               setName(prev => e.target.value);
             }}
-            {...register("name")}
           >
             {options && options.map((option) => (<option key={option.value} value={option.value}>
               {option.label}
