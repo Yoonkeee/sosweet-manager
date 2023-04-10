@@ -18,7 +18,7 @@ import {
   VStack
 } from "@chakra-ui/react";
 import {useForm} from "react-hook-form";
-import {useMutation, useQuery} from "react-query";
+import {useMutation, useQuery, useQueryClient} from "react-query";
 import {addNewDog, dogsList, getDogInfo, modDog} from "../api";
 import {useEffect, useState} from "react";
 
@@ -28,11 +28,13 @@ export default function ModifyDog({isOpen, onClose}) {
   const toast = useToast();
   const [name, setName] = useState('');
   const [info, setInfo] = useState('');
+  const queryClient = useQueryClient();
   const mutation = useMutation(modDog, {
     onSuccess: () => {
       toast({
-        title: "댕댕이 수정에 성공했어요~~", status: "success", position: "top", duration: 3000, isClosable: true,
+        title: name + " 수정에 성공했어요~~", status: "success", position: "top", duration: 3000, isClosable: true,
       });
+      queryClient.refetchQueries('dogs-list');
       onClose();
       reset();
     },

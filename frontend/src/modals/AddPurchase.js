@@ -30,11 +30,6 @@ export default function AddPurchase({isOpen, onClose}) {
   useEffect(() => {
     setFormattedDate(moment.utc(nowDate, 'YYYY-MM-DD').format('M월 D일 dddd'));
   }, [nowDate]);
-  const timeOtions = {
-    month: 'long',
-    day: 'numeric',
-    weekday: 'long'
-  };
   const mutation = useMutation(purchase, {
     onSuccess: () => {
       toast({

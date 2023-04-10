@@ -62,12 +62,16 @@ class Interface:
         return True
 
     def get_dogs_list(self):
-        query = f"select dogs.*, remaining_time.minutes from dogs inner join remaining_time on dogs.name = remaining_time.name;"
+        query = f"select dogs.*, remaining_time.minutes " \
+                f"from dogs inner join remaining_time " \
+                f"on dogs.name = remaining_time.name " \
+                f"order by name;"
         self.getter.execute(query)
         columns = [col[0] for col in self.getter.description]  # Get column names
-        data = [dict(zip(columns, row)) for row in self.getter.fetchall()]
-        print(data)
-        return data
+        # data = [dict(zip(columns, row)) for row in self.getter.fetchall()]
+        # data = [dict(zip(columns, row)) for row in self.getter.fetchall()]
+        # print(data)
+        return [dict(zip(columns, row)) for row in self.getter.fetchall()]
 
     def get_dog_info(self, name):
         query = f"select * from dogs where name = '{name}'"
