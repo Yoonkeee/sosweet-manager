@@ -61,7 +61,7 @@ export default function ModifyHistory(props) {
   let checkoutData = {};
   const defaultInTime = moment.utc(in_time).format("HH:mm").replace(":", '');
   const defaultOutTime = moment.utc(out_time).format("HH:mm").replace(":", '');
-  const { register, reset, handleSubmit} = useForm();
+  const {register, reset, handleSubmit} = useForm();
   const toast = useToast();
   const queryClient = useQueryClient();
   const mutation = useMutation(checkOut, {
@@ -143,8 +143,8 @@ export default function ModifyHistory(props) {
         <ModalCloseButton/>
         <ModalBody as={'form'} onSubmit={handleSubmit(onSubmit)}>
           <VStack spacing={3} alignItems={'flex-start'}>
-              <HStack justifyContent={'center'} alignContent={'center'} alignItems={'center'}>
-                <Text w={'15vw'}>입장날짜</Text>
+            <HStack w={'100%'} justifyContent={'flex-start'} alignContent={'center'} alignItems={'center'}>
+              <Text w={'30%'}>입장날짜</Text>
                 <IconButton rounded={'xl'} w={'6%'} h={'80%'} bg={'#1a2a52'} color={'white'} isRound={true} position={'inherit'}
                             _hover={{
                               textDecoration: 'none', color: 'white', bg: '#526491', rounded: 'xl', transform: 'scale(1.2)'
@@ -168,10 +168,10 @@ export default function ModifyHistory(props) {
                               setNowDate(moment(nowDate).add(1, 'day'))
                               console.log(nowDate)
                             }}
-                />
-              </HStack>)
-            <HStack>
-              <Text w={'15vw'}>입장시간</Text>
+              />
+            </HStack>
+            <HStack w={'100%'}>
+              <Text w={'30%'}>입장시간</Text>
               <HStack>
                 <PinInput placeholder='0' defaultValue={defaultInTime}>
                   <PinInputField w={'40px'} {...register("inPinNumber[0]")} required={true}/>
@@ -182,8 +182,8 @@ export default function ModifyHistory(props) {
                 </PinInput>
               </HStack>
             </HStack>
-            <HStack>
-              <Text w={'15vw'}>퇴장시간</Text>
+            <HStack w={'100%'}>
+              <Text w={'30%'}>퇴장시간</Text>
               <HStack>
                 <PinInput placeholder='0' defaultValue={defaultOutTime}>
                   <PinInputField w={'40px'} {...register("outPinNumber[0]")} required={true}/>
@@ -194,8 +194,8 @@ export default function ModifyHistory(props) {
                 </PinInput>
               </HStack>
             </HStack>
-            <HStack>
-              <Text w={'15vw'}>매너벨트 사용량</Text>
+            <HStack w={'100%'}>
+              <Text w={'30%'}>매너벨트 사용량</Text>
               <NumberInput size='md' maxW={'30%'} min={0}
                            value={belts}
                            {...register('belts')}>
