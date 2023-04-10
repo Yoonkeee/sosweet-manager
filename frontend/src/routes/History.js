@@ -99,6 +99,7 @@ export default function History() {
             <Th textAlign={'center'} fontSize={'xl'}>이용시간</Th>
             <Th textAlign={'center'} fontSize={'xl'}>매너벨트</Th>
             <Th textAlign={'center'} fontSize={'xl'}>전송날짜</Th>
+            <Th textAlign={'center'} fontSize={'xl'}>수정</Th>
           </Tr>
         </Thead>
         <Tbody>
