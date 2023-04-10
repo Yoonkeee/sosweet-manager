@@ -67,6 +67,12 @@ class Interface:
         columns = [col[0] for col in self.getter.description]  # Get column names
         return [dict(zip(columns, row)) for row in self.getter.fetchall()]
 
+    def get_dog_info(self, name):
+        query = f"select * from dogs where name = '{name}'"
+        self.getter.execute(query)
+        columns = [col[0] for col in self.getter.description]
+        return [dict(zip(columns, row)) for row in self.getter.fetchall()]
+
     def mod_dog_info(self, data):
         # update table
         update_query = f"""

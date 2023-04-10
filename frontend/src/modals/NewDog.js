@@ -18,23 +18,21 @@ import {
   VStack
 } from "@chakra-ui/react";
 import {useForm} from "react-hook-form";
-import {addNewDog} from "../api";
+import {addNewDog, dogsList} from "../api";
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import {useParams} from "react-router-dom";
 
 export default function NewDog({isOpen, onClose}) {
-  // const {isOpen, onOpen, onClose} = useDisclosure()
   const {register, reset, handleSubmit} = useForm();
-  // const queryClient = useQueryClient();
-  // const {params} = useParams();
-  // const {isLoading, data} = useQuery('', () => addNewDog(params));
+  const queryClient = useQueryClient();
+  const initQuery = useQuery(["dogs-list"], dogsList);
   const toast = useToast();
   const mutation = useMutation(addNewDog, {
     onSuccess: () => {
       toast({
         title: "댕댕이 등록에 성공했어요~~", status: "success", position: "top", duration: 3000, isClosable: true,
       });
-      // queryClient.refetchQueries(["dogs-list"]);
+      queryClient.refetchQueries(["dogs-list"]);
       onClose();
       reset();
     },
@@ -59,6 +57,11 @@ export default function NewDog({isOpen, onClose}) {
               required={true}
               placeholder={"댕댕이 이름(필수)"}
               {...register("dogName", {required: "댕댕이 이름 입력해주세요!!"})}
+            />
+            <Input
+              variant={"filled"}
+              placeholder={"메세지에 보낼 댕댕이 이름(선택) 미입력시 이름과 동일"}
+              {...register("officialName")}
             />
             <Input
               variant={"filled"}

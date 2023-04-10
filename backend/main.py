@@ -54,19 +54,20 @@ scheduler.add_job(execute_keep_alive, 'interval', minutes=60)
 scheduler.start()
 
 
-class NewDog(BaseModel):
+class DictModel(BaseModel):
     data: dict
-    # dogName: str
-    # dogGender: Optional[str] = None
-    # dogBreed: Optional[str] = None
-    # dogAge: Optional[str] = None
-    # dogWeight: Optional[str] = None
-    # dogInfo: Optional[str] = None
-    # phone: Optional[str] = None
+
+
+class ArrayModel(BaseModel):
+    data: list
+
+
+class StringModel(BaseModel):
+    data: str
 
 
 @app.post("/api/post/add-new-dog")
-async def add_new_dog(request: NewDog):
+async def add_new_dog(request: DictModel):
     print('in add_new_dog')
     data = json.loads(request.json())
     response = db_interface.add_dog_info(*data.values())
@@ -77,18 +78,28 @@ async def add_new_dog(request: NewDog):
         return Response(status_code=status.HTTP_200_OK)
 
 
+@app.post("/api/post/mod-dog")
+async def mod_dog(request: DictModel):
+    print('in mod_dog')
+    data = json.loads(request.json())
+    response = db_interface.mod_dog_info(*data.values())
+    print(response)
+    if not response:
+        return Response(status_code=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response(status_code=status.HTTP_200_OK)
+
+
+@app.get("/api/get/dog-info/{name}")
+async def get_dog_info(name: str):
+    print('in get_dog_info')
+    return db_interface.get_dog_info(name)
+
+
 @app.get("/api/get/dogs-list")
 async def get_dogs_list():
     print('in get_dogs_list')
     return db_interface.get_dogs_list()
-
-
-class DictModel(BaseModel):
-    data: dict
-
-
-class ArrayModel(BaseModel):
-    data: list
 
 
 @app.post("/api/post/check-in")

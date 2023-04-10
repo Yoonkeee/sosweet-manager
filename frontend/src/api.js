@@ -34,6 +34,9 @@ export const test = () => {
   }).then((response) => console.log(response.data));
 }
 
+export const getDogInfo = (name) => {
+  return instance.get(`/get/dog-info/${name}`).then((response) => response.data);
+}
 
 export const addNewDog = (data) => {
   if(data.officialName === '' || data.officialName === null) {
@@ -41,6 +44,18 @@ export const addNewDog = (data) => {
   }
   console.log(data);
   return instance.post("/post/add-new-dog", {data}, {
+    headers: {
+      "X-CSRFToken": Cookies.get("csrftoken") || "",
+    },
+  }).then((response) => response.data);
+}
+
+export const modDog = (data) => {
+  if(data.officialName === '' || data.officialName === null) {
+    data.officialName = data.dogName;
+  }
+  console.log(data);
+  return instance.post("/post/mod-dog", {data}, {
     headers: {
       "X-CSRFToken": Cookies.get("csrftoken") || "",
     },
