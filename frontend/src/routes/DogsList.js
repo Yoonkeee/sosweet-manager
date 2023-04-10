@@ -20,7 +20,7 @@ export default function DogsList() {
   return (
     <VStack w={'100%'}>
       <Text mt={'2vh'} fontSize={'2xl'} fontWeight={'bold'} textAlign={'center'}>
-        등록된 댕댕이 목록~
+        🥰쏘스윗 댕댕이 목록🥰
       </Text>
       <TableContainer w={'100%'}>
         <Table variant='striped' colorScheme='blue' layout={'fixed'}>
@@ -33,13 +33,13 @@ export default function DogsList() {
             {/*</HStack>*/}
             {/*</Box>*/}
             <Tr textAlign={'center'}>
-              <Th textAlign={'center'} w={'10%'} fontSize={'xl'}>이름</Th>
-              <Th textAlign={'center'} w={'30%'} fontSize={'xl'}>특이사항</Th>
-              <Th textAlign={'center'} fontSize={'xl'}>견종</Th>
-              <Th textAlign={'center'} px={0} w={'6%'} fontSize={'xl'}>성별</Th>
-              <Th textAlign={'center'} w={'20%'} fontSize={'xl'}>전화번호</Th>
+              <Th textAlign={'center'} w={'12%'} px={0} fontSize={'xl'}>이름</Th>
+              <Th textAlign={'center'} px={0} fontSize={'xl'}>특이사항</Th>
+              <Th textAlign={'center'} w={'10%'} px={0} fontSize={'xl'}>견종</Th>
+              <Th textAlign={'center'} w={'6%'} px={0} fontSize={'xl'}>성별</Th>
+              <Th textAlign={'center'} w={'20%'} px={0} fontSize={'xl'}>전화번호</Th>
               <Th textAlign={'center'} w={'8%'} px={0} fontSize={'xl'}>몸무게</Th>
-              <Th textAlign={'center'} fontSize={'xl'}>남은시간</Th>
+              <Th textAlign={'center'} w={'13%'} px={0} fontSize={'xl'}>남은시간</Th>
             </Tr>
           </Thead>
           <Tbody>

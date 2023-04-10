@@ -30,37 +30,38 @@ export default function DogsListRow(props) {
   // console.log(name, breed, note, gender, phone, weight);
   return (<>
     <Tr textAlign={'center'}>
-      <Td textAlign={'center'} p={2}>
+      <Td borderRight="1px solid" borderColor="gray.300" textAlign={'center'} p={2}>
         <Text fontSize={'md'} textAlign={'center'} fontWeight={'semibold'} textColor={'#1a2a52'}>
           {data.name}
         </Text>
       </Td>
-      <Td textAlign={'center'} p={2}>
-        <Text fontSize={'md'} textAlign={'center'} fontWeight={'semibold'} textColor={'#1a2a52'}>
+      <Td borderRight="1px solid" borderColor="gray.300" textAlign={'center'} p={2}>
+        <Text fontSize={'md'} textAlign={'center'} fontWeight={'semibold'} textColor={'#1a2a52'}
+        whiteSpace={'pre-line'}>
           {data.note}
         </Text>
       </Td>
-      <Td textAlign={'center'} p={0}>
+      <Td borderRight="1px solid" borderColor="gray.300" textAlign={'center'} p={0}>
         <Text fontSize={'md'} textAlign={'center'} fontWeight={'semibold'} textColor={'#1a2a52'}>
           {data.breed}
         </Text>
       </Td>
-      <Td textAlign={'center'} p={2}>
+      <Td borderRight="1px solid" borderColor="gray.300" textAlign={'center'} p={2}>
         <Text fontSize={'md'} textAlign={'center'} fontWeight={'semibold'} textColor={'#1a2a52'}>
           {data.gender}
         </Text>
       </Td>
-      <Td textAlign={'center'} p={2}>
+      <Td borderRight="1px solid" borderColor="gray.300" textAlign={'center'} p={2}>
         <Text fontSize={'md'} textAlign={'center'} fontWeight={'semibold'} textColor={'#1a2a52'}>
           {data.phone}
         </Text>
       </Td>
-      <Td textAlign={'center'} p={2}>
+      <Td borderRight="1px solid" borderColor="gray.300" textAlign={'center'} p={2}>
         <Text fontSize={'md'} textAlign={'center'} fontWeight={'semibold'} textColor={'#1a2a52'}>
           {data.weight}
         </Text>
       </Td>
-      <Td textAlign={'center'} p={2}>
+      <Td borderRight="1px solid" borderColor="gray.300" textAlign={'center'} p={2}>
         <Text fontSize={'md'} textAlign={'center'} fontWeight={'semibold'} textColor={'#1a2a52'}>
           {moment.utc(data.minutes * 60 * 1000).format('H:mm')}
         </Text>
