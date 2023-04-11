@@ -123,16 +123,6 @@ async def check_in(request: DictModel):
     response = db_interface.check_in(*data.values())
     return {"message": "check-in"}
 
-# check_out is post request and data will be {
-#     "id": 1680347566755,
-#     "name": "나나1",
-#     "in_time": "14:14",
-#     "out_time": "16:55",
-#     "belts": "2",
-#     "date": "2023-04-01",
-#     "minutes": 161
-# }
-
 
 @app.post("/api/post/check-out")
 async def check_out(request: DictModel):
@@ -141,12 +131,6 @@ async def check_out(request: DictModel):
     print(*data.values())
     response = db_interface.check_out(*data.values())
     return {"message": "check-out"}
-
-# change check-in time. url will be /api/post/change-check-in
-# data will be {
-#     "id": 1680347566755,
-#     "check_in_time": "14:14"
-# }
 
 
 @app.post("/api/post/change-check-in")
@@ -203,6 +187,16 @@ async def cancel_checkin(row_id: int):
     # print(*data.values())
     response = db_interface.cancel_checkin(row_id)
     return {"message": "cancel-checkin"}
+
+
+@app.get("/api/get/cancel-history/{row_id}")
+async def cancel_history(row_id: int):
+    print('in cancel_history')
+    print('row_id' + str(row_id))
+    # data = json.loads(request.json())
+    # print(*data.values())
+    response = db_interface.cancel_history(row_id)
+    return {"message": "cancel-history"}
 
 
 @app.get("/api/get/cancel-pay/{row_id}")

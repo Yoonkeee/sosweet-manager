@@ -244,6 +244,16 @@ class Interface:
         self.db.commit()
         return True
 
+    def cancel_history(self, row_id):
+        delete_query = f"""
+        delete from used_table
+        where id = {row_id};
+        """
+        print(delete_query)
+        self.setter.execute(delete_query)
+        self.db.commit()
+        return True
+
     def cancel_pay(self, row_id):
         delete_query = f"""
         delete from paid

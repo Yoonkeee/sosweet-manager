@@ -31,7 +31,7 @@ import {
 import {useEffect, useRef, useState} from "react";
 import {useForm} from "react-hook-form";
 import {useMutation, useQueryClient} from "react-query";
-import {addNewDog, cancelCheckin, checkOut, modHistory} from "../api";
+import {addNewDog, cancelCheckin, cancelHistory, checkOut, modHistory} from "../api";
 import {useSelector} from "react-redux";
 import moment from "moment/moment";
 import {ArrowBackIcon, ArrowForwardIcon} from "@chakra-ui/icons";
@@ -138,11 +138,27 @@ export default function ModifyHistory(props) {
     console.log(checkoutData);
     mutation.mutate(checkoutData);
   }
+  const cancelMutation = useMutation(cancelHistory, {
+    onSuccess: (data) => {
+      toast({
+        title: (
+          <>
+            사용내역 삭제! <br/>
+            댕댕이 : {name} <br/>
+            사용날짜 : {document.getElementById('formattedNowDate').innerText} <br/>
+          </>),
+        status: "success",
+        position: "top",
+        duration: 3000,
+        isClosable: true,
+      });
+      onClose();
+      reset();
+      queryClient.refetchQueries(["history", name]);
+    },
+  });
   const cancel = () => {
-    cancelCheckin(id);
-    onClose();
-    reset();
-    queryClient.refetchQueries(["timetable"]);
+    cancelMutation.mutate(id)
   };
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -221,7 +237,7 @@ export default function ModifyHistory(props) {
                 <Button colorScheme='yellow' mr={3} rounded={'xl'} _hover={{
                   textDecoration: 'none', color: 'white', rounded: 'xl', transform: 'scale(1.2)'
                 }}>
-                  체크인 취소
+                  사용내역 취소
                 </Button>
               </PopoverTrigger>
               <Portal containerRef={ref}>
@@ -229,8 +245,8 @@ export default function ModifyHistory(props) {
                   <PopoverArrow/>
                   <PopoverCloseButton/>
                   <PopoverBody>
-                    <Heading fontSize={'2xl'} my={'3vh'}>체크인 취소할까요?</Heading>
-                    <Button colorScheme='yellow' onClick={cancel}>취소할게요!</Button>
+                    <Heading fontSize={'2xl'} my={'3vh'}>내역을 삭제할까요?</Heading>
+                    <Button colorScheme='yellow' onClick={cancel}>삭제할게요!</Button>
                   </PopoverBody>
                 </PopoverContent>
               </Portal>
