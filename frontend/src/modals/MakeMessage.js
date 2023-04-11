@@ -31,7 +31,6 @@ import {useMutation, useQueryClient} from "react-query";
 import {addNewDog, checkUsedDate, makeMessage} from "../api";
 
 export default function MakeMessage({isOpen, onClose, checked}) {
-  // const {isOpen, onOpen, onClose} = useDisclosure()
   const queryClient = useQueryClient()
   const toast = useToast()
   const [text, setText] = useState('')
@@ -59,13 +58,7 @@ export default function MakeMessage({isOpen, onClose, checked}) {
       }
     })
   }
-  
-  // queryClient.refetchQueries(["history"]);
-  // toast({
-  //   title: "전송 완료 처리했어요~~", status: "success", position: "top", duration: 3000, isClosable: true,
-  // });
   const ref = useRef(null)
-  
   const handleCopy = () => {
     navigator.clipboard.writeText(text)
     toast({
@@ -92,7 +85,6 @@ export default function MakeMessage({isOpen, onClose, checked}) {
           }}>
             취소
           </Button>
-          
           <Popover placement='top-start'>
             <PopoverTrigger>
               <Button bg={'#1a2a52'} color={'white'} rounded={'xl'}
@@ -112,13 +104,6 @@ export default function MakeMessage({isOpen, onClose, checked}) {
               </PopoverContent>
             </Portal>
           </Popover>
-          
-          
-          {/*<Button bg={'#1a2a52'} color={'white'} rounded={'xl'}*/}
-          {/*        type={'submit'}*/}
-          {/*        _hover={{*/}
-          {/*          textDecoration: 'none', color: 'white', bg: '#526491', rounded: 'xl', transform: 'scale(1.2)'*/}
-          {/*        }}>전송 완료~</Button>*/}
         </ModalFooter>
       </ModalBody>
     </ModalContent>

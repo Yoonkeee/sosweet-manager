@@ -145,9 +145,12 @@ class Interface:
         # return [dict(zip(columns, row)) for row in self.getter.fetchall()]
 
     # used_table
-    def get_history(self, name):
-        select_query = f"SELECT * FROM used_table WHERE name = '{name}' ORDER BY date DESC"
-        # print(select_query)
+    def get_history(self, name, get_message=False):
+        if get_message:
+            select_query = f"SELECT * FROM used_table WHERE name = '{name}' and checked != 1 ORDER BY date DESC"
+        else:
+            select_query = f"SELECT * FROM used_table WHERE name = '{name}' ORDER BY date DESC"
+        print(select_query)
         self.getter.execute(select_query)
         columns = [col[0] for col in self.getter.description]
         data = [dict(zip(columns, row)) for row in self.getter.fetchall()]

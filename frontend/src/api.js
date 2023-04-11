@@ -128,11 +128,15 @@ export const getTimeTable = ({queryKey}) => {
 // get history from fast api server. url is /get/history and passing dog name for parameter.
 // export const getHistory = (name) => {
 export const getHistory = ({queryKey}) => {
-  const [_, name] = queryKey;
+  console.log(queryKey);
+  let [_, name, getMessage] = queryKey;
   console.log('in history ' + name);
   if (name === undefined || name === null ||
     name === '' || typeof name === "object") return null
-  console.log('in api history ' + name);
+  if(getMessage === 'getMessage') {
+    name = name + '/message'
+  }
+  console.log(`/get/history/${name}`);
   return instance.get(`/get/history/${name}`).then((response) => response.data);
 }
 

@@ -170,7 +170,16 @@ async def get_table(date: str):
 async def get_history(name: str):
     print('in get_history')
     print(name)
-    result = db_interface.get_history(name)
+    result = db_interface.get_history(name, False)
+    print(result)
+    return result
+
+
+@app.get('/api/get/history/{name}/{message}')
+async def get_history(name: str):
+    print('in get_history with message')
+    print(name)
+    result = db_interface.get_history(name, True)
     print(result)
     return result
 

@@ -20,7 +20,7 @@ export default function GetMessage() {
   const {isLoading: selectIsLoading, data: selectData} = useQuery(["dogs-list"], dogsList);
   const [name, setName] = useState('');
   // const [data, setData] = useState('');
-  const {isLoading, data} = useQuery(["history", name], getHistory);
+  const {isLoading, data} = useQuery(["history", name, 'getMessage'], getHistory);
   const options = selectData?.map(item => ({
     value: item.name, label: item.name,
   }));
@@ -29,7 +29,7 @@ export default function GetMessage() {
     queryClient.removeQueries('history')
     setChecked([])
     if (name) {
-      queryClient.refetchQueries(["history", name]);
+      queryClient.refetchQueries(["history", name, 'getMessage']);
     }
   }, [name]);
   const [checked, setChecked] = useState([]);
