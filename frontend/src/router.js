@@ -6,6 +6,7 @@ import NewDog from "./modals/NewDog";
 import GetMessage from "./routes/GetMessage";
 import History from "./routes/History";
 import DogsList from "./routes/DogsList";
+import PayHistory from "./routes/PayHistory";
 // import Home from "./routes/Home";
 // import Company from "./routes/Company";
 // import CompanyDetail from "./components/CompanyDetail";
@@ -34,10 +35,10 @@ const router = createBrowserRouter([
         path: 'history',
         element: <History />
       },
-      // {
-      //   path: 'history/:name',
-      //   element: <History />
-      // },
+      {
+        path: 'pay-history',
+        element: <PayHistory />
+      },
       {
         path: 'dogs-list',
         element: <DogsList/>

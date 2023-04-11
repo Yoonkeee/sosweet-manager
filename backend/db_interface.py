@@ -154,6 +154,15 @@ class Interface:
         # print(data)
         return data
 
+    def get_pay_history(self):
+        select_query = f"SELECT * FROM paid ORDER BY date DESC"
+        # print(select_query)
+        self.getter.execute(select_query)
+        columns = [col[0] for col in self.getter.description]
+        data = [dict(zip(columns, row)) for row in self.getter.fetchall()]
+        # print(data)
+        return data
+
     def check_in(self, data):
         name, date, in_time, row_id = data['name'], data['date'], data['in_time'], data['id']
         # in_time 15:55
@@ -232,13 +241,23 @@ class Interface:
         self.db.commit()
         return True
 
+    def cancel_pay(self, row_id):
+        delete_query = f"""
+        delete from paid
+        where id = {row_id};
+        """
+        print(delete_query)
+        self.setter.execute(delete_query)
+        self.db.commit()
+        return True
+
     def purchase(self, data):
         name, hours, date = data['name'], data['hours'], data['date']
         # date form 2021-08-01
         # hours form 1
         # name form 'test'
         insert_query = f"""
-        insert into purchased (name, date, minutes)
+        insert into paid (name, date, minutes)
         values (
         '{name}',
         STR_TO_DATE('{date.replace('-', '')}', '%Y%m%d'),

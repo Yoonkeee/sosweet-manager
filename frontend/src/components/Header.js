@@ -345,9 +345,11 @@ interface NavItem {
 }
 
 const NAV_ITEMS: Array<NavItem> = [{label: '시간표', link: '/timetable',}, {
-  label: '이용시간', children: [{label: '이용시간 계산', subLabel: '이용 내역 취합하여 메세지 만들기', subLink: '/get-message'}, {
-    label: '이용 내역', subLabel: '놀이방 이용 내역 확인 및 수정하기', subLink: '/history'
-  },],
+  label: '내역', children: [
+    {label: '이용시간 계산', subLabel: '이용 내역 취합하여 메세지 만들기', subLink: '/get-message'},
+    {label: '이용 내역', subLabel: '놀이방 이용 내역 확인 및 수정하기', subLink: '/history'},
+    {label: '결제 내역', subLabel: '놀이방 결제 내역 확인 및 수정하기', subLink: '/pay-history'},
+  ],
 }, {
   label: '등록', children: [
     {label: '결제 내역 등록', subLabel: '놀이방 이용권 구매 등록', subLink: '/payment'},

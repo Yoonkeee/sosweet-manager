@@ -101,9 +101,19 @@ export const modHistory = (data) => {
   }).then((response) => response.data);
 }
 
+// get pay-history from fast api server. url is /get/pay-history and passing dog name for parameter.
+export const getPayHistory = () => {
+  console.log('in pay history');
+  return instance.get(`/get/pay-history`).then((response) => response.data);
+}
+
 
 export const cancelCheckin = (id) => {
   return instance.get(`/get/cancel-checkin/${id}`).then((response) => response.data);
+}
+
+export const cancelPay = (id) => {
+  return instance.get(`/get/cancel-pay/${id}`).then((response) => response.data);
 }
 
 

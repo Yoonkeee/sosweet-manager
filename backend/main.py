@@ -175,6 +175,15 @@ async def get_history(name: str):
     return result
 
 
+# get data from paid table
+@app.get('/api/get/pay-history/')
+async def get_pay_history():
+    print('in get_pay_history')
+    result = db_interface.get_pay_history()
+    print(result)
+    return result
+
+
 # cancel checkin with given id. url will be /api/post/cancel-checkin
 # data will be { id: int }
 @app.get("/api/get/cancel-checkin/{row_id}")
@@ -185,6 +194,14 @@ async def cancel_checkin(row_id: int):
     # print(*data.values())
     response = db_interface.cancel_checkin(row_id)
     return {"message": "cancel-checkin"}
+
+
+@app.get("/api/get/cancel-pay/{row_id}")
+async def cancel_checkin(row_id: int):
+    print('in cancel_checkin')
+    print('row_id ' + str(row_id))
+    response = db_interface.cancel_pay(row_id)
+    return {"message": "cancel-pay"}
 
 
 @app.post('/api/post/purchase')
