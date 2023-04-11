@@ -122,6 +122,7 @@ export default function Checkout({isOpen, onClose, id, name, in_time, belts}) {
     reset();
     queryClient.refetchQueries(["timetable"]);
   };
+  // TODO 모달창 vw -> %로 변경
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay/>

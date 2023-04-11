@@ -92,6 +92,15 @@ export const changeCheckIn = (data) => {
   }).then((response) => response.data);
 }
 
+// reset data with data
+export const modHistory = (data) => {
+  return instance.post("/post/mod-history", {data}, {
+    headers: {
+      "X-CSRFToken": Cookies.get("csrftoken") || "",
+    },
+  }).then((response) => response.data);
+}
+
 
 export const cancelCheckin = (id) => {
   return instance.get(`/get/cancel-checkin/${id}`).then((response) => response.data);

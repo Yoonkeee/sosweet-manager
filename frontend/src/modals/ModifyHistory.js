@@ -31,7 +31,7 @@ import {
 import {useEffect, useRef, useState} from "react";
 import {useForm} from "react-hook-form";
 import {useMutation, useQueryClient} from "react-query";
-import {addNewDog, cancelCheckin, checkOut} from "../api";
+import {addNewDog, cancelCheckin, checkOut, modHistory} from "../api";
 import {useSelector} from "react-redux";
 import moment from "moment/moment";
 import {ArrowBackIcon, ArrowForwardIcon} from "@chakra-ui/icons";
@@ -61,10 +61,19 @@ export default function ModifyHistory(props) {
   let checkoutData = {};
   const defaultInTime = moment.utc(in_time).format("HH:mm").replace(":", '');
   const defaultOutTime = moment.utc(out_time).format("HH:mm").replace(":", '');
-  const {register, reset, handleSubmit} = useForm();
+  let inPinNumber = defaultInTime.split("");
+  let outPinNumber = defaultOutTime.split("");
+  const {register, reset, handleSubmit, setValue} = useForm(
+    {
+      defaultValues: {
+        inPinNumber: inPinNumber,
+        outPinNumber: outPinNumber,
+        belts: belts,
+      }}
+  );
   const toast = useToast();
   const queryClient = useQueryClient();
-  const mutation = useMutation(checkOut, {
+  const mutation = useMutation(modHistory, {
     onSuccess: (data) => {
       toast({
         title: (
@@ -88,8 +97,8 @@ export default function ModifyHistory(props) {
     },
   });
   const onSubmit = (data) => {
-    const inPinNumber = data.inPinNumber.join("").replace(/(\d{2})(\d{2})/, "$1:$2");
-    const outPinNumber = data.outPinNumber.join("").replace(/(\d{2})(\d{2})/, "$1:$2");
+    inPinNumber = data.inPinNumber.join("").replace(/(\d{2})(\d{2})/, "$1:$2");
+    outPinNumber = data.outPinNumber.join("").replace(/(\d{2})(\d{2})/, "$1:$2");
     const modDate = moment.utc(document.getElementById('formattedNowDate').innerText,
       'M월 D일 dddd').format('YYYY-MM-DD')
     // const moment = require('moment');
@@ -152,7 +161,6 @@ export default function ModifyHistory(props) {
                   <ArrowBackIcon fontSize={'2xl'} fontWeight={'extrabold'}/>}
                             onClick={() => {
                               setNowDate(moment(nowDate).subtract(1, 'day'))
-                              console.log(nowDate)
                             }}
                 />
                 <Text mt={'2vh'} fontSize={'xl'} fontWeight={'semibold'} textAlign={'center'}
@@ -166,13 +174,13 @@ export default function ModifyHistory(props) {
                   <ArrowForwardIcon fontSize={'2xl'} fontWeight={'extrabold'}/>}
                             onClick={() => {
                               setNowDate(moment(nowDate).add(1, 'day'))
-                              console.log(nowDate)
                             }}
               />
             </HStack>
             <HStack w={'100%'}>
               <Text w={'30%'}>입장시간</Text>
               <HStack>
+                {/*<PinInput placeholder='0'>*/}
                 <PinInput placeholder='0' defaultValue={defaultInTime}>
                   <PinInputField w={'40px'} {...register("inPinNumber[0]")} required={true}/>
                   <PinInputField w={'40px'} {...register("inPinNumber[1]")} required={true}/>

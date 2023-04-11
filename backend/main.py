@@ -90,6 +90,19 @@ async def mod_dog(request: DictModel):
         return Response(status_code=status.HTTP_200_OK)
 
 
+# mod-history
+@app.post("/api/post/mod-history")
+async def mod_history(request: DictModel):
+    print('in mod_history')
+    data = json.loads(request.json())
+    response = db_interface.mod_history(*data.values())
+    print(response)
+    if not response:
+        return Response(status_code=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response(status_code=status.HTTP_200_OK)
+
+
 @app.get("/api/get/dog-info/{name}")
 async def get_dog_info(name: str):
     print('in get_dog_info')
