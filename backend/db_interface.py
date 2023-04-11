@@ -89,16 +89,22 @@ class Interface:
         return True
 
     def get_dogs_list(self):
-        query = f"select dogs.*, remaining_time.minutes " \
-                f"from dogs inner join remaining_time " \
-                f"on dogs.name = remaining_time.name " \
-                f"order by name;"
+        query = f"""
+            SELECT dogs.*, IFNULL(SUM(paid.minutes), 0) as remaining_minutes
+            FROM dogs 
+            LEFT JOIN paid ON dogs.name = paid.name 
+            GROUP BY dogs.name 
+            ORDER BY dogs.name;
+        """
+
+        # query = f"select dogs.*, remaining_time.minutes " \
+        #         f"from dogs inner join remaining_time " \
+        #         f"on dogs.name = remaining_time.name " \
+        #         f"order by name;"
         self.getter.execute(query)
         columns = [col[0] for col in self.getter.description]  # Get column names
-        # data = [dict(zip(columns, row)) for row in self.getter.fetchall()]
-        # data = [dict(zip(columns, row)) for row in self.getter.fetchall()]
-        # print(data)
-        return [dict(zip(columns, row)) for row in self.getter.fetchall()]
+        data = [dict(zip(columns, row)) for row in self.getter.fetchall()]
+        return data
 
     def get_dog_info(self, name):
         query = f"select * from dogs where name = '{name}'"
@@ -187,14 +193,15 @@ class Interface:
 
     def check_out(self, data):
         name, date, in_time, out_time, belts, row_id, check_today = \
-            data['name'], data['date'], data['in_time'], data['out_time'], data['belts'], data['id'], data['check_today']
+            data['name'], data['date'], data['in_time'], data['out_time'], data['belts'], data['id'], data['payToday']
         # insert data into used
+        used_minutes = data['minutes']
         insert_query = f"""
         insert into used_table (name, date, used_minutes, id, belts, checked, in_time, out_time)
         values (
         '{name}',
         STR_TO_DATE('{date.replace('-', '')}', '%Y%m%d'),
-        {data['minutes']},
+        {used_minutes},
         {row_id},
         {belts},
         0,
@@ -216,7 +223,58 @@ class Interface:
         print(update_query)
         self.setter.execute(update_query)
         self.db.commit()
+
+        if belts:
+            self.set_belt(row_id, belts)
+
+        # self.get_remaining_time(name)
+        # self.subtract_time(name, used_minutes)
+
         return True
+
+    def sum_paid_time(self, name):
+        select_query = f"""
+        select sum(minutes) as minutes
+        from paid
+        where name = '{name}'
+        """
+        print(select_query)
+        self.getter.execute(select_query)
+        columns = [col[0] for col in self.getter.description]
+        data = [dict(zip(columns, row)) for row in self.getter.fetchall()]
+        return data[0]['minutes']
+
+    def sum_used_time(self, name):
+        select_query = f"""
+        select sum(used_minutes) as minutes
+        from used_table
+        where name = '{name}'
+        """
+        print(select_query)
+        self.getter.execute(select_query)
+        columns = [col[0] for col in self.getter.description]
+        data = [dict(zip(columns, row)) for row in self.getter.fetchall()]
+        return data[0]['minutes']
+
+    def get_remaining_time(self, name):
+        paid = self.sum_paid_time(name)
+        used = self.sum_used_time(name)
+        if paid is None:
+            paid = 0
+        if used is None:
+            used = 0
+        return paid - used
+
+    # def subtract_time(self, name, minutes):
+    #     update_query = f"""
+    #     update remaining_time
+    #     set minutes = minutes - {minutes}
+    #     where name = '{name}';
+    #     """
+    #     print(update_query)
+    #     self.setter.execute(update_query)
+    #     self.db.commit()
+    #     return True
 
     # change check-in time
     def change_check_in_time(self, data):
@@ -363,17 +421,25 @@ class Interface:
         name = data[0]['name']
         official_name = self.get_official_name(name)
 
-        select_query = f"select minutes from remaining_time where name = '{name}';"
+        # select_query = f"select minutes from remaining_time where name = '{name}';"
+        select_query = f"""SELECT SUM(minutes) as minutes
+        FROM paid
+        WHERE name = '{name}'
+        """
+
         print(select_query)
         self.getter.execute(select_query)
         remaining_minutes = self.getter.fetchall()[0][0]
+        print(remaining_minutes)
 
         message = '안녕하세요~쏘스윗펫입니다😊\n'
         message += f'❤{official_name}❤놀이방 이용 내역 알려드립니다. \n'
         duration = relativedelta(minutes=remaining_minutes)
         print(duration)
-        message += f'놀이방 남은 시간 : {abs(duration.days) * 24 + duration.hours}시간 {abs(duration.minutes)}분 \n\n'
-        #안녕하세요~쏘스윗펫입니다😊
+        # message += f'놀이방 남은 시간 : {abs(duration.days) * 24 + duration.hours}시간 {duration.minutes}분 \n\n'
+        message += f'놀이방 남은 시간 : {"-" if remaining_minutes < 0 else ""}{abs(duration.days * 24 + duration.hours)}시간 {abs(duration.minutes)}분 \n\n'
+
+        # 안녕하세요~쏘스윗펫입니다😊
         # ❤프로❤놀이방 이용 내역 알려드립니다.
         # 놀이방 남은 시간:19시간20분
         #
@@ -399,12 +465,14 @@ class Interface:
         print(total_used_minutes)
         duration = relativedelta(minutes=total_used_minutes)
         print(duration)
-        message += f'\n총 사용시간 : {abs(duration.days) * 24 + duration.hours}시간 {abs(duration.minutes)}분 \n'
+        message += f'\n총 사용시간 : {duration.days * 24 + duration.hours}시간 {duration.minutes}분 \n'
 
         remaining_minutes -= total_used_minutes
         duration = relativedelta(minutes=remaining_minutes)
+        print(duration)
 
-        message += f'차감 후 남은 시간 : {abs(duration.days) * 24 + duration.hours}시간 {abs(duration.minutes)}분 입니다. \n'
+        # message += f'놀이방 남은 시간 : {"-" if remaining_minutes < 0 else ""}{abs(duration.days * 24 + duration.hours)}시간 {abs(duration.minutes)}분 \n\n'
+        message += f'차감 후 남은 시간 : {"-" if remaining_minutes < 0 else ""}{abs(duration.days * 24 + duration.hours)}시간 {abs(duration.minutes)}분 입니다. \n'
         if remaining_minutes < 0:
             message += f'다음에 오시면 충전부탁드려요~ \n'
         message += f'감사합니다🐶❤ \n'
@@ -426,20 +494,3 @@ class Interface:
         self.setter.execute(update_query)
         self.db.commit()
         return True
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
