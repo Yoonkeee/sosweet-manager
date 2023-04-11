@@ -38,7 +38,7 @@ import {
 import {useEffect, useRef, useState} from "react";
 import {useForm} from "react-hook-form";
 import {useMutation, useQueryClient} from "react-query";
-import {addNewDog, cancelCheckin, cancelPay, checkOut, modHistory} from "../api";
+import {addNewDog, cancelCheckin, cancelPay, checkOut, modHistory, modPay} from "../api";
 import {useSelector} from "react-redux";
 import moment from "moment/moment";
 import {ArrowBackIcon, ArrowForwardIcon} from "@chakra-ui/icons";
@@ -78,7 +78,7 @@ export default function ModifyPay(props) {
   });
   const toast = useToast();
   const queryClient = useQueryClient();
-  const mutation = useMutation(modHistory, {
+  const mutation = useMutation(modPay, {
     onSuccess: (data) => {
       toast({
         title: (<>
@@ -96,12 +96,11 @@ export default function ModifyPay(props) {
   const onSubmit = (data) => {
     const modDate = moment.utc(document.getElementById('formattedNowDate').innerText, 'M월 D일 dddd').format('YYYY-MM-DD')
     // const moment = require('moment');
-    console.log(data);
     checkoutData = {
       name: name, date: modDate, minutes: data.hours * 60, id: id
     }
     console.log(checkoutData);
-    // mutation.mutate(checkoutData);
+    mutation.mutate(checkoutData);
   }
   const cancel = () => {
     checkoutData = {

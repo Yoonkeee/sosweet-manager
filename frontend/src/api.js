@@ -101,21 +101,31 @@ export const modHistory = (data) => {
   }).then((response) => response.data);
 }
 
+export const modPay = (data) => {
+  return instance.post("/post/mod-pay", {data}, {
+    headers: {
+      "X-CSRFToken": Cookies.get("csrftoken") || "",
+    },
+  }).then((response) => response.data);
+}
+
 // get pay-history from fast api server. url is /get/pay-history and passing dog name for parameter.
 export const getPayHistory = () => {
   console.log('in pay history');
   return instance.get(`/get/pay-history`).then((response) => response.data);
 }
 
-
 export const cancelCheckin = (id) => {
   return instance.get(`/get/cancel-checkin/${id}`).then((response) => response.data);
+}
+
+export const cancelHistory = (id) => {
+  return instance.get(`/get/cancel-history/${id}`).then((response) => response.data);
 }
 
 export const cancelPay = (id) => {
   return instance.get(`/get/cancel-pay/${id}`).then((response) => response.data);
 }
-
 
 // get timetable from fast api server. url is /get/timetable and passing date for parameter.
 export const getTimeTable = ({queryKey}) => {
@@ -123,7 +133,6 @@ export const getTimeTable = ({queryKey}) => {
   console.log('in api getTimeTable ' + date);
   return instance.get(`/get/timetable/${date}`).then((response) => response.data);
 }
-
 
 // get history from fast api server. url is /get/history and passing dog name for parameter.
 // export const getHistory = (name) => {
@@ -140,29 +149,10 @@ export const getHistory = ({queryKey}) => {
   return instance.get(`/get/history/${name}`).then((response) => response.data);
 }
 
-
-// @app.get('/api/get/get-used-belts/{name}')
-// async def get_used_belts(name: str):
-// print(name)
-// result = db_interface.get_used_belts(name)
-// print(result)
-// return result
-//
-//
-// # check_used_belts
-// @app.get('/api/get/check-used-belts/{name}')
-// async def check_used_belts(name: str):
-// print(name)
-// result = db_interface.check_used_belts(name)
-// print(result)
-// return result
-
-// set belt with post
 export const setBelt = ([id, belt]) => {
   console.log('in api addBelt ' + id + ' ' + belt);
 return instance.get(`/get/set-belt/${id}/${belt}`).then((response) => response.data);
 }
-
 
 export const getUsedBelts = (name) => {
   console.log('in api getUsedBelts ' + name);
@@ -171,22 +161,19 @@ export const getUsedBelts = (name) => {
   return instance.get(`/get/get-used-belts/${name}`).then((response) => response.data);
 }
 
-
 export const checkUsedBelts = (name) => {
   console.log('in api checkUsedBelts ' + name);
   return instance.get(`/get/check-used-belts/${name}`).then((response) => response.data);
 }
 
-
-// purchase
-export const purchase = (data) => {
-  return instance.post("/post/purchase", {data}, {
+export const pay = (data) => {
+  return instance.post("/post/pay", {data}, {
     headers: {
       "X-CSRFToken": Cookies.get("csrftoken") || "",
     },
   }).then((response) => {
     if(data.belts !== undefined) {
-      console.log('in api purchase ' + data.belts);
+      console.log('in api pay ' + data.belts);
       checkUsedBelts(data.name);
     }
     return response.data

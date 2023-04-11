@@ -254,7 +254,7 @@ class Interface:
         self.db.commit()
         return True
 
-    def purchase(self, data):
+    def pay(self, data):
         name, hours, date = data['name'], data['hours'], data['date']
         # date form 2021-08-01
         # hours form 1
@@ -271,6 +271,20 @@ class Interface:
         self.setter.execute(insert_query)
         if self.add_remaining_time(data):
             self.db.commit()
+        if data['isSwitchOn']:
+            self.check_used_belts(name)
+        return True
+
+    def mod_pay(self, data):
+        update_query = f"""
+        update paid
+        set minutes = {data['minutes']},
+        date = STR_TO_DATE('{data['date'].replace('-', '')}', '%Y%m%d')
+        where id = {data['id']};
+        """
+        print(update_query)
+        self.setter.execute(update_query)
+        self.db.commit()
         return True
 
     def add_remaining_time(self, data):

@@ -39,7 +39,7 @@ import {useMutation} from "react-query";
 import {addNewDog} from "../api";
 import {useForm} from "react-hook-form";
 import ModifyDog from "../modals/ModifyDog";
-import AddPurchase from "../modals/AddPurchase";
+import AddPay from "../modals/AddPay";
 import Cookies from "js-cookie";
 import axios from "axios";
 import DogsList from "../routes/DogsList";
@@ -147,7 +147,7 @@ const DesktopNav = () => {
                 if (child.label === '신규 등록') {
                   return <AddNewDog {...child}/>
                 } else if (child.label === '결제 내역 등록') {
-                  return <AddNewPurchase {...child}/>
+                  return <AddNewPay {...child}/>
                 } else if (child.label === '등록정보 수정') {
                   return <ModDog {...child}/>
                 } else {
@@ -226,7 +226,7 @@ const AddNewDog = (child) => {
 }
 
 
-const AddNewPurchase = (child) => {
+const AddNewPay = (child) => {
   const {isOpen, onOpen, onClose} = useDisclosure()
   const {label, subLink, subLabel} = child;
   return (<>
@@ -255,7 +255,7 @@ const AddNewPurchase = (child) => {
       </Button>
     </Box>
     {/*<Button onClick={onOpen}>Open Modal</Button>*/}
-    <AddPurchase isOpen={isOpen} onClose={onClose}/>
+    <AddPay isOpen={isOpen} onClose={onClose}/>
   </>);
 };
 

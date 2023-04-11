@@ -213,13 +213,22 @@ async def cancel_checkin(row_id: int):
     return {"message": "cancel-pay"}
 
 
-@app.post('/api/post/purchase')
-async def purchase(request: DictModel):
-    print('in purchase')
+@app.post('/api/post/pay')
+async def pay(request: DictModel):
+    print('in pay')
     data = json.loads(request.json())
     print(*data.values())
-    response = db_interface.purchase(*data.values())
-    return {"message": "purchase"}
+    response = db_interface.pay(*data.values())
+    return {"message": "pay"}
+
+
+@app.post('/api/post/mod-pay')
+async def mod_pay(request: DictModel):
+    print('in mod_pay')
+    data = json.loads(request.json())
+    print(*data.values())
+    response = db_interface.mod_pay(*data.values())
+    return {"message": "pay"}
 
 
 # add belt +1
