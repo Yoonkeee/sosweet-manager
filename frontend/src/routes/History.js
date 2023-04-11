@@ -68,7 +68,7 @@ export default function History() {
         <Table variant='striped' colorScheme='blue' layout={'fixed'}>
           <Thead w={'100%'} borderBottomColor={'black'} borderBottomWidth={5} alignItems={'center'}>
             <Tr textAlign={'center'}>
-              <Th textAlign={'center'} fontSize={'xl'} px={0}>
+              <Th textAlign={'center'} fontSize={'xl'} px={0} w={'15%'}>
                 {selectIsLoading ? <Text>Loading options...</Text> :
                   (
                     <Select
@@ -76,10 +76,12 @@ export default function History() {
                       icon={<></>}
                       mr={5}
                       placeholder={"댕댕이 선택"}
+                      position={'inherit'}
                       required={true}
+                      id={'name'}
                       onChange={(e) => {
-                        // console.log(e.target.value);
-                        setName(e.target.value);
+                        document.getElementById('name').style.position = 'inherit'
+                        setName(prev => e.target.value);
                       }}
                     >
                       {options && options.map((option) => (
@@ -93,13 +95,13 @@ export default function History() {
                 {/*<SelectDog setter={setName}/>*/}
               {/*</Button>*/}
             </Th>
-            <Th textAlign={'center'} fontSize={'xl'}>이용날짜</Th>
+            <Th textAlign={'center'} w={'20%'} px={0} fontSize={'xl'}>이용내역</Th>
             {/*<Th textAlign={'center'} fontSize={'xl'}>입장시간</Th>*/}
             {/*<Th textAlign={'center'} fontSize={'xl'}>퇴장시간</Th>*/}
-            <Th textAlign={'center'} fontSize={'xl'}>이용시간</Th>
-            <Th textAlign={'center'} fontSize={'xl'}>매너벨트</Th>
-            <Th textAlign={'center'} fontSize={'xl'}>전송날짜</Th>
-            <Th textAlign={'center'} fontSize={'xl'}>수정</Th>
+            <Th textAlign={'center'} w={'9%'} px={0} fontSize={'xl'}>이용시간</Th>
+            <Th textAlign={'center'} w={'12%'} px={0} fontSize={'xl'}>매너벨트</Th>
+            <Th textAlign={'center'} w={'12%'} px={0} fontSize={'xl'}>전송날짜</Th>
+            <Th textAlign={'center'} w={'12%'} px={0} fontSize={'xl'}>수정</Th>
           </Tr>
         </Thead>
         <Tbody>

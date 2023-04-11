@@ -26,29 +26,29 @@ export default function HistoryRow(data) {
           {name}
         </Text>
       </Td>
-      <Td>
+      <Td px={0} textAlign={'center'}>
         <Text fontSize={'md'} textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>
-          {formatDate(date)}
+          {formatDate(date) + ' ' + formatTime(in_time) + '~' + formatTime(out_time)}
         </Text>
       </Td>
-      <Td>
+      <Td px={0} textAlign={'center'}>
         <Text fontSize='lg' textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>
           {formatTimeFromMinutes(used_minutes)}
         </Text>
       </Td>
-      <Td>
+      <Td textAlign={'center'}>
         <Text fontSize='lg' textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>
           {belts > 0 ? <Text fontSize='lg'>{belts}</Text> : ''}
         </Text>
       </Td>
-      <Td>
+      <Td px={0} textAlign={'center'}>
         {checked ?
           <Text fontSize='lg' textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>
             {formatDate(checked_date)}
           </Text>
           : (<></>)}
       </Td>
-      <Td>
+      <Td px={0} py={2} textAlign={'center'}>
         <Button position={'inherit'} onClick={onOpen} bg={'#1a2a52'} color={'white'}
                 fontSize={'md'}
                 _hover={{
