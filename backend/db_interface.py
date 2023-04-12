@@ -151,6 +151,16 @@ class Interface:
         # return [dict(zip(columns, row)) for row in self.getter.fetchall()]
 
     # used_table
+    def get_history_nonchecked(self):
+        select_query = f"SELECT * FROM used_table WHERE checked != 1 ORDER BY name, date"
+        print(select_query)
+        self.getter.execute(select_query)
+        columns = [col[0] for col in self.getter.description]
+        data = [dict(zip(columns, row)) for row in self.getter.fetchall()]
+        # print(data)
+        return data
+
+    # used_table
     def get_history(self, name, get_message=False):
         if get_message:
             select_query = f"SELECT * FROM used_table WHERE name = '{name}' and checked != 1 ORDER BY date DESC"
@@ -419,8 +429,12 @@ class Interface:
         columns = [col[0] for col in self.getter.description]
         data = [dict(zip(columns, row)) for row in self.getter.fetchall()]
         name = data[0]['name']
-        official_name = self.get_official_name(name)
+        all_names = [row['name'] for row in data]
+        for compare in all_names:
+            if name != compare:
+                return '다른 강아지의 이용 내역이 포함되어 있습니다.'
 
+        official_name = self.get_official_name(name)
         # select_query = f"select minutes from remaining_time where name = '{name}';"
         select_query = f"""SELECT SUM(minutes) as minutes
         FROM paid

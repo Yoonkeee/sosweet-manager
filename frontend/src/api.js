@@ -140,8 +140,11 @@ export const getHistory = ({queryKey}) => {
   console.log(queryKey);
   let [_, name, getMessage] = queryKey;
   console.log('in history ' + name);
-  if (name === undefined || name === null ||
-    name === '' || typeof name === "object") return null
+  if (name === undefined || name === null || name === '' || typeof name === "object")
+    if (getMessage)
+      return instance.get(`/get/history-nonchecked`).then((response) => response.data);
+    else
+      return null
   if(getMessage === 'getMessage') {
     name = name + '/message'
   }

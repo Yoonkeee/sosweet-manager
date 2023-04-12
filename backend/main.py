@@ -150,6 +150,15 @@ async def get_table(date: str):
 
 
 # get data from used_table table with input name
+@app.get('/api/get/history-nonchecked')
+async def get_history_nonchecked():
+    print('in get_history_nonchecked')
+    result = db_interface.get_history_nonchecked()
+    print(result)
+    return result
+
+
+# get data from used_table table with input name
 @app.get('/api/get/history/{name}')
 async def get_history(name: str):
     print('in get_history')
