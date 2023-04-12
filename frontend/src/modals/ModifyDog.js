@@ -48,6 +48,8 @@ export default function ModifyDog({isOpen, onClose}) {
     mutation.mutate(res);
   }
   useEffect(() => {
+    if (name === undefined || name === null || name === '' || typeof name === "object")
+      return;
     getDogInfo(name).then((res) => {
       setInfo(res[0])
     })

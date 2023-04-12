@@ -35,6 +35,8 @@ export const test = () => {
 }
 
 export const getDogInfo = (name) => {
+  // if (name === undefined || name === null || name === '' || typeof name === "object")
+  //   return {}
   return instance.get(`/get/dog-info/${name}`).then((response) => response.data);
 }
 

@@ -24,7 +24,7 @@ export default function TimetableRow({id, name, in_time, out_time, loaded_belts}
   return (<>
     <Tr textAlign={'center'}>
       <Td>
-        <Text fontSize={'xl'} textAlign={'center'} fontWeight={'bold'} textColor={'1a2a52'}>
+        <Text fontSize={'xl'} textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>
           {name}
         </Text>
       </Td>
