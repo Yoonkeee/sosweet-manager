@@ -17,23 +17,35 @@ import {
   useBreakpointValue,
 } from '@chakra-ui/react'
 import {MinusIcon, PlusSquareIcon, SearchIcon} from "@chakra-ui/icons";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 // import "react-icons/all";
 import {BiPlus} from "react-icons/bi";
 import Checkout from "../modals/Checkout";
 import ChangeCheckInTime from "../modals/ChangeCheckInTime";
 import moment from "moment";
+import {formatMinuteToTime} from "../api";
 
 export default function DogsListRow(props) {
   console.log(props.data);
-  const data = props.data
-  var remainingMinutes = data.remaining_minutes;
+  var minutes = props.data.remaining_minutes;
+  var data = props.data
+  var remainingMinutes = props.data.remaining_minutes;
   var remainingDuration = moment.utc(Math.abs(remainingMinutes) * 60 * 1000);
-  var formattedDuration = (remainingMinutes < 0 ? '-' : '') + remainingDuration.format('H:mm');
+  console.log(remainingMinutes)
+  console.log(remainingDuration.format('H:mm'))
+  var formattedDuration = formatMinuteToTime(remainingMinutes);
+
   const showBreed = useBreakpointValue({base: false, md: true});
   const showGender = useBreakpointValue({base: false, md: true});
   const showPhone = useBreakpointValue({base: false, md: true});
   const showWeight = useBreakpointValue({base: false, md: true});
+  // useEffect(() => {
+  //   data = props.data
+  //   remainingMinutes = props.data.remaining_minutes;
+  //   remainingDuration = moment.utc(Math.abs(remainingMinutes) * 60 * 1000);
+  //   formattedDuration = (remainingMinutes < 0 ? '-' : '') + remainingDuration.format('H:mm');
+  // }, []);
+
   return (<>
     <Tr textAlign={'center'}>
       <Td borderRight="1px solid" borderColor="gray.300" textAlign={'center'} p={2}>

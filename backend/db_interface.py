@@ -465,6 +465,7 @@ class Interface:
         # 총 사용시간:14시간30분
         # 차감 후 남은 시간:4시간50분입니다.
         # 감사합니다🐶❤
+        data = sorted(data, key=lambda x: x['date'])
         for row in data:
             date = row['date'].strftime('%-m월%-d일')
             in_time = row['in_time'].strftime('%H:%M')

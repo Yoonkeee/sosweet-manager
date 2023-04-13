@@ -15,7 +15,7 @@ import {useQuery, useQueryClient} from "react-query";
 import {dogsList} from "../api";
 
 export default function DogsList() {
-  const {isLoading, data} = useQuery(["dogs-list"], dogsList);
+  const {isLoading, data} = useQuery(["dogs-list"], dogsList, { cacheTime: 0 });
   console.log(data)
   const showBreed = useBreakpointValue({ base: false, md: true });
   const showGender = useBreakpointValue({ base: false, md: true });

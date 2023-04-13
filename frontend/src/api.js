@@ -23,7 +23,16 @@ const instance = axios.create({
 //       },
 //     }).then((response) => {console.log(response.data)});
 // }
-
+export const formatMinuteToTime = (minutes) => {
+  let result = ''
+  let hours = Math.floor(Math.abs(minutes / 60));
+  let mins = Math.abs(minutes % 60);
+  mins = (mins < 10 && mins >= 0) ? '0' + mins : mins;
+  if (minutes < 0)
+    result += '-'
+  result += hours + ':' + mins
+  return result
+}
 
 export const test = () => {
   console.log("test");
