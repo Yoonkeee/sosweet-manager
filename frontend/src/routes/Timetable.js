@@ -7,16 +7,16 @@ import {
   Th,
   Td,
   TableCaption,
-  TableContainer, Box, Text, HStack, VStack, Button, IconButton,
+  TableContainer, Box, Text, HStack, VStack, Button, IconButton, useToast,
 } from '@chakra-ui/react'
 import TimetableRow from "../components/TimetableRow";
 import {ArrowBackIcon, ArrowForwardIcon} from "@chakra-ui/icons";
 import {useSelector, useDispatch} from "react-redux";
 import moment from "moment/moment";
 import 'moment/locale/ko'
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useQuery, useQueryClient} from "react-query";
-import {dogsList, getTimeTable} from "../api";
+import {dogsList, getTimeTable, notOutTimetable} from "../api";
 import {tomorrow, yesterday} from "../store";
 
 export default function Timetable() {
@@ -30,8 +30,28 @@ export default function Timetable() {
   const dispatch = useDispatch();
   let formattedDate = moment.utc(date, 'YYYY-MM-DD').format('M월 D일 dddd');
   const {isLoading, data} = useQuery(["timetable", date], getTimeTable);
+  const {isLoading: notOutIsLoading, data: notOutData} = useQuery("notOut", notOutTimetable);
   console.log(data)
   const queryClient = useQueryClient();
+  const toast = useToast();
+  console.log(notOutData)
+  useEffect(() => {
+    if (notOutData) {
+      toast({
+        title: "체크아웃 하지 않은 댕댕이가 있습니다.",
+        description: notOutData.map((notOut) => {
+            let month = moment.utc(notOut.date, 'YYYY-MM-DD').format('M');
+            let day = moment.utc(notOut.date, 'YYYY-MM-DD').format('D');
+          return <Text>{month}월 {day}일 {notOut.name}</Text>
+        }),
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: 'center'
+      })
+    }
+  }, []);
+
   
   return (
     <VStack w={'100%'} mt={'2vh'} mb={'10vh'}>

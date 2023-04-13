@@ -283,6 +283,14 @@ async def check_used_date(request: ArrayModel):
     return response
 
 
+@app.get('/api/get/not_out_timetable')
+async def not_out_timetable():
+    print('in not_out_timetable')
+    result = db_interface.not_out_timetable()
+    print(result)
+    return result
+
+
 # @app.get("/api/post/add-new-dog/")
 # async def add_new_dog():
 #     return {"message": "/api/post/add-new_dog/"}

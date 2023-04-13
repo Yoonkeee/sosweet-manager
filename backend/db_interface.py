@@ -509,3 +509,14 @@ class Interface:
         self.setter.execute(update_query)
         self.db.commit()
         return True
+
+    def not_out_timetable(self):
+        select_query = """
+        select name, date
+        from timetable
+        where out_time is null
+        """
+        self.getter.execute(select_query)
+        columns = [col[0] for col in self.getter.description]
+        data = [dict(zip(columns, row)) for row in self.getter.fetchall()]
+        return data

@@ -225,6 +225,10 @@ export const checkUsedDate = (data) => {
   }).then((response) => response.data);
 }
 
+export const notOutTimetable = (data) => {
+  return instance.get(`/get/not_out_timetable`).then((response) => response.data);
+}
+
 
 
 
