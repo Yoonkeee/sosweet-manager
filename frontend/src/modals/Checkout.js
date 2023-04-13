@@ -31,7 +31,7 @@ import {
 import {useRef, useState} from "react";
 import {useForm} from "react-hook-form";
 import {useMutation, useQueryClient} from "react-query";
-import {addNewDog, cancelCheckin, checkOut} from "../api";
+import {addNewDog, cancelCheckin, cancelHistory, checkOut} from "../api";
 import {useSelector} from "react-redux";
 import moment from "moment/moment";
 
@@ -115,13 +115,35 @@ export default function Checkout({isOpen, onClose, id, name, in_time, belts}) {
     console.log(checkoutData);
     mutation.mutate(checkoutData);
   }
+  const cancelMutation = useMutation(cancelCheckin, {
+    onSuccess: (data) => {
+      toast({
+        title: (
+          <>
+            사용내역 삭제! <br/>
+            댕댕이 : {name} <br/>
+            사용날짜 : {document.getElementById('formattedNowDate').innerText} <br/>
+          </>),
+        status: "success",
+        position: "top",
+        duration: 3000,
+        isClosable: true,
+      });
+      onClose();
+      reset();
+      queryClient.refetchQueries(["timetable"]);
+    },
+  });
   const cancel = () => {
-    cancelCheckin(id);
-    // console.log(id);
-    onClose();
-    reset();
-    queryClient.refetchQueries(["timetable"]);
+    cancelMutation.mutate(id)
   };
+  // const cancel = () => {
+  //   cancelCheckin(id);
+  //   // console.log(id);
+  //   onClose();
+  //   reset();
+  //   queryClient.refetchQueries(["timetable"]);
+  // };
   // TODO 모달창 vw -> %로 변경
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
