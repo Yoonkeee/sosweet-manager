@@ -1,5 +1,20 @@
 import {
-  Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, TableContainer, Button, HStack, IconButton, Text, useDisclosure, Tooltip,
+  Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  TableCaption,
+  TableContainer,
+  Button,
+  HStack,
+  IconButton,
+  Text,
+  useDisclosure,
+  Tooltip,
+  useBreakpointValue, useBreakpoint,
 } from '@chakra-ui/react'
 import {MinusIcon, PlusSquareIcon, SearchIcon} from "@chakra-ui/icons";
 import {useEffect, useState} from "react";
@@ -20,36 +35,44 @@ export default function TimetableRow({id, name, in_time, out_time, loaded_belts}
   useEffect(() => {
     setBelt([id, belts])
   }, [belts]);
-  
+  const breakpoint = useBreakpoint({ ssr: false })
+  const buttonSize = useBreakpointValue({ base: 'xs', md: 'md' }, { ssr: false })
+  const beltButtonSize = useBreakpointValue({ base: 'sm', md: 'md' }, { ssr: false })
   return (<>
     <Tr textAlign={'center'}>
-      <Td>
+      <Td px={0}>
         <Text fontSize={'xl'} textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>
           {name}
         </Text>
       </Td>
-      <Td textAlign={'center'}>
+      <Td px={0} textAlign={'center'}>
+        {/* TODO: 모바일에서 툴팁이 사라지지 않음 */}
         <Tooltip hasArrow label='체크인 시간 수정' fontSize={'md'} bg='yellow.300' color='black'>
-          <Button fontSize={'xl'} fontWeight={'bold'} textColor={'#1a2a52'} colorScheme={'white'}
-                  onClick={checkinModOnOpen}>
+          <Button fontSize={'xl'} px={0} w={'80%'} fontWeight={'bold'} textColor={'#1a2a52'} colorScheme={'white'}
+                  onClick={checkinModOnOpen}
+          size={buttonSize}>
             {in_time}
             <ChangeCheckInTime isOpen={checkinModIsOpen} onClose={checkinModOnClose}
             id={id} name={name} in_time={in_time}/>
           </Button>
         </Tooltip>
       </Td>
-      <Td textAlign={'center'}>
+      <Td px={0} textAlign={'center'}>
         <Button position={'inherit'} onClick={onOutOpen} bg={'#1a2a52'} color={'white'}
                 fontSize={'md'}
+                size={buttonSize}
+                
                 _hover={{
                   textDecoration: 'none', color: 'white', bg: '#526491', transform: 'scale(1.2)'
                 }}>
           체크아웃</Button>
       </Td>
-      <Td textAlign={'center'}>
+      <Td textAlign={'center'} px={0}>
         <HStack justifyContent={'center'}>
           {/*<Text>{() => { if (belts > 0) {return belts}}}</Text>*/}
           <IconButton
+            mr={'1vw'}
+            size={beltButtonSize}
             position={'inherit'}
             onClick={() => {
               if (belts > 0) setBelts(belts - 1)
@@ -62,6 +85,7 @@ export default function TimetableRow({id, name, in_time, out_time, loaded_belts}
             }}
           />
           <IconButton
+            size={beltButtonSize}
             position={'inherit'}
             onClick={() => {
               setBelts(belts + 1)

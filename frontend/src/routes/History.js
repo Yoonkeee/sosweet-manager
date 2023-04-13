@@ -9,7 +9,7 @@ import {
   Text,
   Th,
   Thead,
-  Tr,
+  Tr, useBreakpointValue,
   useDisclosure,
   useToast,
   VStack
@@ -61,18 +61,23 @@ export default function History() {
       // mutation.mutate(name);
     }
   }, [name]);
-  
+  const showUsedTime = useBreakpointValue({ base: false, md: true });
+
   return (
-    <VStack w={'100%'}>
+    <VStack w={'100%'} mt={'2vh'} mb={'10vh'}>
       <TableContainer w={'100%'}>
         <Table variant='striped' colorScheme='blue' layout={'fixed'}>
           <Thead w={'100%'} borderBottomColor={'black'} borderBottomWidth={5} alignItems={'center'}>
             <Tr textAlign={'center'}>
-              <Th textAlign={'center'} fontSize={'xl'} px={0} w={'15%'}>
+              <Th textAlign={'center'} fontSize={'xl'} px={0} w={'15vw'}>
                 {selectIsLoading ? <Text>Loading options...</Text> :
                   (
                     <Select
-                      // w={'40%'}
+                        paddingInlineEnd={0}
+                        paddingInlineStart={0}
+                        css={{WebkitPaddingEnd: 0, WebkitPaddingStart: 10}}
+                      w={'100%'}
+                      px={0}
                       icon={<></>}
                       mr={5}
                       placeholder={"댕댕이 선택"}
@@ -95,13 +100,13 @@ export default function History() {
                 {/*<SelectDog setter={setName}/>*/}
               {/*</Button>*/}
             </Th>
-            <Th textAlign={'center'} w={'20%'} px={0} fontSize={'xl'}>이용내역</Th>
+            <Th textAlign={'center'} w={'20vw'} px={0} fontSize={'xl'}>이용내역</Th>
             {/*<Th textAlign={'center'} fontSize={'xl'}>입장시간</Th>*/}
             {/*<Th textAlign={'center'} fontSize={'xl'}>퇴장시간</Th>*/}
-            <Th textAlign={'center'} w={'9%'} px={0} fontSize={'xl'}>이용시간</Th>
-            <Th textAlign={'center'} w={'12%'} px={0} fontSize={'xl'}>매너벨트</Th>
-            <Th textAlign={'center'} w={'12%'} px={0} fontSize={'xl'}>전송날짜</Th>
-            <Th textAlign={'center'} w={'12%'} px={0} fontSize={'xl'}>수정</Th>
+              {showUsedTime && <Th textAlign={'center'} w={'9vw'} px={0} fontSize={'xl'}>이용시간</Th>}
+            <Th textAlign={'center'} w={'12vw'} px={0} fontSize={'xl'}>매너벨트</Th>
+            {/*<Th textAlign={'center'} w={'12vw'} px={0} fontSize={'xl'}>전송날짜</Th>*/}
+            <Th textAlign={'center'} w={'12vw'} px={0} fontSize={'xl'}>수정</Th>
           </Tr>
         </Thead>
         <Tbody>

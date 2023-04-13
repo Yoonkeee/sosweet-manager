@@ -1,5 +1,20 @@
 import {
-  Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, TableContainer, Button, HStack, IconButton, Text, useDisclosure, Checkbox,
+  Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  TableCaption,
+  TableContainer,
+  Button,
+  HStack,
+  IconButton,
+  Text,
+  useDisclosure,
+  Checkbox,
+  useBreakpointValue,
 } from '@chakra-ui/react'
 import {MinusIcon, PlusSquareIcon, SearchIcon} from "@chakra-ui/icons";
 import {useEffect, useState} from "react";
@@ -24,39 +39,42 @@ export default function GetMessageRow(props) {
   const {belts, date, id, in_time, name, out_time, used_minutes} = props.data;
   const [checked, setChecked] = props.state;
   
+  const showInTime = useBreakpointValue({ base: false, md: true });
+  const showOutTime = useBreakpointValue({ base: false, md: true });
+  const showBelt = useBreakpointValue({ base: false, md: true });
   return (<>
     <Tr>
-      <Td>
-        <Text fontSize='xl' fontWeight='bold' textColor='#1a2a52'>
+      <Td px={0}>
+        <Text fontSize='xl' fontWeight='bold' textAlign={'center'} textColor='#1a2a52'>
           {name}
         </Text>
       </Td>
-      <Td>
+      <Td px={0}>
         <Text fontSize={'md'} textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>
           {formatDate(date)}
         </Text>
       </Td>
-      <Td>
+      {showInTime && <Td px={0}>
         <Text fontSize='lg' textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>
           {formatTime(in_time)}
         </Text>
-      </Td>
-      <Td>
+      </Td> }
+      {showOutTime && <Td px={0}>
         <Text fontSize='lg' textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>
           {formatTime(out_time)}
         </Text>
-      </Td>
-      <Td>
+      </Td>}
+      <Td px={0}>
         <Text fontSize='lg' textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>
           {formatTimeFromMinutes(used_minutes)}
         </Text>
       </Td>
-      <Td>
+      {showBelt && <Td px={0}>
         <Text fontSize='lg' textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>
           {belts > 0 ? <Text fontSize='lg'>{belts}</Text> : ''}
         </Text>
-      </Td>
-      <Td>
+      </Td>}
+      <Td px={0}>
         <Text textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>
           <Checkbox size={'lg'} borderColor={'black'} position={'inherit'}
                     // checked={checked.includes(id)}

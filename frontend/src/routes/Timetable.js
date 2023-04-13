@@ -34,7 +34,7 @@ export default function Timetable() {
   const queryClient = useQueryClient();
   
   return (
-    <VStack w={'100%'}>
+    <VStack w={'100%'} mt={'2vh'} mb={'10vh'}>
       <HStack w={'100%'} justifyContent={'center'}>
         <IconButton rounded={'xl'} w={'6%'} h={'80%'} bg={'#1a2a52'} color={'white'} isRound={true} position={'inherit'}
                     _hover={{
@@ -47,7 +47,7 @@ export default function Timetable() {
             queryClient.refetchQueries(["timetable"]);
           }}
         />
-        <Text mt={'2vh'} fontSize={'2xl'} fontWeight={'bold'} w={'25%'} textAlign={'center'} id={'formattedNowDate'}>
+        <Text mt={'2vh'} fontSize={'2xl'} fontWeight={'bold'} marginX={'10px'} textAlign={'center'} id={'formattedNowDate'}>
           {formattedDate}
         </Text>
         <IconButton rounded={'xl'} w={'6%'} h={'80%'} bg={'#1a2a52'} color={'white'} isRound={true} position={'inherit'}
@@ -65,11 +65,11 @@ export default function Timetable() {
         <Table variant='striped' colorScheme='blue' layout={'fixed'}>
           <Thead w={'100%'} borderBottomColor={'black'} borderBottomWidth={5} textAlign={'center'}>
             <Tr textAlign={'center'}>
-              <Td textAlign={'center'} fontSize={'xl'} w={'20%'}>이름</Td>
-              <Th textAlign={'center'} fontSize={'xl'} w={'20%'}>입장시간</Th>
-              <Th textAlign={'center'} fontSize={'xl'} w={'20%'}>퇴장하기</Th>
-              <Th textAlign={'center'} fontSize={'xl'} w={'30%'}>매너벨트</Th>
-              <Th textAlign={'center'} fontSize={'xl'} w={'10%'}>갯수</Th>
+              <Td textAlign={'center'} px={0} fontSize={'xl'} w={'20vw'}>이름</Td>
+              <Th textAlign={'center'} px={0} fontSize={'xl'} w={'15vw'}>입장시간</Th>
+              <Th textAlign={'center'} px={0} fontSize={'xl'} w={'15vw'}>퇴장하기</Th>
+              <Th textAlign={'center'} px={0} fontSize={'xl'} w={'15vw'}>매너벨트</Th>
+              <Th textAlign={'center'} px={0} fontSize={'xl'} w={'10vw'}>갯수</Th>
             </Tr>
           </Thead>
           <Tbody>

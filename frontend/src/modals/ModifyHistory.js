@@ -221,7 +221,7 @@ export default function ModifyHistory(props) {
             <HStack w={'100%'}>
               <Text w={'30%'}>매너벨트 사용량</Text>
               <NumberInput size='md' maxW={'30%'} min={0}
-                           value={belts}
+                           defaultValue={belts > 0 ? belts : 0}
                            {...register('belts')}>
                 <NumberInputField/>
                 <NumberInputStepper>

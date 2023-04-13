@@ -1,5 +1,20 @@
 import {
-  Box, Button, effect, HStack, Select, Table, TableContainer, Tbody, Text, Th, Thead, Tr, useDisclosure, useToast, VStack
+  Box,
+  Button,
+  effect,
+  HStack,
+  Select,
+  Table,
+  TableContainer,
+  Tbody,
+  Text,
+  Th,
+  Thead,
+  Tr,
+  useBreakpointValue,
+  useDisclosure,
+  useToast,
+  VStack
 } from "@chakra-ui/react";
 import GetMessageRow from "../components/GetMessageRow";
 import HistoryRow from "../components/HistoryRow";
@@ -34,13 +49,21 @@ export default function GetMessage() {
   }, [name]);
   const [checked, setChecked] = useState([]);
   
-  return (<VStack w={'100%'}>
+  const showInTime = useBreakpointValue({ base: false, md: true });
+  const showOutTime = useBreakpointValue({ base: false, md: true });
+  const showBelt = useBreakpointValue({ base: false, md: true });
+  return (<VStack w={'100%'} mt={'2vh'} mb={'10vh'}>
     <TableContainer w={'100%'}>
       <Table variant='striped' colorScheme='blue' layout={'fixed'}>
         <Thead w={'100%'} borderBottomColor={'black'} borderBottomWidth={5} alignItems={'center'}>
           <Tr textAlign={'center'}>
-            <Th textAlign={'center'} fontSize={'xl'} px={0} w={'15%'}>
+            <Th textAlign={'center'} fontSize={'xl'} px={0} w={'15vw'}>
               {selectIsLoading ? <Text>Loading options...</Text> : (<Select
+                paddingInlineEnd={0}
+                paddingInlineStart={0}
+                css={{WebkitPaddingEnd: 0, WebkitPaddingStart: 10}}
+                px={0}
+                w={'100%'}
                 p={0}
                 mr={5}
                 placeholder={"댕댕이 선택"}
@@ -62,12 +85,12 @@ export default function GetMessage() {
               {/*<SelectDog setter={setName}/>*/}
               {/*</Button>*/}
             </Th>
-            <Th textAlign={'center'} fontSize={'xl'}>이용날짜</Th>
-            <Th textAlign={'center'} fontSize={'xl'}>입장시간</Th>
-            <Th textAlign={'center'} fontSize={'xl'}>퇴장시간</Th>
-            <Th textAlign={'center'} fontSize={'xl'}>이용시간</Th>
-            <Th textAlign={'center'} fontSize={'xl'}>매너벨트</Th>
-            <Th p={0} textAlign={'center'} fontSize={'xl'}>
+            <Th textAlign={'center'} fontSize={'xl'} px={0} w={'12vw'}>이용날짜</Th>
+            {showInTime && <Th textAlign={'center'} px={0} fontSize={'xl'} w={'10vw'}>입장시간</Th>}
+            {showOutTime && <Th textAlign={'center'} px={0} fontSize={'xl'} w={'10vw'}>퇴장시간</Th>}
+            <Th textAlign={'center'} fontSize={'xl'} px={0} w={'10vw'}>이용시간</Th>
+            {showBelt && <Th textAlign={'center'} px={0} fontSize={'xl'} w={'10vw'}>매너벨트</Th>}
+            <Th p={0} textAlign={'center'} fontSize={'xl'} w={'10vw'}>
               <Button onClick={onOpen} position={'inherit'} bg={'#1a2a52'} color={'white'} rounded={'xl'}
                       _hover={{
                           textDecoration: 'none', color: 'white', bg: '#526491', rounded: 'xl', transform: 'scale(1.2)'

@@ -1,4 +1,4 @@
-import {Button, Td, Text, Tr, useDisclosure,} from '@chakra-ui/react'
+import {Button, Td, Text, Tr, useBreakpointValue, useDisclosure,} from '@chakra-ui/react'
 // import "react-icons/all";
 import moment from "moment/moment";
 import ModifyHistory from "../modals/ModifyHistory";
@@ -19,6 +19,7 @@ export default function HistoryRow(data) {
   };
   const {belts, checked, checked_date, date, id, in_time, name, out_time, used_minutes} = data;
   const {isOpen, onClose, onOpen} = useDisclosure()
+  const showUsedTime = useBreakpointValue({ base: false, md: true });
   return (<>
     <Tr>
       <Td>
@@ -31,23 +32,23 @@ export default function HistoryRow(data) {
           {formatDate(date) + ' ' + formatTime(in_time) + '~' + formatTime(out_time)}
         </Text>
       </Td>
-      <Td px={0} textAlign={'center'}>
+      {showUsedTime && <Td px={0} textAlign={'center'}>
         <Text fontSize='lg' textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>
           {formatTimeFromMinutes(used_minutes)}
         </Text>
-      </Td>
+      </Td>}
       <Td textAlign={'center'}>
-        <Text fontSize='lg' textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>
+        <Text fontSize='lg' textAlign={'center'} fontWeight={'bold'} textColor={'red'}>
           {belts > 0 ? <Text fontSize='lg'>{belts}</Text> : ''}
         </Text>
       </Td>
-      <Td px={0} textAlign={'center'}>
-        {checked ?
-          <Text fontSize='lg' textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>
-            {formatDate(checked_date)}
-          </Text>
-          : (<></>)}
-      </Td>
+      {/*<Td px={0} textAlign={'center'}>*/}
+      {/*  {checked ?*/}
+      {/*    <Text fontSize='lg' textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>*/}
+      {/*      {formatDate(checked_date)}*/}
+      {/*    </Text>*/}
+      {/*    : (<></>)}*/}
+      {/*</Td>*/}
       <Td px={0} py={2} textAlign={'center'}>
         <Button position={'inherit'} onClick={onOpen} bg={'#1a2a52'} color={'white'}
                 fontSize={'md'}

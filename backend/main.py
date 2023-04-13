@@ -178,7 +178,7 @@ async def get_history(name: str):
 
 
 # get data from paid table
-@app.get('/api/get/pay-history/')
+@app.get('/api/get/pay-history')
 async def get_pay_history():
     print('in get_pay_history')
     result = db_interface.get_pay_history()

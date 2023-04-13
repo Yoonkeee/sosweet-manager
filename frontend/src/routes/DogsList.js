@@ -7,7 +7,7 @@ import {
   Th,
   Td,
   TableCaption,
-  TableContainer, Box, Text, HStack, VStack,
+  TableContainer, Box, Text, HStack, VStack, useBreakpointValue,
 } from '@chakra-ui/react'
 import TimetableRow from "../components/TimetableRow";
 import DogsListRow from "../components/DogsListRow";
@@ -17,8 +17,12 @@ import {dogsList} from "../api";
 export default function DogsList() {
   const {isLoading, data} = useQuery(["dogs-list"], dogsList);
   console.log(data)
+  const showBreed = useBreakpointValue({ base: false, md: true });
+  const showGender = useBreakpointValue({ base: false, md: true });
+  const showPhone = useBreakpointValue({ base: false, md: true });
+  const showWeight = useBreakpointValue({ base: false, md: true });
   return (
-    <VStack w={'100%'}>
+    <VStack w={'100%'} mt={'2vh'} mb={'10vh'}>
       <Text mt={'2vh'} fontSize={'2xl'} fontWeight={'bold'} textAlign={'center'}>
         🥰쏘스윗 댕댕이 목록🥰
       </Text>
@@ -33,13 +37,13 @@ export default function DogsList() {
             {/*</HStack>*/}
             {/*</Box>*/}
             <Tr textAlign={'center'}>
-              <Th textAlign={'center'} w={'12%'} px={0} fontSize={'xl'}>이름</Th>
+              <Th textAlign={'center'} w={'15vw'} px={0} fontSize={'xl'}>이름</Th>
               <Th textAlign={'center'} px={0} fontSize={'xl'}>특이사항</Th>
-              <Th textAlign={'center'} w={'10%'} px={0} fontSize={'xl'}>견종</Th>
-              <Th textAlign={'center'} w={'6%'} px={0} fontSize={'xl'}>성별</Th>
-              <Th textAlign={'center'} w={'20%'} px={0} fontSize={'xl'}>전화번호</Th>
-              <Th textAlign={'center'} w={'8%'} px={0} fontSize={'xl'}>몸무게</Th>
-              <Th textAlign={'center'} w={'13%'} px={0} fontSize={'xl'}>남은시간</Th>
+              {showBreed && <Th textAlign={'center'} w={'10vw'} px={0} fontSize={'xl'}>견종</Th>}
+              {showGender && <Th textAlign={'center'} w={'6vw'} px={0} fontSize={'xl'}>성별</Th>}
+              {showPhone && <Th textAlign={'center'} w={'20vw'} px={0} fontSize={'xl'}>전화번호</Th>}
+              {showWeight && <Th textAlign={'center'} w={'8vw'} px={0} fontSize={'xl'}>몸무게</Th>}
+              <Th textAlign={'center'} w={'15vw'} px={0} fontSize={'xl'}>남은시간</Th>
             </Tr>
           </Thead>
           <Tbody>

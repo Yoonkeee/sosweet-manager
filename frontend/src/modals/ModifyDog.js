@@ -83,6 +83,11 @@ export default function ModifyDog({isOpen, onClose}) {
         <VStack>
           {selectIsLoading ? <Text>Loading options...</Text> : (<Select
             // w={'40%'}
+              paddingInlineEnd={0}
+              paddingInlineStart={0}
+              css={{WebkitPaddingEnd: 0, WebkitPaddingStart: 10}}
+            w={'100%'}
+            px={0}
             placeholder={"댕댕이 선택"}
             icon={<></>}
             required={true}

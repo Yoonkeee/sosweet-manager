@@ -173,6 +173,8 @@ const ModDog = (child) => {
   const mutation = useMutation(addNewDog);
   return (<>
     <Box
+      cursor={'pointer'}
+      onClick={onOpen}
       role={'group'}
       display={'block'}
       bg={'none'}
@@ -205,6 +207,8 @@ const AddNewDog = (child) => {
   const {label, subLink, subLabel} = child;
   return (<>
     <Box
+      cursor={'pointer'}
+      onClick={onOpen}
       role={'group'}
       display={'block'}
       bg={'none'}
@@ -238,13 +242,15 @@ const AddNewPay = (child) => {
   const {label, subLink, subLabel} = child;
   return (<>
     <Box
+      cursor={'pointer'}
+      onClick={onOpen}
       role={'group'}
       display={'block'}
       bg={'none'}
       p={2}
       rounded={'md'}
       _hover={{bg: '#526491'}}>
-      <Button onClick={onOpen} bg={'transparent'} _hover={''} p={0}>
+      <Button bg={'transparent'} _hover={''} p={0}>
         <Stack direction={'row'} align={'center'}>
           {/*서브메뉴 - 라벨*/}
           <VStack alignItems={'flex-start'}>
@@ -356,12 +362,12 @@ const NAV_ITEMS: Array<NavItem> = [{label: '시간표', link: '/timetable',}, {
     {label: '이용시간 계산', subLabel: '이용 내역 취합하여 메세지 만들기', subLink: '/get-message'},
     {label: '이용 내역', subLabel: '놀이방 이용 내역 확인 및 수정하기', subLink: '/history'},
     {label: '결제 내역', subLabel: '놀이방 결제 내역 확인 및 수정하기', subLink: '/pay-history'},
+    {label: '댕댕이 목록', subLabel: '등록된 댕댕이 목록 확인하기', subLink: '/dogs-list'},
   ],
 }, {
   label: '등록', children: [
     {label: '결제 내역 등록', subLabel: '놀이방 이용권 구매 등록', subLink: '/payment'},
     {label: '신규 등록', subLabel: '새로운 댕댕이 등록하기', subLink: '/new-dog'},
     {label: '등록정보 수정', subLabel: '기존 댕댕이 정보 변경하기', subLink: '/edit-dog'},
-    {label: '댕댕이 목록', subLabel: '등록된 댕댕이 목록 확인하기', subLink: '/dogs-list'},
   ],
 },];
