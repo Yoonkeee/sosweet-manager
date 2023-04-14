@@ -99,6 +99,7 @@ export const checkOut = (data) => {
 
 // change check-in time
 export const changeCheckIn = (data) => {
+  // console.log(data.in_or_out);
   return instance.post("/post/change-check-in", {data}, {
     headers: {
       "X-CSRFToken": Cookies.get("csrftoken") || "",
@@ -146,6 +147,12 @@ export const getTimeTable = ({queryKey}) => {
   const [_, date] = queryKey;
   console.log('in api getTimeTable ' + date);
   return instance.get(`/get/timetable/${date}`).then((response) => response.data);
+}
+
+export const getCheckoutTimetable = ({queryKey}) => {
+  const [_, date] = queryKey;
+  console.log('in api getCheckoutTimetable ' + date);
+  return instance.get(`/get/checkout-timetable/${date}`).then((response) => response.data);
 }
 
 // get history from fast api server. url is /get/history and passing dog name for parameter.

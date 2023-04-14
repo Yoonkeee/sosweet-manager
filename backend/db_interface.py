@@ -135,24 +135,49 @@ class Interface:
 
     # timetable
     def get_table(self, date):
-        select_query = f"SELECT * FROM timetable WHERE date = '{date}' and out_time is NULL ORDER BY in_time"
+        select_query = f"SELECT * FROM timetable WHERE date = '{date}' and out_time is NULL AND valid='Y' ORDER BY in_time"
         print(select_query)
         self.getter.execute(select_query)
         columns = [col[0] for col in self.getter.description]  # Get column names
         data = [dict(zip(columns, row)) for row in self.getter.fetchall()]
-        return [{'name': row['name'],
-                 'in_time': row['in_time'].strftime('%H:%M'),
-                 'out_time': row['out_time'].strftime('%H:%M') if row['out_time'] is not None else '',
-                 'date': row['date'],
-                 'belts': row['belts'],
-                 'id': row['id']}
-                for row in data]
+        converted_data = []
+        for row in data:
+            converted_row = {}
+            for key, value in row.items():
+                if key == 'in_time' or key == 'out_time':
+                    if value is not None:
+                        converted_row[key] = value.strftime('%H:%M')
+                    else:
+                        converted_row[key] = ''
+                else:
+                    converted_row[key] = value
+            converted_data.append(converted_row)
+        return converted_data
+
+    # timetable
+    def get_checkout_timetable(self, date):
+        select_query = f"SELECT * FROM timetable WHERE date = '{date}' AND out_time is not NULL AND valid='Y' ORDER BY in_time"
+        print(select_query)
+        self.getter.execute(select_query)
+        columns = [col[0] for col in self.getter.description]  # Get column names
+        data = [dict(zip(columns, row)) for row in self.getter.fetchall()]
+        print(data)
+        converted_data = []
+        for row in data:
+            converted_row = {}
+            for key, value in row.items():
+                if key == 'in_time' or key == 'out_time':
+                    converted_row[key] = value.strftime('%H:%M')
+                else:
+                    converted_row[key] = value
+            converted_data.append(converted_row)
+        return converted_data
 
         # return [dict(zip(columns, row)) for row in self.getter.fetchall()]
 
     # used_table
     def get_history_nonchecked(self):
-        select_query = f"SELECT * FROM used_table WHERE checked != 1 ORDER BY name, date"
+        select_query = f"SELECT * FROM used_table WHERE checked != 1 AND valid='Y' ORDER BY name, date"
         print(select_query)
         self.getter.execute(select_query)
         columns = [col[0] for col in self.getter.description]
@@ -297,13 +322,13 @@ class Interface:
 
     # change check-in time
     def change_check_in_time(self, data):
-        name, date, in_time, row_id = data['name'], data['date'], data['in_time'], data['id']
+        name, date, in_time, row_id, in_or_out = data['name'], data['date'], data['in_time'], data['id'], data['in_or_out']
         # in_time form 15:55
         # date form 2021-08-01
         in_time = date + ' ' + in_time
         update_query = f"""
         update timetable
-        set in_time = '{in_time}'
+        set {in_or_out}_time = '{in_time}'
         where id = {row_id};
         """
         print(update_query)

@@ -73,12 +73,11 @@ export default function Checkout({isOpen, onClose, id, name, in_time, belts}) {
       onClose();
       reset();
       queryClient.refetchQueries(["timetable"]);
+      queryClient.refetchQueries(["checkoutTimetable"]);
     },
   });
   const onSubmit = (data) => {
     const pinNumber = data.pinNumber.join("").replace(/(\d{2})(\d{2})/, "$1:$2");
-    
-    // const moment = require('moment');
     const inTime = moment(in_time, 'HH:mm');
     const outTime = moment(pinNumber, 'HH:mm');
     if (!outTime.isValid()) {
@@ -132,6 +131,7 @@ export default function Checkout({isOpen, onClose, id, name, in_time, belts}) {
       onClose();
       reset();
       queryClient.refetchQueries(["timetable"]);
+      queryClient.refetchQueries(["checkoutTimetable"]);
     },
   });
   const cancel = () => {

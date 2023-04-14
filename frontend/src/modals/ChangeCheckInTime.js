@@ -16,7 +16,7 @@ import {useMutation, useQueryClient} from "react-query";
 import {changeCheckIn, checkIn} from "../api";
 import moment from "moment";
 
-export default function ChangeCheckInTime({isOpen, onClose, id, name}) {
+export default function ChangeCheckInTime({isOpen, onClose, id, name, in_or_out}) {
   const {register, reset, handleSubmit, formState: {errors}} = useForm();
   const toast = useToast();
   let date = useSelector((state) => state.currentDate);
@@ -27,9 +27,9 @@ export default function ChangeCheckInTime({isOpen, onClose, id, name}) {
       toast({
         title: (
           <>
-            체크인 수정! <br/>
+            체크{in_or_out === 'in' ? '인' : '아웃'} 수정! <br/>
             댕댕이 : {dogData.name} <br/>
-            입장시간 : {dogData.in_time}
+            {in_or_out === 'in' ? '입' : '퇴'}장시간 : {dogData.in_time}
           </>),
         status: "success",
         position: "top",
@@ -37,7 +37,8 @@ export default function ChangeCheckInTime({isOpen, onClose, id, name}) {
         isClosable: true,
       });
       queryClient.refetchQueries(["timetable"]);
-      console.log('체크인 수정 성공');
+      queryClient.refetchQueries(["checkoutTimetable"]);
+      console.log('체크인/아웃 수정 성공');
       onClose();
       reset();
     },
@@ -60,7 +61,8 @@ export default function ChangeCheckInTime({isOpen, onClose, id, name}) {
       name: name,
       in_time: pinNumber,
       date: date,
-      id: id
+      id: id,
+      in_or_out: in_or_out
     };
     console.log(dogData)
     mutation.mutate(dogData);
@@ -70,7 +72,7 @@ export default function ChangeCheckInTime({isOpen, onClose, id, name}) {
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay/>
       <ModalContent>
-        <ModalHeader>댕댕이 체크인 시간 수정!</ModalHeader>
+        <ModalHeader>댕댕이 체크{in_or_out === 'in' ? '인' : '아웃'} 시간 수정!</ModalHeader>
         <ModalCloseButton/>
         <ModalBody as={'form'} onSubmit={handleSubmit(onSubmit)}>
           <VStack spacing={3}>

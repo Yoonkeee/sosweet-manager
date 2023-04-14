@@ -48,6 +48,7 @@ export default function Checkin() {
       onClose();
       reset();
       queryClient.refetchQueries(["timetable"]);
+      queryClient.refetchQueries(["checkoutTimetable"]);
     },
   });
   const onSubmit = (data) => {

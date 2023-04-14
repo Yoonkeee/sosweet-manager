@@ -155,6 +155,13 @@ async def get_table(date: str):
     return db_interface.get_table(date)
 
 
+@app.get('/api/get/checkout-timetable/{date}')
+async def get_checkout_timetable(date: str):
+    print('in get_checkout_timetable')
+    print(date)
+    return db_interface.get_checkout_timetable(date)
+
+
 # get data from used_table table with input name
 @app.get('/api/get/history-nonchecked')
 async def get_history_nonchecked():
