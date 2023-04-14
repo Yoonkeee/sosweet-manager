@@ -130,7 +130,7 @@ const DesktopNav = () => {
                     trigger={'hover'}
                     placement={'bottom-start'}>
                     <PopoverTrigger>
-                        <Link to={navItem.link} onClick={dispatch(setToday())}>
+                        <Link to={navItem.link} onClick={navItem.label === '시간표' ? () => dispatch(setToday()) : null}>
                             <Button
                                 p={2}
                                 href={navItem.href ?? '#'}
