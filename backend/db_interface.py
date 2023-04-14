@@ -511,11 +511,15 @@ class Interface:
         return True
 
     def not_out_timetable(self):
-        select_query = """
+        today = datetime.today().strftime('%Y-%m-%d')
+        select_query = f"""
         select name, date
         from timetable
         where out_time is null
+        and
+        date != '{today}'
         """
+        print(select_query)
         self.getter.execute(select_query)
         columns = [col[0] for col in self.getter.description]
         data = [dict(zip(columns, row)) for row in self.getter.fetchall()]

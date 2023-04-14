@@ -6,6 +6,10 @@ let currentDate = createSlice({
   name: 'date',
   initialState: today,
   reducers: {
+    setToday: state => {
+      state = moment(new Date()).format('YYYY-MM-DD');
+      return state;
+    },
     tomorrow: state => {
       console.log('before tomorrow' + state);
       const nextDate = moment(state).add(1, 'day').format("YYYY-MM-DD");
@@ -58,5 +62,5 @@ export default configureStore({
        selectedDog: selectedDog.reducer}
 });
 
-export let { yesterday, tomorrow, setDate } = currentDate.actions;
+export let { yesterday, tomorrow, setDate, setToday } = currentDate.actions;
 export let { setDog } = selectedDog.actions;

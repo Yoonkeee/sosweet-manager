@@ -12,12 +12,12 @@ import {
 import TimetableRow from "../components/TimetableRow";
 import {ArrowBackIcon, ArrowForwardIcon} from "@chakra-ui/icons";
 import {useSelector, useDispatch} from "react-redux";
-import moment from "moment/moment";
+import moment, {now} from "moment/moment";
 import 'moment/locale/ko'
 import {useEffect, useState} from "react";
 import {useQuery, useQueryClient} from "react-query";
 import {dogsList, getTimeTable, notOutTimetable} from "../api";
-import {tomorrow, yesterday} from "../store";
+import {tomorrow, yesterday, today, setToday} from "../store";
 
 export default function Timetable() {
   let nowDate = new Date();
@@ -35,24 +35,32 @@ export default function Timetable() {
   const queryClient = useQueryClient();
   const toast = useToast();
   console.log(notOutData)
+  const toastId = 'notOutToast'
   useEffect(() => {
-    if (notOutData) {
-      toast({
-        title: "체크아웃 하지 않은 댕댕이가 있습니다.",
-        description: notOutData.map((notOut) => {
+    toast.closeAll()
+    if (notOutData && notOutData.length > 0) {
+      // if (toast.isActive(toastId))
+      //   toast.close(toastId);
+        toast({
+          id: toastId,
+          title: "체크아웃 하지 않은 댕댕이가 있습니다.",
+          description: notOutData.map((notOut) => {
             let month = moment.utc(notOut.date, 'YYYY-MM-DD').format('M');
             let day = moment.utc(notOut.date, 'YYYY-MM-DD').format('D');
-          return <Text>{month}월 {day}일 {notOut.name}</Text>
-        }),
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-        position: 'center'
-      })
-    }
+            // if(parseInt(month) !== todayMonth || parseInt(day) !== todayDate)
+              return <Text>{month}월 {day}일 {notOut.name}</Text>
+          }),
+          status: "warning",
+          duration: 2500,
+          isClosable: true,
+          position: 'center'
+        })
+      }
+  }, [formattedDate]);
+  useEffect(() => {
+    dispatch(setToday());
   }, []);
 
-  
   return (
     <VStack w={'100%'} mt={'2vh'} mb={'10vh'}>
       <HStack w={'100%'} justifyContent={'center'}>
