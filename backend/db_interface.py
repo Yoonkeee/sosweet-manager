@@ -93,6 +93,7 @@ class Interface:
             SELECT dogs.*, IFNULL(SUM(paid.minutes), 0) as remaining_minutes
             FROM dogs 
             LEFT JOIN paid ON dogs.name = paid.name 
+            WHERE dogs.valid='Y' 
             GROUP BY dogs.name 
             ORDER BY dogs.name;
         """
@@ -107,7 +108,7 @@ class Interface:
         return data
 
     def get_dog_info(self, name):
-        query = f"select * from dogs where name = '{name}'"
+        query = f"select * from dogs where name = '{name}' AND valid='Y' "
         self.getter.execute(query)
         columns = [col[0] for col in self.getter.description]
         return [dict(zip(columns, row)) for row in self.getter.fetchall()]
@@ -187,7 +188,7 @@ class Interface:
 
     def get_unchecked_used_list(self):
         query = f"""
-        SELECT name FROM used_table WHERE checked != 1 GROUP BY name ORDER BY name
+        SELECT name FROM used_table WHERE checked != 1 AND valid='Y' GROUP BY name ORDER BY name
         """
         self.getter.execute(query)
         columns = [col[0] for col in self.getter.description]  # Get column names
@@ -197,9 +198,9 @@ class Interface:
     # used_table
     def get_history(self, name, get_message=False):
         if get_message:
-            select_query = f"SELECT * FROM used_table WHERE name = '{name}' and checked != 1 ORDER BY date DESC"
+            select_query = f"SELECT * FROM used_table WHERE name = '{name}' and checked != 1 AND valid='Y' ORDER BY date DESC"
         else:
-            select_query = f"SELECT * FROM used_table WHERE name = '{name}' ORDER BY date DESC"
+            select_query = f"SELECT * FROM used_table WHERE name = '{name}' AND valid='Y' ORDER BY date DESC"
         print(select_query)
         self.getter.execute(select_query)
         columns = [col[0] for col in self.getter.description]
@@ -208,7 +209,7 @@ class Interface:
         return data
 
     def get_pay_history(self):
-        select_query = f"SELECT * FROM paid ORDER BY date DESC"
+        select_query = f"SELECT * FROM paid WHERE valid='Y' ORDER BY date DESC"
         # print(select_query)
         self.getter.execute(select_query)
         columns = [col[0] for col in self.getter.description]
@@ -281,6 +282,7 @@ class Interface:
         select sum(minutes) as minutes
         from paid
         where name = '{name}'
+        AND valid='Y' 
         """
         print(select_query)
         self.getter.execute(select_query)
@@ -293,6 +295,7 @@ class Interface:
         select sum(used_minutes) as minutes
         from used_table
         where name = '{name}'
+        AND valid='Y' 
         """
         print(select_query)
         self.getter.execute(select_query)
@@ -338,7 +341,8 @@ class Interface:
 
     def cancel_checkin(self, row_id):
         delete_query = f"""
-        delete from timetable
+        update timetable
+        set valid='N' 
         where id = {row_id};
         """
         print(delete_query)
@@ -348,7 +352,8 @@ class Interface:
 
     def cancel_history(self, row_id):
         delete_query = f"""
-        delete from used_table
+        update used_table
+        set valid='N' 
         where id = {row_id};
         """
         print(delete_query)
@@ -358,7 +363,8 @@ class Interface:
 
     def cancel_pay(self, row_id):
         delete_query = f"""
-        delete from paid
+        update paid
+        set valid='N' 
         where id = {row_id};
         """
         print(delete_query)
@@ -427,6 +433,7 @@ class Interface:
         select sum(belts) as belts from used_table
         where name = '{name}' and
         checked_belts is null
+        AND valid='Y' 
         """
         self.getter.execute(select_query)
         columns = [col[0] for col in self.getter.description]
@@ -442,6 +449,7 @@ class Interface:
         set checked_belts = 1
         where name = '{name}' and
         checked_belts is null
+        AND valid='Y' 
         """
         self.setter.execute(update_query)
         self.db.commit()
