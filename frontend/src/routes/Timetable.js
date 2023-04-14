@@ -20,27 +20,17 @@ import {dogsList, getTimeTable, notOutTimetable} from "../api";
 import {tomorrow, yesterday, today, setToday} from "../store";
 
 export default function Timetable() {
-  let nowDate = new Date();
-  const options = {
-    month: 'long',
-    day: 'numeric',
-    weekday: 'long'
-  };
   let date = useSelector((state) => state.currentDate);
   const dispatch = useDispatch();
   let formattedDate = moment.utc(date, 'YYYY-MM-DD').format('M월 D일 dddd');
   const {isLoading, data} = useQuery(["timetable", date], getTimeTable);
   const {isLoading: notOutIsLoading, data: notOutData} = useQuery("notOut", notOutTimetable);
-  console.log(data)
   const queryClient = useQueryClient();
   const toast = useToast();
-  console.log(notOutData)
   const toastId = 'notOutToast'
   useEffect(() => {
     toast.closeAll()
     if (notOutData && notOutData.length > 0) {
-      // if (toast.isActive(toastId))
-      //   toast.close(toastId);
         toast({
           id: toastId,
           title: "체크아웃 하지 않은 댕댕이가 있습니다.",
