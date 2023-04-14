@@ -19,7 +19,7 @@ import {
 import {useForm} from "react-hook-form";
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import {addNewDog, checkIn, dogsList} from "../api";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useSelector} from "react-redux";
 
 export default function Checkin() {
@@ -30,7 +30,6 @@ export default function Checkin() {
   const queryClient = useQueryClient();
   
   let date = useSelector((state) => state.currentDate);
-  // const [dogData, setDogData] = useState([]);
   let dogData = {};
   const mutation = useMutation(checkIn,{
     onSuccess: () => {
@@ -52,11 +51,8 @@ export default function Checkin() {
     },
   });
   const onSubmit = (data) => {
-    // console.log(data)
     const pinNumber = data.pinNumber.join("").replace(/(\d{2})(\d{2})/, "$1:$2");
     console.log(pinNumber); // outputs "12:34"
-  
-    // const pinNumber = data.pinNumber.join(':').padStart(5, '0');
     dogData = {
       name: data.dogName,
       in_time: pinNumber,
@@ -70,7 +66,7 @@ export default function Checkin() {
     value: item.name,
     label: item.name,
   }));
-  
+
   // TODO 모달창 vw -> %로 변경
   return (<>
     <Button
@@ -105,7 +101,7 @@ export default function Checkin() {
                 </Select>
                   )}
               <HStack>
-                <PinInput placeholder='0'>
+                <PinInput placeholder='0' autoFocus={true}>
                   <PinInputField w={'40px'} {...register("pinNumber[0]")} required={true}/>
                   <PinInputField w={'40px'} {...register("pinNumber[1]")} required={true}/>
                   <Text fontSize={'3xl'} fontWeight={'bold'}>:</Text>

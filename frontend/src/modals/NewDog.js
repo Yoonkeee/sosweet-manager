@@ -56,6 +56,7 @@ export default function NewDog({isOpen, onClose}) {
               variant={"filled"}
               required={true}
               placeholder={"댕댕이 이름(필수)"}
+              autoFocus={true}
               {...register("dogName", {required: "댕댕이 이름 입력해주세요!!"})}
             />
             <Input

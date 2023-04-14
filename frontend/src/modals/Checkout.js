@@ -156,7 +156,7 @@ export default function Checkout({isOpen, onClose, id, name, in_time, belts}) {
             <HStack>
               <Text w={'15vw'}>{name} 퇴장시간</Text>
               <HStack>
-                <PinInput placeholder='0'>
+                <PinInput placeholder='0' autoFocus={true}>
                   <PinInputField w={'40px'} {...register("pinNumber[0]")} required={true}/>
                   <PinInputField w={'40px'} {...register("pinNumber[1]")} required={true}/>
                   <Text fontSize={'3xl'} fontWeight={'bold'}>:</Text>
