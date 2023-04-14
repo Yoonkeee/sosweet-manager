@@ -20,7 +20,7 @@ import GetMessageRow from "../components/GetMessageRow";
 import HistoryRow from "../components/HistoryRow";
 import TimetableRow from "../components/TimetableRow";
 import {useMutation, useQuery, useQueryClient} from "react-query";
-import {dogsList, getHistory} from "../api";
+import {dogsList, getHistory, uncheckedDogsList} from "../api";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
@@ -32,7 +32,8 @@ export default function GetMessage() {
   const toast = useToast();
   const {isOpen, onOpen, onClose} = useDisclosure();
   const queryClient = useQueryClient();
-  const {isLoading: selectIsLoading, data: selectData} = useQuery(["dogs-list"], dogsList);
+  const {isLoading: selectIsLoading, data: selectData} = useQuery(["unchecked-dogs-list"], uncheckedDogsList);
+  console.log(selectData);
   const [name, setName] = useState('');
   // const [data, setData] = useState('');
   const {isLoading, data} = useQuery(["history", name, 'getMessage'], getHistory);

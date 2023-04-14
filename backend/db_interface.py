@@ -160,6 +160,15 @@ class Interface:
         # print(data)
         return data
 
+    def get_unchecked_used_list(self):
+        query = f"""
+        SELECT name FROM used_table WHERE checked != 1 GROUP BY name ORDER BY name
+        """
+        self.getter.execute(query)
+        columns = [col[0] for col in self.getter.description]  # Get column names
+        data = [dict(zip(columns, row)) for row in self.getter.fetchall()]
+        return data
+
     # used_table
     def get_history(self, name, get_message=False):
         if get_message:
@@ -524,3 +533,4 @@ class Interface:
         columns = [col[0] for col in self.getter.description]
         data = [dict(zip(columns, row)) for row in self.getter.fetchall()]
         return data
+

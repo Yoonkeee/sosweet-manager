@@ -77,6 +77,10 @@ export const dogsList = () => {
   return instance.get("/get/dogs-list").then((response) => response.data);
 }
 
+export const uncheckedDogsList = () => {
+  return instance.get("/get/unchecked_used_list").then((response) => response.data);
+}
+
 export const checkIn = (data) => {
   return instance.post("/post/check-in", {data}, {
     headers: {
@@ -84,7 +88,6 @@ export const checkIn = (data) => {
     },
   }).then((response) => response.data);
 }
-
 
 export const checkOut = (data) => {
   return instance.post("/post/check-out", {data}, {

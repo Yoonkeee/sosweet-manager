@@ -115,6 +115,12 @@ async def get_dogs_list():
     return db_interface.get_dogs_list()
 
 
+@app.get("/api/get/unchecked_used_list")
+async def get_unchecked_used_list():
+    print('in get_unchecked_used_list')
+    return db_interface.get_unchecked_used_list()
+
+
 @app.post("/api/post/check-in")
 async def check_in(request: DictModel):
     print('in check_in')

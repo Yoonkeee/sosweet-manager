@@ -58,13 +58,11 @@ export default function MakeMessage({isOpen, onClose, checked}) {
                 })
             }
         })
+        queryClient.refetchQueries("unchecked-dogs-list");
     }
     const ref = useRef(null)
     const handleCopy = () => {
-        copy(text, {
-            debug: true,
-            message: 'Press #{key} to copy'
-        })
+        copy(text)
         toast({
             title: '복사되었습니다!',
             description: "카톡으로 보내세용~~",
