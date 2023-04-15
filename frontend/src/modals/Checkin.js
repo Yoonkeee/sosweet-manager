@@ -102,7 +102,7 @@ export default function Checkin() {
                 </Select>
                   )}
               <HStack>
-                <PinInput placeholder='0' autoFocus={true}>
+                <PinInput placeholder='0'>
                   <PinInputField w={'40px'} {...register("pinNumber[0]")} required={true}/>
                   <PinInputField w={'40px'} {...register("pinNumber[1]")} required={true}/>
                   <Text fontSize={'3xl'} fontWeight={'bold'}>:</Text>

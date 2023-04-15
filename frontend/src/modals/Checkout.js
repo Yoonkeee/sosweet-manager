@@ -28,7 +28,7 @@ import {
   Text, useToast,
   VStack
 } from "@chakra-ui/react";
-import {useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useForm} from "react-hook-form";
 import {useMutation, useQueryClient} from "react-query";
 import {addNewDog, cancelCheckin, cancelHistory, checkOut} from "../api";
@@ -137,14 +137,17 @@ export default function Checkout({isOpen, onClose, id, name, in_time, belts}) {
   const cancel = () => {
     cancelMutation.mutate(id)
   };
-  // const cancel = () => {
-  //   cancelCheckin(id);
-  //   // console.log(id);
-  //   onClose();
-  //   reset();
-  //   queryClient.refetchQueries(["timetable"]);
-  // };
   // TODO 모달창 vw -> %로 변경
+  // const firstPin = useRef();
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     if (isOpen) {
+  //       firstPin.current.focus();
+  //     }
+  //   }, 1000);
+  //
+  // }, [isOpen]);
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay/>
@@ -156,8 +159,9 @@ export default function Checkout({isOpen, onClose, id, name, in_time, belts}) {
             <HStack>
               <Text w={'15vw'}>{name} 퇴장시간</Text>
               <HStack>
-                <PinInput placeholder='0' autoFocus={true}>
+                <PinInput placeholder='0'>
                   <PinInputField w={'40px'} {...register("pinNumber[0]")} required={true}/>
+                  {/*<PinInputField w={'40px'} ref={firstPin} {...register("pinNumber[0]")} required={true}/>*/}
                   <PinInputField w={'40px'} {...register("pinNumber[1]")} required={true}/>
                   <Text fontSize={'3xl'} fontWeight={'bold'}>:</Text>
                   <PinInputField w={'40px'} {...register("pinNumber[2]")} required={true}/>
