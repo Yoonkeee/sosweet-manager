@@ -560,6 +560,7 @@ class Interface:
         where out_time is null
         and
         date != '{today}'
+        and valid='Y'
         """
         print(select_query)
         self.getter.execute(select_query)
