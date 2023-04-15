@@ -156,8 +156,8 @@ export default function Checkout({isOpen, onClose, id, name, in_time, belts}) {
         <ModalCloseButton/>
         <ModalBody as={'form'} onSubmit={handleSubmit(onSubmit)}>
           <VStack alignItems={'flex-start'} spacing={0} m={0}>
-            <HStack>
-              <Text w={'25vw'}>퇴장시간</Text>
+            <HStack w={'100%'}>
+              <Text w={'30%'}>퇴장시간</Text>
               <HStack>
                 <PinInput placeholder='0'>
                   <PinInputField w={'40px'} {...register("pinNumber[0]")} required={true}/>
@@ -169,8 +169,8 @@ export default function Checkout({isOpen, onClose, id, name, in_time, belts}) {
                 </PinInput>
               </HStack>
             </HStack>
-            <HStack>
-              <Text my={'3vh'} w={'25vw'}>매너벨트 사용량</Text>
+            <HStack w={'100%'}>
+              <Text my={'6%'} w={'30%'}>매너벨트 사용량</Text>
               <NumberInput size='md' maxW={'30%'} min={0}
                            value={belts}
                            {...register('belts')}>
@@ -181,9 +181,9 @@ export default function Checkout({isOpen, onClose, id, name, in_time, belts}) {
                 </NumberInputStepper>
               </NumberInput>
             </HStack>
-            <HStack alignItems='center'>
-              <FormControl mb={'1.5vh'} display='flex' alignItems='center'>
-                <FormLabel w={'24.5vw'} mb={0}>
+            <HStack w={'100%'} alignItems='center'>
+              <FormControl mb={'5%'} display='flex' alignItems='center'>
+                <FormLabel w={'29.5%'} mb={0}>
                   당일 결제
                 </FormLabel>
                 <Switch size={'lg'} onChange={(e) => {
