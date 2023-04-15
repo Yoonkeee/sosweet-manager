@@ -152,12 +152,12 @@ export default function Checkout({isOpen, onClose, id, name, in_time, belts}) {
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay/>
       <ModalContent ref={ref}>
-        <ModalHeader>댕댕이 체크아웃!</ModalHeader>
+        <ModalHeader>{name}🥰 체크아웃!</ModalHeader>
         <ModalCloseButton/>
         <ModalBody as={'form'} onSubmit={handleSubmit(onSubmit)}>
-          <VStack spacing={3} alignItems={'flex-start'}>
+          <VStack alignItems={'flex-start'} spacing={0} m={0}>
             <HStack>
-              <Text w={'15vw'}>{name} 퇴장시간</Text>
+              <Text w={'25vw'}>퇴장시간</Text>
               <HStack>
                 <PinInput placeholder='0'>
                   <PinInputField w={'40px'} {...register("pinNumber[0]")} required={true}/>
@@ -170,7 +170,7 @@ export default function Checkout({isOpen, onClose, id, name, in_time, belts}) {
               </HStack>
             </HStack>
             <HStack>
-              <Text w={'15vw'}>매너벨트 사용량</Text>
+              <Text my={'3vh'} w={'25vw'}>매너벨트 사용량</Text>
               <NumberInput size='md' maxW={'30%'} min={0}
                            value={belts}
                            {...register('belts')}>
@@ -181,19 +181,21 @@ export default function Checkout({isOpen, onClose, id, name, in_time, belts}) {
                 </NumberInputStepper>
               </NumberInput>
             </HStack>
-            <FormControl display='flex' alignItems='center'>
-              <FormLabel mb='0' w={'14.5vw'}>
-                당일 결제
-              </FormLabel>
-              <Switch size={'lg'} onChange={(e) => {
-                if (e.target.checked) {
-                  setPayToday(true);
-                } else {
-                  setPayToday(false);
+            <HStack alignItems='center'>
+              <FormControl mb={'1.5vh'} display='flex' alignItems='center'>
+                <FormLabel w={'24.5vw'} mb={0}>
+                  당일 결제
+                </FormLabel>
+                <Switch size={'lg'} onChange={(e) => {
+                  if (e.target.checked) {
+                    setPayToday(true);
+                  } else {
+                    setPayToday(false);
+                  }
                 }
-              }
-              }/>
-            </FormControl>
+                }/>
+              </FormControl>
+            </HStack>
           </VStack>
           <ModalFooter>
             <Popover placement='top-start'>

@@ -40,6 +40,9 @@ export default function CheckoutTimetableRow({id, name, in_time, out_time, loade
     const {
         isOpen: checkinModIsOpen, onOpen: checkinModOnOpen, onClose: checkinModOnClose
     } = useDisclosure()
+    const {
+        isOpen: checkoutModIsOpen, onOpen: checkoutModOnOpen, onClose: checkoutModOnClose
+    } = useDisclosure()
     const {isOpen: deleteIsOpen, onOpen: deleteOnOpen, onClose: deleteOnClose} = useDisclosure()
     useEffect(() => {
         setBelt([id, belts])
@@ -91,10 +94,10 @@ export default function CheckoutTimetableRow({id, name, in_time, out_time, loade
             </Td>
             <Td px={0} textAlign={'center'}>
                 <Button fontSize={'xl'} px={0} w={'80%'} fontWeight={'bold'} textColor={'#1a2a52'} colorScheme={'white'}
-                        onClick={checkinModOnOpen}
+                        onClick={checkoutModOnOpen}
                         size={buttonSize}>
                     {out_time}
-                    <ChangeCheckInTime isOpen={checkinModIsOpen} onClose={checkinModOnClose}
+                    <ChangeCheckInTime isOpen={checkoutModIsOpen} onClose={checkoutModOnClose}
                                        id={id} name={name} in_time={out_time} in_or_out={'out'}/>
                 </Button>
             </Td>
