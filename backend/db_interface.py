@@ -90,14 +90,16 @@ class Interface:
 
     def get_dogs_list(self):
         query = f"""
-            SELECT dogs.*, IFNULL(SUM(paid.minutes), 0) as remaining_minutes
-            FROM dogs 
-            LEFT JOIN paid ON dogs.name = paid.name 
-            WHERE dogs.valid='Y' 
-            GROUP BY dogs.name 
-            ORDER BY dogs.name;
+        SELECT d.*, ifnull(SUM(p.minutes), 0) - ifnull(SUM(u.used_minutes), 0) AS remaining_minutes
+        FROM dogs d
+        LEFT JOIN (select name, sum(minutes) as minutes from paid where valid = 'Y' group by name) p ON d.name = p.name
+        LEFT JOIN (select name, sum(used_minutes) as used_minutes
+        from used_table
+        where valid = 'Y'
+        AND checked = 0
+        group by name) u ON d.name = u.name
+        GROUP BY d.name;
         """
-
         # query = f"select dogs.*, remaining_time.minutes " \
         #         f"from dogs inner join remaining_time " \
         #         f"on dogs.name = remaining_time.name " \
