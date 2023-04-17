@@ -356,14 +356,16 @@ class Interface:
         return True
 
     def cancel_history(self, row_id):
-        delete_query = f"""
-        update used_table
-        set valid='N' 
-        where id = {row_id};
-        """
-        print(delete_query)
-        self.setter.execute(delete_query)
-        self.db.commit()
+        target_table = ['used_table', 'timetable']
+        for target in target_table:
+            delete_query = f"""
+            update {target}
+            set valid='N' 
+            where id = {row_id};
+            """
+            print(delete_query)
+            self.setter.execute(delete_query)
+            self.db.commit()
         return True
 
     def cancel_pay(self, row_id):
