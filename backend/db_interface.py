@@ -466,6 +466,30 @@ class Interface:
         official_name = self.getter.fetchone()[0]
         return official_name
 
+    def get_remaining_minutes(self, name):
+        query = f"""
+        SELECT ifnull(SUM(p.minutes), 0) - ifnull(SUM(u.used_minutes), 0) AS remaining_minutes
+        FROM dogs d
+        LEFT JOIN (select name, sum(minutes) as minutes from paid where valid = 'Y' group by name) p ON d.name = p.name
+        LEFT JOIN (select name, sum(used_minutes) as used_minutes
+        from used_table
+        where valid = 'Y'
+        AND checked = 1
+        group by name) u ON d.name = u.name
+        WHERE d.name = '{name}'
+        GROUP BY d.name;
+        """
+        # query = f"""
+        # select paid.remaining_minutes - used_table.used_minutes from
+        # (select sum(minutes) as remaining_minutes from paid where name = '{name}' and valid = 'Y') as paid,
+        # (select sum(used_minutes) as used_minutes from used_table where name = '{name}' and valid = 'Y' and checked = 0) as used_table;
+        # """
+        self.getter.execute(query)
+        remaining_minutes = self.getter.fetchone()[0]
+        if not remaining_minutes:
+            return 0
+        return remaining_minutes
+
     def make_message(self, row_ids):
         select_query = f"""
         select name, date, in_time, out_time, used_minutes, belts from used_table
@@ -483,14 +507,17 @@ class Interface:
 
         official_name = self.get_official_name(name)
         # select_query = f"select minutes from remaining_time where name = '{name}';"
-        select_query = f"""SELECT SUM(minutes) as minutes
-        FROM paid
-        WHERE name = '{name}'
-        """
 
-        print(select_query)
-        self.getter.execute(select_query)
-        remaining_minutes = self.getter.fetchall()[0][0]
+        # select_query = f"""SELECT SUM(minutes) as minutes
+        # FROM paid
+        # WHERE name = '{name}'
+        # """
+        #
+        # print(select_query)
+        # self.getter.execute(select_query)
+        # remaining_minutes = self.getter.fetchall()[0][0]
+        # print(remaining_minutes)
+        remaining_minutes = self.get_remaining_minutes(name)
         print(remaining_minutes)
 
         message = '안녕하세요~쏘스윗펫입니다😊\n'
