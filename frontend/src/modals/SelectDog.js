@@ -44,7 +44,7 @@ export default function SelectDog({setter}) {
           </>),
         status: "success",
         position: "top",
-        duration: 3000,
+        duration: 800,
         isClosable: true,
       });
       onClose();

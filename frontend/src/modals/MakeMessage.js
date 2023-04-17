@@ -49,12 +49,12 @@ export default function MakeMessage({isOpen, onClose, checked}) {
             console.log(res)
             if (res) {
                 toast({
-                    title: "전송 완료 처리했어요~~", status: "success", position: "top", duration: 3000, isClosable: true,
+                    title: "전송 완료 처리했어요~~", status: "success", position: "top", duration: 1500, isClosable: true,
                 })
                 queryClient.refetchQueries(["history"]);
             } else {
                 toast({
-                    title: "에러가 났어요... 죄송해요ㅜㅜ", status: "error", position: "top", duration: 3000, isClosable: true,
+                    title: "에러가 났어요... 죄송해요ㅜㅜ", status: "error", position: "top", duration: 2000, isClosable: true,
                 })
             }
         })
@@ -68,7 +68,7 @@ export default function MakeMessage({isOpen, onClose, checked}) {
             description: "카톡으로 보내세용~~",
             position: 'top',
             status: 'success',
-            duration: 5000,
+            duration: 1000,
             isClosable: true,
         })
     }

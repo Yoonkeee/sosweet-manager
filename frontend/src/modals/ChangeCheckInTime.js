@@ -33,7 +33,7 @@ export default function ChangeCheckInTime({isOpen, onClose, id, name, in_or_out}
           </>),
         status: "success",
         position: "top",
-        duration: 3000,
+        duration: 1000,
         isClosable: true,
       });
       queryClient.refetchQueries(["timetable"]);
@@ -52,7 +52,7 @@ export default function ChangeCheckInTime({isOpen, onClose, id, name, in_or_out}
         title: "시간이 올바른 형식이 아닙니다.",
         status: "error",
         position: "top",
-        duration: 3000,
+        duration: 1000,
         isClosable: true,
       });
       return;

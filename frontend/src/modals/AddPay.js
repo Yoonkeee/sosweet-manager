@@ -41,7 +41,7 @@ export default function AddPay({isOpen, onClose}) {
   const mutation = useMutation(pay, {
     onSuccess: () => {
       toast({
-        title: "결제 내역 등록에 성공했어요~~", status: "success", position: "top", duration: 3000, isClosable: true,
+        title: "결제 내역 등록에 성공했어요~~", status: "success", position: "top", duration: 1000, isClosable: true,
       });
       onClose();
       reset();

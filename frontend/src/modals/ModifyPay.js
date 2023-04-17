@@ -86,7 +86,7 @@ export default function ModifyPay(props) {
           댕댕이 : {checkoutData.name} <br/>
           결제시간 : {Math.floor(checkoutData.minutes / 60)}시간 <br/>
           결제일 : {formattedDate} <br/>
-        </>), status: "success", position: "top", duration: 3000, isClosable: true,
+        </>), status: "success", position: "top", duration: 1000, isClosable: true,
       });
       onClose();
       reset();
@@ -116,7 +116,7 @@ export default function ModifyPay(props) {
           댕댕이 : {checkoutData.name} <br/>
           결제시간 : {hours}시간 <br/>
           결제일 : {formattedDate} <br/>
-        </>), status: "success", position: "top", duration: 3000, isClosable: true,
+        </>), status: "success", position: "top", duration: 1000, isClosable: true,
       });
       onClose();
       reset();

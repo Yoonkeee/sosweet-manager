@@ -67,7 +67,7 @@ export default function Checkout({isOpen, onClose, id, name, in_time, belts}) {
           </>),
         status: "success",
         position: "top",
-        duration: 3000,
+        duration: 1500,
         isClosable: true,
       });
       onClose();
@@ -85,7 +85,7 @@ export default function Checkout({isOpen, onClose, id, name, in_time, belts}) {
         title: "퇴장 시간이 올바른 형식이 아닙니다.",
         status: "error",
         position: "top",
-        duration: 3000,
+        duration: 1000,
         isClosable: true,
       });
       return;
@@ -95,7 +95,7 @@ export default function Checkout({isOpen, onClose, id, name, in_time, belts}) {
         title: "퇴장 시간이 입장 시간보다 빠릅니다.",
         status: "error",
         position: "top",
-        duration: 3000,
+        duration: 1000,
         isClosable: true,
       });
       return;
@@ -125,7 +125,7 @@ export default function Checkout({isOpen, onClose, id, name, in_time, belts}) {
           </>),
         status: "success",
         position: "top",
-        duration: 3000,
+        duration: 1000,
         isClosable: true,
       });
       onClose();

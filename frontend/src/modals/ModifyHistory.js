@@ -88,7 +88,7 @@ export default function ModifyHistory(props) {
           </>),
         status: "success",
         position: "top",
-        duration: 3000,
+        duration: 1500,
         isClosable: true,
       });
       onClose();
@@ -109,7 +109,7 @@ export default function ModifyHistory(props) {
         title: "퇴장 시간이 올바른 형식이 아닙니다.",
         status: "error",
         position: "top",
-        duration: 3000,
+        duration: 1000,
         isClosable: true,
       });
       return;
@@ -119,7 +119,7 @@ export default function ModifyHistory(props) {
         title: "퇴장 시간이 입장 시간보다 빠릅니다.",
         status: "error",
         position: "top",
-        duration: 3000,
+        duration: 1000,
         isClosable: true,
       });
       return;
@@ -149,7 +149,7 @@ export default function ModifyHistory(props) {
           </>),
         status: "success",
         position: "top",
-        duration: 3000,
+        duration: 1000,
         isClosable: true,
       });
       onClose();

@@ -32,7 +32,7 @@ export default function ModifyDog({isOpen, onClose}) {
   const mutation = useMutation(modDog, {
     onSuccess: () => {
       toast({
-        title: name + " 수정에 성공했어요~~", status: "success", position: "top", duration: 3000, isClosable: true,
+        title: name + " 수정에 성공했어요~~", status: "success", position: "top", duration: 1000, isClosable: true,
       });
       queryClient.refetchQueries('dogs-list');
       onClose();

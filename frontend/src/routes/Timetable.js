@@ -46,7 +46,7 @@ export default function Timetable() {
                     return <Text>{month}월 {day}일 {notOut.name}</Text>
                 }),
                 status: "warning",
-                duration: 2500,
+                duration: 1500,
                 isClosable: true,
                 position: 'center'
             })

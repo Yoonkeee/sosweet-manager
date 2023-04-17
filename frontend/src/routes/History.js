@@ -43,7 +43,7 @@ export default function History() {
           </>),
         status: "success",
         position: "top",
-        duration: 3000,
+        duration: 800,
         isClosable: true,
       });
       // console.log(response);

@@ -42,7 +42,7 @@ export default function Checkin() {
             </>),
         status: "success",
         position: "top",
-        duration: 3000,
+        duration: 1000,
         isClosable: true,
       });
       onClose();

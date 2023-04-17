@@ -64,7 +64,7 @@ export default function CheckoutTimetableRow({id, name, in_time, out_time, loade
                     </>),
                 status: "success",
                 position: "top",
-                duration: 3000,
+                duration: 1000,
                 isClosable: true,
             });
             queryClient.refetchQueries(["timetable"]);
