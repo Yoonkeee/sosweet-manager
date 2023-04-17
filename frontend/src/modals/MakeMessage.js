@@ -27,8 +27,8 @@ import {
 } from "@chakra-ui/react";
 import {useForm} from "react-hook-form";
 import {useEffect, useRef, useState} from "react";
-import {useMutation, useQueryClient} from "react-query";
-import {addNewDog, checkUsedDate, makeMessage} from "../api";
+import {useMutation, useQuery, useQueryClient} from "react-query";
+import {addNewDog, checkUsedDate, makeMessage, uncheckedDogsList} from "../api";
 import copy from 'copy-to-clipboard';
 
 export default function MakeMessage({isOpen, onClose, checked}) {
@@ -58,7 +58,8 @@ export default function MakeMessage({isOpen, onClose, checked}) {
                 })
             }
         })
-        queryClient.refetchQueries("unchecked-dogs-list");
+        queryClient.refetchQueries(["history", '', 'getMessage']);
+        queryClient.refetchQueries(["unchecked-dogs-list"]);
     }
     const ref = useRef(null)
     const handleCopy = () => {

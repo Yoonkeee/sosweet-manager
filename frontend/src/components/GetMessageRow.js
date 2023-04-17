@@ -42,6 +42,7 @@ export default function GetMessageRow(props) {
   const showInTime = useBreakpointValue({ base: false, md: true });
   const showOutTime = useBreakpointValue({ base: false, md: true });
   const showBelt = useBreakpointValue({ base: false, md: true });
+  console.log(props.key)
   return (<>
     <Tr>
       <Td px={0}>

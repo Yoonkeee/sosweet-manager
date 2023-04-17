@@ -106,6 +106,7 @@ export default function GetMessage() {
           {data && data.map((item) => (<>
             <GetMessageRow
               data={item}
+              key={data.length}
               state={[checked, setChecked]}
             />
           </>))}
