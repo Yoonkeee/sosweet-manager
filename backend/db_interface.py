@@ -262,6 +262,18 @@ class Interface:
         print(insert_query)
         self.setter.execute(insert_query)
         self.db.commit()
+        if check_today:
+            update_query = f"""
+            update used_table
+            set checked = 1,
+            set checked_date = STR_TO_DATE('{date.replace('-', '')}', '%Y%m%d'),
+            set checked_belts = 1
+            where id = {row_id};
+            """
+            # 당일결제시 매너벨트도 같이 결제됨
+            print(update_query)
+            self.setter.execute(update_query)
+            self.db.commit()
 
         # set timetable out_time, belts with id
         update_query = f"""
