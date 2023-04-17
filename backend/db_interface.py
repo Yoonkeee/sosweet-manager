@@ -88,8 +88,8 @@ class Interface:
             print(update_query)
             self.setter.execute(update_query)
             self.db.commit()
-
-        return True
+        if self.reset_used_minutes(data['id']):
+            return True
 
     def get_dogs_list(self):
         query = f"""
@@ -328,21 +328,38 @@ class Interface:
     #     self.db.commit()
     #     return True
 
+    def reset_used_minutes(self, row_id):
+        timeset_query = f"""
+        UPDATE used_table
+        SET used_minutes = TIMESTAMPDIFF(MINUTE, in_time, out_time)
+        WHERE id = {row_id};
+        ;
+        """
+        print(timeset_query)
+        self.setter.execute(timeset_query)
+        self.db.commit()
+
+        return True
+
     # change check-in time
     def change_check_in_time(self, data):
         name, date, in_time, row_id, in_or_out = data['name'], data['date'], data['in_time'], data['id'], data['in_or_out']
         # in_time form 15:55
         # date form 2021-08-01
         in_time = date + ' ' + in_time
-        update_query = f"""
-        update timetable
-        set {in_or_out}_time = '{in_time}'
-        where id = {row_id};
-        """
-        print(update_query)
-        self.setter.execute(update_query)
-        self.db.commit()
-        return True
+        target_tables = ['timetable', 'used_table']
+        for target in target_tables:
+            update_query = f"""
+            update {target}
+            set {in_or_out}_time = '{in_time}'
+            where id = {row_id};
+            """
+            print(update_query)
+            self.setter.execute(update_query)
+            self.db.commit()
+
+        if self.reset_used_minutes(row_id):
+            return True
 
     def cancel_checkin(self, row_id):
         delete_query = f"""
