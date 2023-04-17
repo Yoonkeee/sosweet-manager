@@ -74,18 +74,21 @@ class Interface:
         # update data from used_table where id=id
         in_time = data['date'] + ' ' + data['in_time']
         out_time = data['date'] + ' ' + data['out_time']
-        update_query = f"""
-        UPDATE used_table
-        SET
-        in_time = '{in_time}',
-        out_time = '{out_time}',
-        belts = {data['belts']},
-        date = STR_TO_DATE('{data['date'].replace('-', '')}', '%Y%m%d') 
-        WHERE id = {data['id']}
-        """
-        print(update_query)
-        self.setter.execute(update_query)
-        self.db.commit()
+        target_table = ['used_table', 'timetable']
+        for target in target_table:
+            update_query = f"""
+            UPDATE {target}
+            SET
+            in_time = '{in_time}',
+            out_time = '{out_time}',
+            belts = {data['belts']},
+            date = STR_TO_DATE('{data['date'].replace('-', '')}', '%Y%m%d') 
+            WHERE id = {data['id']}
+            """
+            print(update_query)
+            self.setter.execute(update_query)
+            self.db.commit()
+
         return True
 
     def get_dogs_list(self):
