@@ -46,13 +46,12 @@ export default function TimetableRow({id, name, in_time, out_time, loaded_belts}
                 </Text>
             </Td>
             <Td px={0} textAlign={'center'}>
-                {/* TODO: 모바일에서 툴팁이 사라지지 않음 */}
                 <Button fontSize={'xl'} px={0} w={'80%'} fontWeight={'bold'} textColor={'#1a2a52'} colorScheme={'white'}
                         onClick={checkinModOnOpen}
                         size={buttonSize}>
                     {in_time}
                     <ChangeCheckInTime isOpen={checkinModIsOpen} onClose={checkinModOnClose}
-                                       id={id} name={name} in_time={in_time}/>
+                                       id={id} name={name} in_time={in_time} in_or_out={'in'}/>
                 </Button>
             </Td>
             <Td px={0} textAlign={'center'}>
