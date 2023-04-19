@@ -23,6 +23,7 @@ class Interface:
         environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
         HOST, PORT, SCHEMA, DB_USER, PASSWORD = env("HOST"), int(env("PORT")), env("SCHEMA"), env("DB_USER"), env("PASSWORD")
         self.db = pymysql.connect(host=HOST, port=PORT, user=DB_USER, password=PASSWORD, db=SCHEMA, charset="utf8")
+        self.db.autocommit(True)
         self.setter = self.db.cursor()
         self.getter = self.db.cursor()
 
@@ -99,7 +100,7 @@ class Interface:
         LEFT JOIN (select name, sum(used_minutes) as used_minutes
         from used_table
         where valid = 'Y'
-        AND checked = 0
+#         AND checked = 0
         group by name) u ON d.name = u.name
         GROUP BY d.name;
         """
