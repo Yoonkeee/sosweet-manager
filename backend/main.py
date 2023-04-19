@@ -49,8 +49,13 @@ def execute_keep_alive():
     print(db_interface.keep_alive())
 
 
+def set_backup():
+    print(db_interface.set_backup())
+
+
 scheduler = BackgroundScheduler()
 scheduler.add_job(execute_keep_alive, 'interval', minutes=60)
+scheduler.add_job(set_backup, 'interval', hours=12)
 scheduler.start()
 
 

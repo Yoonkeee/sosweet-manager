@@ -1,6 +1,7 @@
 import pymysql
 import environ
 import os
+import csv
 from pathlib import Path
 from typing import *
 from datetime import datetime, timedelta
@@ -34,6 +35,30 @@ class Interface:
         self.getter.execute("SELECT 1")
         print('db connection keep alive')
         return self.getter.fetchone()
+
+    def set_backup(self):
+        now = datetime.now()
+        timestamp = now.strftime("%Y-%m-%d %H시%M분%S초")
+        print(timestamp)
+        backup_dir = os.path.join(os.getcwd(), '../backup/'+timestamp)
+        os.makedirs(backup_dir)
+        self.getter.execute("SHOW TABLES")
+        tables = self.getter.fetchall()
+        for table in tables:
+            table_name = table[0]
+            backup_file = os.path.join(backup_dir, f"{table_name}.csv")
+
+            # Execute the SQL query to select data from the table
+            self.getter.execute(f"SELECT * FROM {table_name}")
+
+            # Fetch all the rows in a list of lists
+            data = self.getter.fetchall()
+            # Open the file in write mode
+            with open(backup_file, 'w', newline='') as csvfile:
+                writer = csv.writer(csvfile)
+                for row in data:
+                    writer.writerow(row)
+        return f'backup done at {backup_dir}, tables : {tables}'
 
     # dogs
     def add_dog_info(self, data):
