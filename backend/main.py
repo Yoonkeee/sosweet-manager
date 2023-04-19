@@ -1,10 +1,12 @@
 import time
 from fastapi import FastAPI, Request, Response, status, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
+from datetime import datetime, timedelta
 import db_interface
 from pydantic import BaseModel
 from typing import Optional
 import json
+import pytz
 from apscheduler.schedulers.background import BackgroundScheduler
 
 app = FastAPI()
@@ -53,9 +55,10 @@ def set_backup():
     print(db_interface.set_backup())
 
 
+tz = pytz.timezone('UTC')
 scheduler = BackgroundScheduler()
 scheduler.add_job(execute_keep_alive, 'interval', minutes=60)
-scheduler.add_job(set_backup, 'interval', hours=12)
+scheduler.add_job(set_backup, 'interval', hours=12, next_run_time=datetime.now(tz) + timedelta(minutes=1))
 scheduler.start()
 
 

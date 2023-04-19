@@ -32,9 +32,9 @@ class Interface:
         return {'message': 'CORS TEST SUCCESSFUL'}
 
     def keep_alive(self):
-        self.getter.execute("SELECT 1")
+        self.getter.execute("SHOW TABLES")
         print('db connection keep alive')
-        return self.getter.fetchone()
+        return self.getter.fetchall()
 
     def set_backup(self):
         now = datetime.now()
