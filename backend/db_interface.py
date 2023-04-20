@@ -292,8 +292,8 @@ class Interface:
             update_query = f"""
             update used_table
             set checked = 1,
-            set checked_date = STR_TO_DATE('{date.replace('-', '')}', '%Y%m%d'),
-            set checked_belts = 1
+            checked_date = STR_TO_DATE('{date.replace('-', '')}', '%Y%m%d'),
+            checked_belts = 1
             where id = {row_id};
             """
             # 당일결제시 매너벨트도 같이 결제됨
