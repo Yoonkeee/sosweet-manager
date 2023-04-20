@@ -12,7 +12,7 @@ export default function Root() {
         <>
             <Helmet>
                 <title>쏘스윗 매니저</title>
-                {/*<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover" />*/}
+                <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover" />
                 <meta name="apple-mobile-web-app-capable" content="yes" />
                 {/*<meta name="apple-mobile-web-app-status-bar-style" content="black" />*/}
                 <meta name="apple-mobile-web-app-status-bar-style" content="default" />
@@ -61,9 +61,9 @@ export default function Root() {
                     {/*<Box position="fixed" top={0} left={`calc((100% - ${mainWidth})/2)`} w={mainWidth}>*/}
                     <Header/>
                 </Box>
-                <Box overflow={'hidden'} h={'80vh'}>
+                <Box overflow={'hidden'}>
                     {/*<Image src={'app_icon.png'} />*/}
-                    <Outlet overflow={'hidden'}/>
+                    <Outlet overflow={'hidden'} h={'100%'}/>
                 </Box>
                 <Box position="fixed" bottom={0} w={'100%'}>
                     {/*<Box position="fixed" bottom={0} left={`calc((100% - ${mainWidth})/2)`} w={mainWidth}>*/}

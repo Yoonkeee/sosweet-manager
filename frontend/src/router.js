@@ -24,6 +24,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '',
+        // element: <Home />
         element: <Image h={'80vh'} w={'100vw'} src={'main_img2.jpeg'} objectFit={'cover'}></Image>
       },
       {

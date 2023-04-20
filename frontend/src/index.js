@@ -10,7 +10,7 @@ import store from "./store";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const queryClient = new QueryClient();
-
+document.documentElement.style.backgroundColor = "white";
 root.render(// <React.StrictMode>
   <QueryClientProvider client={queryClient}>
     <ChakraProvider>
