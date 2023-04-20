@@ -271,7 +271,7 @@ class Interface:
         name, date, in_time, out_time, belts, row_id, check_today = \
             data['name'], data['date'], data['in_time'], data['out_time'], data['belts'], data['id'], data['payToday']
         # insert data into used
-        used_minutes = data['minutes']
+        used_minutes = 0 if check_today else data['minutes']
         insert_query = f"""
         insert into used_table (name, date, used_minutes, id, belts, checked, in_time, out_time)
         values (
