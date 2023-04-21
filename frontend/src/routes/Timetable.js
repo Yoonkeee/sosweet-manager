@@ -54,6 +54,7 @@ export default function Timetable() {
     }, []);
     useEffect(() => {
         dispatch(setToday());
+        queryClient.refetchQueries('notOut')
     }, []);
     return (
         <VStack w={'100%'} mt={'2vh'} mb={'10vh'}>
