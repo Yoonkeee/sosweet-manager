@@ -32,8 +32,8 @@ import ChangeCheckInTime from "../modals/ChangeCheckInTime";
 import {cancelCheckin, cancelHistory, setBelt} from "../api";
 import {useMutation, useQueryClient} from "react-query";
 
-export default function CheckoutTimetableRow({id, name, in_time, out_time, loaded_belts}) {
-    const [belts, setBelts] = useState(loaded_belts)
+export default function CheckoutTimetableRow(props) {
+    var {id, name, in_time, out_time} = props.data
     const {
         isOpen: isOutOpen, onOpen: onOutOpen, onClose: onOutClose
     } = useDisclosure()
@@ -44,9 +44,6 @@ export default function CheckoutTimetableRow({id, name, in_time, out_time, loade
         isOpen: checkoutModIsOpen, onOpen: checkoutModOnOpen, onClose: checkoutModOnClose
     } = useDisclosure()
     const {isOpen: deleteIsOpen, onOpen: deleteOnOpen, onClose: deleteOnClose} = useDisclosure()
-    useEffect(() => {
-        setBelt([id, belts])
-    }, [belts]);
     const toast = useToast();
     const breakpoint = useBreakpoint({ssr: false})
     const buttonSize = useBreakpointValue({base: 'xs', md: 'md'}, {ssr: false})
@@ -76,15 +73,21 @@ export default function CheckoutTimetableRow({id, name, in_time, out_time, loade
         cancelTimetableMutation.mutate(id)
     };
     const ref = useRef(null)
+    const [nameColor, setNameColor] = useState('#1a2a52')
+    useEffect(() => {
+        if (props.data.remaining_minutes < 0) {
+            setNameColor('#ff7f50')
+        }
+    }, [props.data.remaining_minutes]);
     return (<>
         <Tr textAlign={'center'}>
             <Td px={0}>
-                <Text fontSize={'xl'} textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>
+                <Text fontSize={'xl'} textAlign={'center'} fontWeight={'bold'} textColor={nameColor}>
                     {name}
                 </Text>
             </Td>
             <Td px={0} textAlign={'center'}>
-                <Button fontSize={'xl'} px={0} w={'80%'} fontWeight={'bold'} textColor={'#1a2a52'} colorScheme={'white'}
+                <Button fontSize={'xl'} px={0} w={'80%'} fontWeight={'bold'} textColor={nameColor} colorScheme={'white'}
                         onClick={checkinModOnOpen}
                         size={buttonSize}>
                     {in_time}
@@ -93,7 +96,7 @@ export default function CheckoutTimetableRow({id, name, in_time, out_time, loade
                 </Button>
             </Td>
             <Td px={0} textAlign={'center'}>
-                <Button fontSize={'xl'} px={0} w={'80%'} fontWeight={'bold'} textColor={'#1a2a52'} colorScheme={'white'}
+                <Button fontSize={'xl'} px={0} w={'80%'} fontWeight={'bold'} textColor={nameColor} colorScheme={'white'}
                         onClick={checkoutModOnOpen}
                         size={buttonSize}>
                     {out_time}
@@ -129,8 +132,5 @@ export default function CheckoutTimetableRow({id, name, in_time, out_time, loade
             </Td>
             <Td/>
         </Tr>
-        <Checkout isOpen={isOutOpen} onClose={onOutClose} id={id}
-                  name={name} in_time={in_time} belts={belts}
-        />
     </>)
 }

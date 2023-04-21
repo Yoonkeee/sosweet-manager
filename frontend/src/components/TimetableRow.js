@@ -24,7 +24,8 @@ import Checkout from "../modals/Checkout";
 import ChangeCheckInTime from "../modals/ChangeCheckInTime";
 import {setBelt} from "../api";
 
-export default function TimetableRow({id, name, in_time, out_time, loaded_belts}) {
+export default function TimetableRow(props) {
+    const {id, name, in_time, out_time, belts: loaded_belts} = props.data
     const [belts, setBelts] = useState(loaded_belts)
     const {
         isOpen: isOutOpen, onOpen: onOutOpen, onClose: onOutClose
@@ -33,20 +34,29 @@ export default function TimetableRow({id, name, in_time, out_time, loaded_belts}
         isOpen: checkinModIsOpen, onOpen: checkinModOnOpen, onClose: checkinModOnClose
     } = useDisclosure()
     useEffect(() => {
-        setBelt([id, belts])
+        if (belts)
+        console.log('belts effected')
+        console.log(belts)
+            setBelt([id, belts])
     }, [belts]);
     const breakpoint = useBreakpoint({ssr: false})
     const buttonSize = useBreakpointValue({base: 'xs', md: 'md'}, {ssr: false})
     const beltButtonSize = useBreakpointValue({base: 'sm', md: 'md'}, {ssr: false})
+    const [nameColor, setNameColor] = useState('#1a2a52')
+    useEffect(() => {
+        if (props.data.remaining_minutes < 0) {
+            setNameColor('#ff7f50')
+        }
+    }, [props.data.remaining_minutes]);
     return (<>
         <Tr textAlign={'center'}>
             <Td px={0}>
-                <Text fontSize={'xl'} textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>
+                <Text fontSize={'xl'} textAlign={'center'} fontWeight={'bold'} textColor={nameColor}>
                     {name}
                 </Text>
             </Td>
             <Td px={0} textAlign={'center'}>
-                <Button fontSize={'xl'} px={0} w={'80%'} fontWeight={'bold'} textColor={'#1a2a52'} colorScheme={'white'}
+                <Button fontSize={'xl'} px={0} w={'80%'} fontWeight={'bold'} textColor={nameColor} colorScheme={'white'}
                         onClick={checkinModOnOpen}
                         size={buttonSize}>
                     {in_time}
