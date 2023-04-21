@@ -55,8 +55,6 @@ export default function Timetable() {
     useEffect(() => {
         dispatch(setToday());
     }, []);
-    console.log('data');
-    console.log(data);
     return (
         <VStack w={'100%'} mt={'2vh'} mb={'10vh'}>
             <HStack w={'100%'} justifyContent={'center'}>
@@ -110,19 +108,19 @@ export default function Timetable() {
                     <Tbody>
                         {data && data.map((item) => (
                             <TimetableRow
-                                id={item.id}
-                                name={item.name}
-                                in_time={item.in_time}
-                                loaded_belts={item.belts}
+                                data={item}
+                                key={item.id}
+                                // len={data.length}
                             />
                         ))}
-                        {data && data.length !== 0 && checkoutData && checkoutData.length !== 0 && <Tr borderY="2px solid"><Td p={'3vh'}/><Td p={'3vh'}/><Td p={'3vh'}/><Td p={'3vh'}/><Td p={'3vh'}/></Tr>}
+                        {data && data.length !== 0 && checkoutData && checkoutData.length !== 0 &&
+                            <Tr borderY="2px solid"><Td p={'3vh'}/><Td p={'3vh'}/><Td p={'3vh'}/><Td p={'3vh'}/><Td
+                                p={'3vh'}/></Tr>}
                         {checkoutData && checkoutData.length !== 0 && checkoutData.map((item) => (
                             <CheckoutTimetableRow
-                                id={item.id}
-                                name={item.name}
-                                in_time={item.in_time}
-                                out_time={item.out_time}
+                                data={item}
+                                key={item.id}
+                                // len={checkoutData.length}
                             />
                         ))
                         }

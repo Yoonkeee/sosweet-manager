@@ -104,7 +104,7 @@ export default function Header() {
 
                 <Flex display={{base: 'flex', md: 'flex'}} ml={10}>
                     {/*<Flex display={{base: 'flex'}} ml={10}>*/}
-                    <DesktopNav/>
+                    <DesktopNav key={'DesktopNav'}/>
                     {/*<Button bg={'none'} onClick={test}>CORS TEST</Button>*/}
                 </Flex>
             </Flex>
@@ -162,13 +162,13 @@ const DesktopNav = () => {
                             <Stack>
                                 {navItem.children.map((child) => {
                                     if (child.label === '신규 등록') {
-                                        return <AddNewDog {...child}/>
+                                        return <AddNewDog {...child} key={child.label}/>
                                     } else if (child.label === '결제 내역 등록') {
-                                        return <AddNewPay {...child}/>
+                                        return <AddNewPay {...child} key={child.label}/>
                                     } else if (child.label === '등록정보 수정') {
-                                        return <ModDog {...child}/>
+                                        return <ModDog {...child} key={child.label}/>
                                     } else {
-                                        return <DesktopSubNav {...child} />
+                                        return <DesktopSubNav {...child} key={child.label}/>
                                     }
                                 })}
                             </Stack>
