@@ -525,7 +525,8 @@ class Interface:
         official_name = self.getter.fetchone()[0]
         return official_name
 
-    def get_remaining_minutes(self, name):
+    def get_remaining_minutes(self, name, message=False):
+        condition = ' AND checked = 1' if message else ''
         query = f"""
         SELECT ifnull(SUM(p.minutes), 0) - ifnull(SUM(u.used_minutes), 0) AS remaining_minutes
         FROM dogs d
@@ -533,7 +534,7 @@ class Interface:
         LEFT JOIN (select name, sum(used_minutes) as used_minutes
         from used_table
         where valid = 'Y'
-        AND checked = 1
+        {condition}
         group by name) u ON d.name = u.name
         WHERE d.name = '{name}'
         GROUP BY d.name;
@@ -576,7 +577,7 @@ class Interface:
         # self.getter.execute(select_query)
         # remaining_minutes = self.getter.fetchall()[0][0]
         # print(remaining_minutes)
-        remaining_minutes = self.get_remaining_minutes(name)
+        remaining_minutes = self.get_remaining_minutes(name, message=True)
         print(remaining_minutes)
 
         message = '안녕하세요~쏘스윗펫입니다😊\n'
