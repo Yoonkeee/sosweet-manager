@@ -183,6 +183,7 @@ class Interface:
                         converted_row[key] = ''
                 else:
                     converted_row[key] = value
+            converted_row['remaining_minutes'] = self.get_remaining_minutes(converted_row['name'])
             converted_data.append(converted_row)
         return converted_data
 
@@ -202,6 +203,7 @@ class Interface:
                     converted_row[key] = value.strftime('%H:%M')
                 else:
                     converted_row[key] = value
+            converted_row['remaining_minutes'] = self.get_remaining_minutes(converted_row['name'])
             converted_data.append(converted_row)
         return converted_data
 
