@@ -149,6 +149,7 @@ class Interface:
             for key, value in row.items():
                 converted_row[key] = value
                 converted_row['remaining_minutes'] = self.get_remaining_minutes(converted_row['name'])
+                converted_row['used_belts'] = self.get_used_belts(converted_row['name'])
             converted_data.append(converted_row)
         return converted_data[0]
 

@@ -47,9 +47,16 @@ export default function DogInfo({isOpen, onClose, name}) {
     }
     const {isLoading, data} = useQuery(['dog_info', name], getDogInfo);
     const [remainingTime, setRemainingTime] = useState('');
+    const [usedBelts, setUsedBelts] = useState('');
+    const [beltColor, setBeltColor] = useState('green');
     useEffect(() => {
-        if (data && !isLoading)
+        if (data && !isLoading) {
             setRemainingTime(formatMinuteToTime(data.remaining_minutes))
+            setUsedBelts(data.used_belts)
+            if (data.used_belts > 0) {
+                setBeltColor('orange')
+            }
+        }
     }, [data]);
     useEffect(() => {
         if (data && !isLoading) {
@@ -113,17 +120,22 @@ export default function DogInfo({isOpen, onClose, name}) {
                             />
                         </HStack>
                         <HStack w={'100%'}>
-                            <Text minW={'25%'}>전화번호</Text>
+                            <Text minW={'25%'}>전화번호&<br/>매벨 사용량</Text>
                             <Input
+                                w={'55%'}
                                 mr={1}
                                 variant={"filled"}
                                 placeholder={"견주 전화번호(선택)"}
                                 {...register("phone")}
                             />
+                            <Badge ml='1' fontSize='xl' colorScheme={beltColor}>
+                                {usedBelts}개
+                            </Badge>
                         </HStack>
                         <HStack w={'100%'}>
                             <Text minW={'25%'}>몸무게&<br/>잔여시간</Text>
                             <Input
+                                w={'55%'}
                                 ml={1}
                                 variant={"filled"}
                                 // value={dogWeight}

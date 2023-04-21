@@ -29,6 +29,8 @@ export default function ModifyDog({isOpen, onClose}) {
   const toast = useToast();
   const [name, setName] = useState('');
   const [info, setInfo] = useState('');
+  const [beltColor, setBeltColor] = useState('green');
+  const [usedBelts, setUsedBelts] = useState('');
   const queryClient = useQueryClient();
   const mutation = useMutation(modDog, {
     onSuccess: () => {
@@ -60,6 +62,10 @@ export default function ModifyDog({isOpen, onClose}) {
             dogWeight: data.weight,
         })
         setRemainingTime(formatMinuteToTime(data.remaining_minutes))
+        setUsedBelts(data.used_belts + '개')
+        if (data.used_belts > 0) {
+          setBeltColor('orange')
+        }
     }
   }, [data]);
   const onCloseFn = () => {
@@ -149,17 +155,22 @@ export default function ModifyDog({isOpen, onClose}) {
             />
           </HStack>
           <HStack w={'100%'}>
-            <Text minW={'25%'}>전화번호</Text>
+            <Text minW={'25%'}>전화번호&<br/>매벨 사용량</Text>
             <Input
+                w={'55%'}
                 mr={1}
                 variant={"filled"}
                 placeholder={"견주 전화번호(선택)"}
                 {...register("phone")}
             />
+            <Badge ml='1' fontSize='xl' colorScheme={beltColor}>
+              {usedBelts}
+            </Badge>
           </HStack>
           <HStack w={'100%'}>
             <Text minW={'25%'}>몸무게&<br/>잔여시간</Text>
             <Input
+                w={'55%'}
                 ml={1}
                 variant={"filled"}
                 // value={dogWeight}
