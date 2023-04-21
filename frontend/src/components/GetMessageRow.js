@@ -38,11 +38,9 @@ export default function GetMessageRow(props) {
   };
   const {belts, date, id, in_time, name, out_time, used_minutes} = props.data;
   const [checked, setChecked] = props.state;
-  
   const showInTime = useBreakpointValue({ base: false, md: true });
   const showOutTime = useBreakpointValue({ base: false, md: true });
   const showBelt = useBreakpointValue({ base: false, md: true });
-  console.log(props.key)
   return (<>
     <Tr>
       <Td px={0}>

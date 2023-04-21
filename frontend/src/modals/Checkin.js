@@ -67,8 +67,6 @@ export default function Checkin() {
     value: item.name,
     label: item.name,
   }));
-
-  // TODO 모달창 vw -> %로 변경
   return (<>
     <Button
       onClick={onOpen}
