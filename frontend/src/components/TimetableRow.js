@@ -23,8 +23,10 @@ import {BiPlus} from "react-icons/bi";
 import Checkout from "../modals/Checkout";
 import ChangeCheckInTime from "../modals/ChangeCheckInTime";
 import {setBelt} from "../api";
+import DogInfo from "../modals/DogInfo";
 
 export default function TimetableRow(props) {
+    console.log(props.data)
     const {id, name, in_time, out_time, belts: loaded_belts} = props.data
     const [belts, setBelts] = useState(loaded_belts)
     const {
@@ -48,12 +50,15 @@ export default function TimetableRow(props) {
             setNameColor('#ff7f50')
         }
     }, [props.data.remaining_minutes]);
+    const {isOpen: dogInfoModISOpen, onClose: dogInfoModOnClose, onOpen: dogInfoModOnOpen} = useDisclosure();
     return (<>
         <Tr textAlign={'center'}>
             <Td px={0}>
-                <Text fontSize={'xl'} textAlign={'center'} fontWeight={'bold'} textColor={nameColor}>
+                <Button fontSize={'xl'} px={0} w={'80%'} fontWeight={'bold'} textColor={nameColor} colorScheme={'white'}
+                        onClick={dogInfoModOnOpen}
+                        size={buttonSize}>
                     {name}
-                </Text>
+                </Button>
             </Td>
             <Td px={0} textAlign={'center'}>
                 <Button fontSize={'xl'} px={0} w={'80%'} fontWeight={'bold'} textColor={nameColor} colorScheme={'white'}
@@ -115,5 +120,7 @@ export default function TimetableRow(props) {
         <Checkout isOpen={isOutOpen} onClose={onOutClose} id={id}
                   name={name} in_time={in_time} belts={belts}
         />
+        <DogInfo isOpen={dogInfoModISOpen} onClose={dogInfoModOnClose}
+                 name={name}/>
     </>)
 }

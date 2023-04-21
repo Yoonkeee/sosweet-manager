@@ -31,6 +31,7 @@ import Checkout from "../modals/Checkout";
 import ChangeCheckInTime from "../modals/ChangeCheckInTime";
 import {cancelCheckin, cancelHistory, setBelt} from "../api";
 import {useMutation, useQueryClient} from "react-query";
+import DogInfo from "../modals/DogInfo";
 
 export default function CheckoutTimetableRow(props) {
     var {id, name, in_time, out_time} = props.data
@@ -79,12 +80,15 @@ export default function CheckoutTimetableRow(props) {
             setNameColor('#ff7f50')
         }
     }, [props.data.remaining_minutes]);
+    const {isOpen: dogInfoModISOpen, onClose: dogInfoModOnClose, onOpen: dogInfoModOnOpen} = useDisclosure();
     return (<>
         <Tr textAlign={'center'}>
             <Td px={0}>
-                <Text fontSize={'xl'} textAlign={'center'} fontWeight={'bold'} textColor={nameColor}>
+                <Button fontSize={'xl'} px={0} w={'80%'} fontWeight={'bold'} textColor={nameColor} colorScheme={'white'}
+                        onClick={dogInfoModOnOpen}
+                        size={buttonSize}>
                     {name}
-                </Text>
+                </Button>
             </Td>
             <Td px={0} textAlign={'center'}>
                 <Button fontSize={'xl'} px={0} w={'80%'} fontWeight={'bold'} textColor={nameColor} colorScheme={'white'}
@@ -132,5 +136,8 @@ export default function CheckoutTimetableRow(props) {
             </Td>
             <Td/>
         </Tr>
+
+        <DogInfo isOpen={dogInfoModISOpen} onClose={dogInfoModOnClose}
+                 name={name}/>
     </>)
 }
