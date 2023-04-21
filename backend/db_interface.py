@@ -142,7 +142,15 @@ class Interface:
         query = f"select * from dogs where name = '{name}' AND valid='Y' "
         self.getter.execute(query)
         columns = [col[0] for col in self.getter.description]
-        return [dict(zip(columns, row)) for row in self.getter.fetchall()]
+        data = [dict(zip(columns, row)) for row in self.getter.fetchall()]
+        converted_data = []
+        for row in data:
+            converted_row = {}
+            for key, value in row.items():
+                converted_row[key] = value
+                converted_row['remaining_minutes'] = self.get_remaining_minutes(converted_row['name'])
+            converted_data.append(converted_row)
+        return converted_data[0]
 
     def mod_dog_info(self, data):
         # update table

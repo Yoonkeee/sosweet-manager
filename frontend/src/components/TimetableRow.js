@@ -50,7 +50,7 @@ export default function TimetableRow(props) {
             setNameColor('#ff7f50')
         }
     }, [props.data.remaining_minutes]);
-    const {isOpen: dogInfoModISOpen, onClose: dogInfoModOnClose, onOpen: dogInfoModOnOpen} = useDisclosure();
+    const {isOpen: dogInfoModIsOpen, onClose: dogInfoModOnClose, onOpen: dogInfoModOnOpen} = useDisclosure();
     return (<>
         <Tr textAlign={'center'}>
             <Td px={0}>
@@ -120,7 +120,7 @@ export default function TimetableRow(props) {
         <Checkout isOpen={isOutOpen} onClose={onOutClose} id={id}
                   name={name} in_time={in_time} belts={belts}
         />
-        <DogInfo isOpen={dogInfoModISOpen} onClose={dogInfoModOnClose}
+        <DogInfo isOpen={dogInfoModIsOpen} onClose={dogInfoModOnClose}
                  name={name}/>
     </>)
 }

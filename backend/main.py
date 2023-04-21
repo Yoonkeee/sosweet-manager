@@ -113,7 +113,7 @@ async def mod_history(request: DictModel):
 
 @app.get("/api/get/dog-info/{name}")
 async def get_dog_info(name: str):
-    print('in get_dog_info')
+    print('in get_dog_info' + name)
     return db_interface.get_dog_info(name)
 
 

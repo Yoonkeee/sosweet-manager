@@ -43,9 +43,12 @@ export const test = () => {
   }).then((response) => console.log(response.data));
 }
 
-export const getDogInfo = (name) => {
-  // if (name === undefined || name === null || name === '' || typeof name === "object")
-  //   return {}
+export const getDogInfo = ({queryKey}) => {
+  const [_, name] = queryKey;
+  console.log('in getDogInfo');
+  console.log(name);
+  if (name === undefined || name === null || name === '' || typeof name === "object")
+    return
   return instance.get(`/get/dog-info/${name}`).then((response) => response.data);
 }
 
