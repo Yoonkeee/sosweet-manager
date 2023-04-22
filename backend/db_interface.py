@@ -150,7 +150,9 @@ class Interface:
                 converted_row[key] = value
                 converted_row['remaining_minutes'] = self.get_remaining_minutes(converted_row['name'])
                 converted_row['used_belts'] = self.get_used_belts(converted_row['name'])
+                converted_row['last_visited'] = self.get_last_visited(converted_row['name'])
             converted_data.append(converted_row)
+            print(f'converted row of {name} : {converted_row}')
         return converted_data[0]
 
     def mod_dog_info(self, data):
@@ -170,6 +172,17 @@ class Interface:
         self.setter.execute(update_query)
         self.db.commit()
         return True
+
+    def get_last_visited(self, name):
+        select_qeury = f"select date from used_table where name = '{name}' and valid='Y' order by id desc limit 1"
+        self.getter.execute(select_qeury)
+        data = self.getter.fetchone()
+        if data and len(data) > 0:
+            data = data[0].strftime('%y년 %m월 %d일').replace(" 0", " ")
+        else:
+            data = ''
+        # print(data)
+        return data
 
     def del_dog_info(self, name):
         pass

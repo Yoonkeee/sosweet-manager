@@ -49,12 +49,21 @@ export default function DogInfo({isOpen, onClose, name}) {
     const [remainingTime, setRemainingTime] = useState('');
     const [usedBelts, setUsedBelts] = useState('');
     const [beltColor, setBeltColor] = useState('green');
+    const [lastVisited, setLastVisited] = useState('');
+    const [visitColor, setVisitColor] = useState('telegram');
     useEffect(() => {
         if (data && !isLoading) {
             setRemainingTime(formatMinuteToTime(data.remaining_minutes))
             setUsedBelts(data.used_belts)
             if (data.used_belts > 0) {
                 setBeltColor('orange')
+            }
+            if (data.last_visited) {
+                setVisitColor('telegram')
+                setLastVisited(data.last_visited)
+            } else {
+                setVisitColor('pink')
+                setLastVisited('기록에 없어요ㅜ')
             }
         }
     }, [data]);
@@ -70,9 +79,23 @@ export default function DogInfo({isOpen, onClose, name}) {
             })
         }
     }, [isOpen]);
+    const onReset = () => {
+        reset({
+            officialName: '',
+            dogInfo: '',
+            dogBreed: '',
+            dogGender: '',
+            phone: '',
+            dogWeight: '',
+        })
+        setUsedBelts('');
+        setRemainingTime('')
+        setLastVisited('')
+        setBeltColor('green')
+    }
     const onCloseFn = () => {
         onClose();
-        reset();
+        onReset();
     }
     const [timeColor, setTimeColor] = useState('green');
     useEffect(() => {
@@ -146,6 +169,12 @@ export default function DogInfo({isOpen, onClose, name}) {
                                     {remainingTime}
                                 </Badge>
                             {/*<Text ml={1} w={'50%'}></Text>*/}
+                        </HStack>
+                        <HStack w={'100%'}>
+                            <Text minW={'25%'}>최근방문</Text>
+                            <Badge ml='1' fontSize='xl' colorScheme={'telegram'}>
+                                {data && data.last_visited}
+                            </Badge>
                         </HStack>
                     </VStack>
                     <ModalFooter>
