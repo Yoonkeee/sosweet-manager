@@ -54,7 +54,7 @@ export default function DogInfo({isOpen, onClose, name}) {
     useEffect(() => {
         if (data && !isLoading) {
             setRemainingTime(formatMinuteToTime(data.remaining_minutes))
-            setUsedBelts(data.used_belts)
+            setUsedBelts(data.used_belts + '개')
             if (data.used_belts > 0) {
                 setBeltColor('orange')
             }
@@ -88,10 +88,6 @@ export default function DogInfo({isOpen, onClose, name}) {
             phone: '',
             dogWeight: '',
         })
-        setUsedBelts('');
-        setRemainingTime('')
-        setLastVisited('')
-        setBeltColor('green')
     }
     const onCloseFn = () => {
         onClose();
@@ -152,7 +148,7 @@ export default function DogInfo({isOpen, onClose, name}) {
                                 {...register("phone")}
                             />
                             <Badge ml='1' fontSize='xl' colorScheme={beltColor}>
-                                {usedBelts}개
+                                {usedBelts}
                             </Badge>
                         </HStack>
                         <HStack w={'100%'}>

@@ -33,6 +33,7 @@ export default function ModifyDog({isOpen, onClose}) {
     const [usedBelts, setUsedBelts] = useState('');
     const [lastVisited, setLastVisited] = useState('');
     const [visitColor, setVisitColor] = useState('telegram');
+    const [timeColor, setTimeColor] = useState('green');
     const queryClient = useQueryClient();
     const mutation = useMutation(modDog, {
         onSuccess: () => {
@@ -75,6 +76,11 @@ export default function ModifyDog({isOpen, onClose}) {
                 setVisitColor('pink')
                 setLastVisited('기록에 없어요ㅜ')
             }
+            if (data && data.remaining_minutes < 0) {
+                setTimeColor('red')
+            } else {
+                setTimeColor('green')
+            }
         }
     }, [data]);
     const onReset = () => {
@@ -97,12 +103,11 @@ export default function ModifyDog({isOpen, onClose}) {
         onClose();
         onReset();
     }
-    const [timeColor, setTimeColor] = useState('green');
-    useEffect(() => {
-        if (data && data.remaining_minutes < 0) {
-            setTimeColor('red')
-        }
-    }, [remainingTime]);
+    // useEffect(() => {
+    //     if (data && data.remaining_minutes < 0) {
+    //         setTimeColor('red')
+    //     }
+    // }, [remainingTime]);
     const onNameChange = (e) => {
         if (e.target.value === '') {
             onReset();
