@@ -29,12 +29,14 @@ import {useEffect, useRef, useState} from "react";
 import {BiPlus} from "react-icons/bi";
 import Checkout from "../modals/Checkout";
 import ChangeCheckInTime from "../modals/ChangeCheckInTime";
-import {cancelCheckin, cancelHistory, setBelt} from "../api";
-import {useMutation, useQueryClient} from "react-query";
+import {cancelCheckin, cancelHistory, getHistory, setBelt} from "../api";
+import {useMutation, useQuery, useQueryClient} from "react-query";
 import DogInfo from "../modals/DogInfo";
+import ModifyHistory from "../modals/ModifyHistory";
 
 export default function CheckoutTimetableRow(props) {
-    var {id, name, in_time, out_time} = props.data
+    var {id, name, belts, in_time, out_time, date} = props.data;
+    // var {id, name, in_time, out_time} = props.data
     const {
         isOpen: isOutOpen, onOpen: onOutOpen, onClose: onOutClose
     } = useDisclosure()
@@ -45,6 +47,9 @@ export default function CheckoutTimetableRow(props) {
         isOpen: checkoutModIsOpen, onOpen: checkoutModOnOpen, onClose: checkoutModOnClose
     } = useDisclosure()
     const {isOpen: deleteIsOpen, onOpen: deleteOnOpen, onClose: deleteOnClose} = useDisclosure()
+    const {isOpen: modHistoryIsOpen, onOpen: modHistoryOnOpen, onClose: modHistoryOnClose} = useDisclosure()
+    const {isOpen: dogInfoModISOpen, onClose: dogInfoModOnClose, onOpen: dogInfoModOnOpen} = useDisclosure();
+    const {isLoading, data} = useQuery(["history", name], getHistory);
     const toast = useToast();
     const breakpoint = useBreakpoint({ssr: false})
     const buttonSize = useBreakpointValue({base: 'xs', md: 'md'}, {ssr: false})
@@ -80,7 +85,6 @@ export default function CheckoutTimetableRow(props) {
             setNameColor('#ff7f50')
         }
     }, [props.data.remaining_minutes]);
-    const {isOpen: dogInfoModISOpen, onClose: dogInfoModOnClose, onOpen: dogInfoModOnOpen} = useDisclosure();
     return (<>
         <Tr textAlign={'center'}>
             <Td px={0}>
@@ -92,20 +96,21 @@ export default function CheckoutTimetableRow(props) {
             </Td>
             <Td px={0} textAlign={'center'}>
                 <Button fontSize={'xl'} px={0} w={'80%'} fontWeight={'bold'} textColor={nameColor} colorScheme={'white'}
-                        onClick={checkinModOnOpen}
+                        onClick={modHistoryOnOpen}
                         size={buttonSize}>
                     {in_time}
-                    <ChangeCheckInTime isOpen={checkinModIsOpen} onClose={checkinModOnClose}
-                                       id={id} name={name} in_time={in_time} in_or_out={'in'}/>
+                    <ModifyHistory isOpen={modHistoryIsOpen} onClose={modHistoryOnClose} data={props.data}/>
+                    {/*<ChangeCheckInTime isOpen={checkinModIsOpen} onClose={checkinModOnClose}*/}
+                    {/*                   id={id} name={name} in_time={in_time} in_or_out={'in'}/>*/}
                 </Button>
             </Td>
             <Td px={0} textAlign={'center'}>
                 <Button fontSize={'xl'} px={0} w={'80%'} fontWeight={'bold'} textColor={nameColor} colorScheme={'white'}
-                        onClick={checkoutModOnOpen}
+                        onClick={modHistoryOnOpen}
                         size={buttonSize}>
                     {out_time}
-                    <ChangeCheckInTime isOpen={checkoutModIsOpen} onClose={checkoutModOnClose}
-                                       id={id} name={name} in_time={out_time} in_or_out={'out'}/>
+                    {/*<ChangeCheckInTime isOpen={checkoutModIsOpen} onClose={checkoutModOnClose}*/}
+                    {/*                   id={id} name={name} in_time={out_time} in_or_out={'out'}/>*/}
                 </Button>
             </Td>
             <Td px={0} textAlign={'center'}>

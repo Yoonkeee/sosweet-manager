@@ -55,6 +55,10 @@ export default function History() {
   }));
   // if Select option is changed, set mutation
   useEffect(() => {
+    setName('ALL')
+  }, []);
+
+  useEffect(() => {
     if (name) {
       console.log('mutated '+name);
       queryClient.refetchQueries(["history", name]);
@@ -113,15 +117,8 @@ export default function History() {
           {data && data.map((item) => (
             <>
             <HistoryRow
-              name={item.name}
-              date={item.date}
-              used_minutes={item.used_minutes}
-              id={item.id}
-              checked={item.checked}
-              in_time={item.in_time}
-              out_time={item.out_time}
-              checked_date={item.checked_date}
-              belts={item.belts}
+              data={item}
+              key={item.id}
             />
             </>
           ))}

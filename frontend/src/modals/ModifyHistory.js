@@ -45,22 +45,27 @@ function minutesToHHMM(minutes) {
   return `${formattedHours}:${formattedMinutes}`;
 }
 
-
 export default function ModifyHistory(props) {
+  console.log('!');
+  console.log(props.data);
+  console.log('@');
   // debugger;
   const [onClose, isOpen] = [props.onClose, props.isOpen];
-  // const {belts, checked, checked_date, day, id, in_time, name, out_time, used_minutes} = props;
-  const {id, name, belts, checked, checked_date, in_time, out_time, date} = props.data;
+  // const {belts, checked, checked_date, day, id, in_time, name, out_time, used_minutes} = props.data;
+  // const id = props.data.id;
+  const {id, name, belts, in_time, out_time, date} = props.data;
   // const [id, name, belts] = [props.data.id, props.data.name, props.data.belts];
-  const [nowDate, setNowDate] = useState(moment.utc(date, 'YYYY-MM-DD'));
+  const [nowDate, setNowDate] = useState(moment.utc(date));
   const [formattedDate, setFormattedDate] = useState();
   useEffect(() => {
     setFormattedDate(moment.utc(nowDate, 'YYYY-MM-DD').format('M월 D일 dddd'));
   }, [nowDate]);
   const ref = useRef(null)
   let checkoutData = {};
-  const defaultInTime = moment.utc(in_time).format("HH:mm").replace(":", '');
-  const defaultOutTime = moment.utc(out_time).format("HH:mm").replace(":", '');
+  const defaultInTime = in_time.replace(":", '');
+  const defaultOutTime = out_time.replace(":", '');
+  console.log(in_time, out_time);
+  console.log(defaultInTime, defaultOutTime);
   let inPinNumber = defaultInTime.split("");
   let outPinNumber = defaultOutTime.split("");
   const {register, reset, handleSubmit, setValue} = useForm(

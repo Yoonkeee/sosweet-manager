@@ -254,14 +254,28 @@ class Interface:
     def get_history(self, name, get_message=False):
         if get_message:
             select_query = f"SELECT * FROM used_table WHERE name = '{name}' and checked != 1 AND valid='Y' ORDER BY date DESC"
+        elif name == 'ALL':
+            select_query = f"SELECT * FROM used_table WHERE valid='Y' ORDER BY date DESC LIMIT 30"
         else:
             select_query = f"SELECT * FROM used_table WHERE name = '{name}' AND valid='Y' ORDER BY date DESC"
         print(select_query)
         self.getter.execute(select_query)
         columns = [col[0] for col in self.getter.description]
         data = [dict(zip(columns, row)) for row in self.getter.fetchall()]
+        print(data)
+        converted_data = []
+        for row in data:
+            converted_row = {}
+            for key, value in row.items():
+                if key == 'in_time' or key == 'out_time':
+                    print(value)
+                    converted_row[key] = self.convert_to_hhmm(value)
+                else:
+                    converted_row[key] = value
+            # converted_row['remaining_minutes'] = self.get_remaining_minutes(converted_row['name'])
+            converted_data.append(converted_row)
+        return converted_data
         # print(data)
-        return data
 
     def get_pay_history(self):
         select_query = f"SELECT * FROM paid WHERE valid='Y' ORDER BY date DESC"
@@ -571,6 +585,14 @@ class Interface:
         if not remaining_minutes:
             return 0
         return remaining_minutes
+
+    def convert_to_hhmm(self, input_time):
+        if type(input_time) == str:
+            dt_obj = datetime.strptime(input_time, '%Y-%m-%dT%H:%M:%S')
+            time_str = dt_obj.strftime('%H:%M')
+        else:
+            time_str = input_time.strftime('%H:%M')
+        return time_str
 
     def make_message(self, row_ids):
         select_query = f"""

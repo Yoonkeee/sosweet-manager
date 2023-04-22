@@ -3,21 +3,20 @@ import {Button, Td, Text, Tr, useBreakpointValue, useDisclosure,} from '@chakra-
 import moment from "moment/moment";
 import ModifyHistory from "../modals/ModifyHistory";
 
-export default function HistoryRow(data) {
+export default function HistoryRow(props) {
   console.log('in history row');
-  console.log(data);
   const formatDate = (dateStr) => {
     return moment.utc(dateStr, 'YYYY-MM-DD').format('M월 D일')
   };
-  const formatTime = (timeStr) => {
-    return moment(timeStr, 'YYYY-MM-DDTHH:mm:ss').format('HH:mm');
-  };
+  // const formatTime = (timeStr) => {
+  //   return moment(timeStr, 'YYYY-MM-DDTHH:mm:ss').format('HH:mm');
+  // };
   const formatTimeFromMinutes = (minutes) => {
     const hours = Math.floor(minutes / 60);
     const mins = minutes % 60;
     return moment().startOf('day').add(hours, 'hours').add(mins, 'minutes').format('HH:mm');
   };
-  const {belts, checked, checked_date, date, id, in_time, name, out_time, used_minutes} = data;
+  const {belts, date, id, in_time, name, out_time, used_minutes} = props.data;
   const {isOpen, onClose, onOpen} = useDisclosure()
   const showUsedTime = useBreakpointValue({ base: false, md: true });
   return (<>
@@ -29,7 +28,7 @@ export default function HistoryRow(data) {
       </Td>
       <Td px={0} textAlign={'center'}>
         <Text fontSize={'md'} textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>
-          {formatDate(date) + ' ' + formatTime(in_time) + '~' + formatTime(out_time)}
+          {formatDate(date) + ' ' + in_time + '~' + out_time}
         </Text>
       </Td>
       {showUsedTime && <Td px={0} textAlign={'center'}>
@@ -56,7 +55,7 @@ export default function HistoryRow(data) {
                   textDecoration: 'none', color: 'white', bg: '#526491', transform: 'scale(1.2)'
                 }}>
           수정하기</Button>
-        <ModifyHistory isOpen={isOpen} onClose={onClose} data={data}/>
+        <ModifyHistory isOpen={isOpen} onClose={onClose} data={props.data}/>
       </Td>
     </Tr>
   </>)
