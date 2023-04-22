@@ -8,6 +8,6 @@ export default function Home() {
         // console.log(document.style.backgroundColor);
     }, []);
     return (
-        <Image h={'80vh'} w={'100vw'} src={'main_img2.jpeg'} objectFit={'cover'}></Image>
+        <Image h={'80vh'} w={'100vw'} src={'main_img.jpeg'} objectFit={'cover'}></Image>
     )
 }
