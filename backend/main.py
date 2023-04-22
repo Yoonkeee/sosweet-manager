@@ -57,8 +57,14 @@ def set_backup():
 
 tz = pytz.timezone('UTC')
 scheduler = BackgroundScheduler()
-scheduler.add_job(execute_keep_alive, 'interval', minutes=60)
-scheduler.add_job(set_backup, 'interval', hours=12, next_run_time=datetime.now(tz) + timedelta(minutes=1))
+# scheduler.add_job(execute_keep_alive, 'interval', minutes=60)
+scheduler.add_job(execute_keep_alive, 'cron', minute='15', timezone=tz)
+scheduler.add_job(set_backup, 'cron', hour=9, minute=0, timezone=tz)
+scheduler.add_job(set_backup, 'cron', hour=12, minute=0, timezone=tz)
+scheduler.add_job(set_backup, 'cron', hour=15, minute=0, timezone=tz)
+scheduler.add_job(set_backup, 'cron', hour=18, minute=0, timezone=tz)
+scheduler.add_job(set_backup, 'cron', hour=21, minute=0, timezone=tz)
+# scheduler.add_job(set_backup, 'interval', hours=12, next_run_time=datetime.now(tz) + timedelta(minutes=1))
 scheduler.start()
 
 
