@@ -139,7 +139,9 @@ export default function CheckoutTimetableRow(props) {
                     </Portal>
                 </Popover>
             </Td>
-            <Td/>
+            <Td>
+                {belts > 0 ? belts : ''}
+            </Td>
         </Tr>
 
         <DogInfo isOpen={dogInfoModISOpen} onClose={dogInfoModOnClose}
