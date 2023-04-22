@@ -137,7 +137,6 @@ export default function Checkout({isOpen, onClose, id, name, in_time, belts}) {
   const cancel = () => {
     cancelMutation.mutate(id)
   };
-  // TODO 모달창 vw -> %로 변경
   // const firstPin = useRef();
   // useEffect(() => {
   //   setTimeout(() => {
@@ -172,8 +171,9 @@ export default function Checkout({isOpen, onClose, id, name, in_time, belts}) {
             <HStack w={'100%'}>
               <Text my={'6%'} w={'30%'}>매너벨트 사용량</Text>
               <NumberInput size='md' maxW={'30%'} min={0}
-                           value={belts}
-                           {...register('belts')}>
+                           defaultValue={belts}
+                           {...register('belts')}
+              >
                 <NumberInputField/>
                 <NumberInputStepper>
                   <NumberIncrementStepper/>
