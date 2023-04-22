@@ -1,0 +1,21 @@
+name: FastAPI Back-end
+
+on:
+  push:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+  
+jobs:
+  git-pull-merge:
+    runs-on: macos-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        ref: main
+    - name: Git pull
+      run: git -c credential.helper= -c core.quotepath=false -c log.showSignature=false fetch origin --recurse-submodules=no --progress --prune
+    - name: Git merge
+      run: git -c credential.helper= -c core.quotepath=false -c log.showSignature=false merge origin/main --no-stat -v
