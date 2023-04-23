@@ -55,7 +55,7 @@ def set_backup():
     print(db_interface.set_backup())
 
 
-tz = pytz.timezone('UTC')
+tz = pytz.timezone('Asia/Seoul')
 scheduler = BackgroundScheduler()
 # for test 2
 # scheduler.add_job(execute_keep_alive, 'interval', minutes=60)
