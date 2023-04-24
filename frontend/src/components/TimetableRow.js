@@ -24,10 +24,12 @@ import Checkout from "../modals/Checkout";
 import ChangeCheckInTime from "../modals/ChangeCheckInTime";
 import {setBelt} from "../api";
 import DogInfo from "../modals/DogInfo";
+import {useQueryClient} from "react-query";
 
 export default function TimetableRow(props) {
+    console.log('in timetable row')
     console.log(props.data)
-    const {id, name, in_time, out_time, belts: loaded_belts} = props.data
+    const {id, name, in_time, out_time, belts: loaded_belts, date} = props.data
     const [belts, setBelts] = useState(loaded_belts)
     const {
         isOpen: isOutOpen, onOpen: onOutOpen, onClose: onOutClose
@@ -35,11 +37,13 @@ export default function TimetableRow(props) {
     const {
         isOpen: checkinModIsOpen, onOpen: checkinModOnOpen, onClose: checkinModOnClose
     } = useDisclosure()
+    const queryClient = useQueryClient()
     useEffect(() => {
         if (belts)
-        console.log('belts effected')
+            console.log('belts effected')
         console.log(belts)
-            setBelt([id, belts])
+        setBelt([id, belts])
+        queryClient.refetchQueries(["timetable", date])
     }, [belts]);
     const breakpoint = useBreakpoint({ssr: false})
     const buttonSize = useBreakpointValue({base: 'xs', md: 'md'}, {ssr: false})
@@ -120,7 +124,7 @@ export default function TimetableRow(props) {
         <Checkout isOpen={isOutOpen} onClose={onOutClose} id={id}
                   name={name} in_time={in_time} belts={belts}
         />
-        <DogInfo isOpen={dogInfoModIsOpen} onClose={dogInfoModOnClose}
-                 name={name}/>
+        {dogInfoModIsOpen ? <DogInfo isOpen={dogInfoModIsOpen} onClose={dogInfoModOnClose}
+                  name={name}/> : ''}
     </>)
 }

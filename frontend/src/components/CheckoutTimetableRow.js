@@ -63,7 +63,7 @@ export default function CheckoutTimetableRow(props) {
                     <>
                         사용내역 삭제! <br/>
                         댕댕이 : {name} <br/>
-                        사용날짜 : {document.getElementById('formattedNowDate').innerText} <br/>
+                        사용날짜 : {document.getElementById('formattedNowDateTimetable').innerText} <br/>
                     </>),
                 status: "success",
                 position: "top",
@@ -72,6 +72,8 @@ export default function CheckoutTimetableRow(props) {
             });
             queryClient.refetchQueries(["timetable"]);
             queryClient.refetchQueries(["checkoutTimetable"]);
+            queryClient.refetchQueries(["timetable", date]);
+            queryClient.refetchQueries(['checkoutTimetable', date]);
         },
     });
     const cancel = () => {
@@ -144,7 +146,7 @@ export default function CheckoutTimetableRow(props) {
             </Td>
         </Tr>
 
-        <DogInfo isOpen={dogInfoModISOpen} onClose={dogInfoModOnClose}
-                 name={name}/>
+        {dogInfoModISOpen ? <DogInfo isOpen={dogInfoModISOpen} onClose={dogInfoModOnClose}
+                 name={name}/> : ''}
     </>)
 }
