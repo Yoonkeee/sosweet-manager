@@ -42,6 +42,7 @@ export default function Footer() {
     <Box>
       <Image
         h={'8vh'}
+        mb={'1.5vh'}
         src={'logo_word.png'}
         filter={'invert(1)'}
       />
