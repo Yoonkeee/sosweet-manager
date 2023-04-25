@@ -15,6 +15,7 @@ import {useQuery, useQueryClient} from "react-query";
 import {getCheckoutTimetable, getTimeTable, notOutTimetable, strToLocaleWithoutWeekday} from "../api";
 import {tomorrow, yesterday, setToday, makeTemporal} from "../store";
 import CheckoutTimetableRow from "../components/CheckoutTimetableRow";
+import {Temporal} from "@js-temporal/polyfill";
 
 export default function Timetable() {
     let date = makeTemporal(useSelector((state) => state.currentDate))
@@ -46,7 +47,6 @@ export default function Timetable() {
                 position: 'top'
             })
         }
-        queryClient.refetchQueries('notOut')
     }, [date]);
     useEffect(() => {
         dispatch(setToday());
@@ -71,8 +71,9 @@ export default function Timetable() {
                     <ArrowBackIcon fontSize={'3xl'} fontWeight={'extrabold'}/>}
                             onClick={() => {
                                 dispatch(yesterday())
-                                // console.log(date)
-                                queryClient.refetchQueries(["timetable"]);
+                                queryClient.refetchQueries('notOut')
+                                queryClient.refetchQueries(['checkoutTimetable', date])
+                                queryClient.refetchQueries(["timetable", date]);
                             }}
                 />
                 <Text mt={'2vh'} fontSize={'2xl'} fontWeight={'bold'} marginX={'10px'} textAlign={'center'}
@@ -91,7 +92,9 @@ export default function Timetable() {
                     <ArrowForwardIcon fontSize={'3xl'} fontWeight={'extrabold'}/>}
                             onClick={() => {
                                 dispatch(tomorrow())
-                                // console.log(date)
+                                queryClient.refetchQueries('notOut')
+                                queryClient.refetchQueries(['checkoutTimetable', date])
+                                queryClient.refetchQueries(["timetable", date]);
                             }}
                 />
             </HStack>
