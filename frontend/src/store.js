@@ -1,48 +1,42 @@
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 import moment from 'moment';
+import { Temporal } from '@js-temporal/polyfill';
 
-let today = moment(new Date()).format('YYYY-MM-DD');
+let today = Temporal.Now.plainDateISO().toString()
+export let makeTemporal = function (date) {
+  return Temporal.PlainDate.from(date);
+}
+// debugger;
 let currentDate = createSlice({
   name: 'date',
   initialState: today,
+  // initialState: makeTemporal(today),
   reducers: {
-    setToday: state => {
-      state = moment(new Date()).format('YYYY-MM-DD');
-      return state;
+    setToday: () => {
+      today = Temporal.Now.plainDateISO().toString()
+      return today;
+    },
+    getTemporal: state => {
+        return Temporal.PlainDate.from(state);
     },
     tomorrow: state => {
-      console.log('before tomorrow' + state);
-      const nextDate = moment(state).add(1, 'day').format("YYYY-MM-DD");
-      console.log('after tomorrow' + nextDate);
+      let nextDate = Temporal.PlainDate.from(state).add({days: 1}).toString()
       return nextDate;
     },
     yesterday: state => {
-      console.log('before yesterday' + state);
-      const prevDate = moment(state).subtract(1, 'day').format("YYYY-MM-DD");
-      console.log('after yesterday' + prevDate);
+      let prevDate = Temporal.PlainDate.from(state).subtract({days: 1}).toString()
       return prevDate;
     },
-    setDate: (state, action) => {
-      const dateObject = moment(action.payload, 'YYYYMMDD').toDate();
-      if (isNaN(dateObject.getTime())) {
-        // invalid date string
-        return state;
-      } else {
-        return dateObject;
-      }
-    }
+    // setDate: (state, action) => {
+    //   const dateObject = moment(action.payload, 'YYYYMMDD').toDate();
+    //   if (isNaN(dateObject.getTime())) {
+    //     // invalid date string
+    //     return state;
+    //   } else {
+    //     return dateObject;
+    //   }
+    // }
   },
-  extraReducers: builder => {
-    builder
-      .addMatcher(
-        action => action.type.endsWith('/fulfilled'),
-        (state, action) => {
-          const dateObject = new Date(action.payload);
-          const dateString = moment(dateObject).format('YYYYMMDD');
-          return dateObject.getTime() ? dateObject : state;
-        }
-      );
-  }
 });
 
 const selectedDog = createSlice({
@@ -50,8 +44,7 @@ const selectedDog = createSlice({
   initialState: '',
   reducers: {
     setDog: (state, action) => {
-      console.log(state);
-      console.log('setDog ' + action.payload.name);
+      // console.log('setDog ' + action.payload.name);
       return action.payload.name;
     }
   }
@@ -62,5 +55,5 @@ export default configureStore({
        selectedDog: selectedDog.reducer}
 });
 
-export let { yesterday, tomorrow, setDate, setToday } = currentDate.actions;
+export let { yesterday, getTemporal, tomorrow, setToday } = currentDate.actions;
 export let { setDog } = selectedDog.actions;

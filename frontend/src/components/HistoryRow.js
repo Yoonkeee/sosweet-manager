@@ -1,20 +1,21 @@
 import {Button, Td, Text, Tr, useBreakpointValue, useDisclosure,} from '@chakra-ui/react'
-// import "react-icons/all";
-import moment from "moment/moment";
 import ModifyHistory from "../modals/ModifyHistory";
+import {strToLocaleWithoutWeekday} from "../api";
+import {Temporal} from "@js-temporal/polyfill";
 
 export default function HistoryRow(props) {
-  console.log('in history row');
   const formatDate = (dateStr) => {
-    return moment.utc(dateStr, 'YYYY-MM-DD').format('M월 D일')
+    return strToLocaleWithoutWeekday(dateStr);
   };
-  // const formatTime = (timeStr) => {
-  //   return moment(timeStr, 'YYYY-MM-DDTHH:mm:ss').format('HH:mm');
-  // };
   const formatTimeFromMinutes = (minutes) => {
     const hours = Math.floor(minutes / 60);
     const mins = minutes % 60;
-    return moment().startOf('day').add(hours, 'hours').add(mins, 'minutes').format('HH:mm');
+    const datetime = Temporal.PlainTime.from({hour: hours, minute: mins });
+    return datetime.toLocaleString([], {
+      hour12: false,
+      hour: 'numeric',
+      minute: '2-digit',
+    });
   };
   const {belts, date, id, in_time, name, out_time, used_minutes} = props.data;
   const {isOpen, onClose, onOpen} = useDisclosure()
@@ -41,13 +42,6 @@ export default function HistoryRow(props) {
           {belts > 0 ? <Text fontSize='lg'>{belts}</Text> : ''}
         </Text>
       </Td>
-      {/*<Td px={0} textAlign={'center'}>*/}
-      {/*  {checked ?*/}
-      {/*    <Text fontSize='lg' textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>*/}
-      {/*      {formatDate(checked_date)}*/}
-      {/*    </Text>*/}
-      {/*    : (<></>)}*/}
-      {/*</Td>*/}
       <Td px={0} py={2} textAlign={'center'}>
         <Button position={'inherit'} onClick={onOpen} bg={'#1a2a52'} color={'white'}
                 fontSize={'md'}

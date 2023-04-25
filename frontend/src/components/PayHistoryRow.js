@@ -1,23 +1,14 @@
 import {Button, Td, Text, Tr, useDisclosure,} from '@chakra-ui/react'
 // import "react-icons/all";
-import moment from "moment/moment";
 import ModifyHistory from "../modals/ModifyHistory";
 import ModifyPay from "../modals/ModifyPay";
+import {strToLocaleWithoutWeekday} from "../api";
 
 export default function PayHistoryRow(props) {
-  console.log(props.data);
-  const formatDate = (dateStr) => {
-    return moment.utc(dateStr, 'YYYY-MM-DD').format('M월 D일')
-  };
-  const formatTime = (timeStr) => {
-    return moment(timeStr, 'YYYY-MM-DDTHH:mm:ss').format('HH:mm');
-  };
-  const formatTimeFromMinutes = (minutes) => {
-    const hours = Math.floor(minutes / 60);
-    const mins = minutes % 60;
-    return moment().startOf('day').add(hours, 'hours').add(mins, 'minutes').format('HH:mm');
-  };
   const {name, minutes, date, id} = props.data;
+  const formatDate = (dateStr) => {
+    return strToLocaleWithoutWeekday(dateStr)
+  };
   const {isOpen, onClose, onOpen} = useDisclosure()
   return (<>
     <Tr>

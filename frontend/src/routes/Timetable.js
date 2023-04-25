@@ -12,18 +12,17 @@ import {
 import TimetableRow from "../components/TimetableRow";
 import {ArrowBackIcon, ArrowForwardIcon} from "@chakra-ui/icons";
 import {useSelector, useDispatch} from "react-redux";
-import moment, {now} from "moment/moment";
-import 'moment/locale/ko'
 import {useEffect, useState} from "react";
 import {useQuery, useQueryClient} from "react-query";
-import {dogsList, getCheckoutTimetable, getTimeTable, notOutTimetable} from "../api";
-import {tomorrow, yesterday, setToday} from "../store";
+import {dogsList, getCheckoutTimetable, getTimeTable, notOutTimetable, strToLocaleWithoutWeekday} from "../api";
+import {tomorrow, yesterday, setToday, getTemporal, makeTemporal} from "../store";
 import CheckoutTimetableRow from "../components/CheckoutTimetableRow";
+import {Temporal} from "@js-temporal/polyfill";
 
 export default function Timetable() {
-    let date = useSelector((state) => state.currentDate);
+    let date = makeTemporal(useSelector((state) => state.currentDate))
     const dispatch = useDispatch();
-    let formattedDate = moment.utc(date, 'YYYY-MM-DD').format('M월 D일 dddd');
+    let formattedDate = date.toLocaleString('ko-KR', { month: 'long', day: 'numeric', weekday: 'long' });
     const {isLoading, data} = useQuery(["timetable", date], getTimeTable);
     const {
         isLoading: checkoutIsLoading,
@@ -33,29 +32,33 @@ export default function Timetable() {
     const queryClient = useQueryClient();
     const toast = useToast();
     const toastId = 'notOutToast'
+    // notout 체크아웃 리페치
     useEffect(() => {
         toast.closeAll()
         if (notOutData && notOutData.length > 0) {
             toast({
-                id: toastId,
+                // id: toastId + Temporal.Now.instant.toString(),
                 title: "체크아웃 하지 않은 댕댕이가 있습니다.",
                 description: notOutData.map((notOut) => {
-                    let month = moment.utc(notOut.date, 'YYYY-MM-DD').format('M');
-                    let day = moment.utc(notOut.date, 'YYYY-MM-DD').format('D');
-                    // if(parseInt(month) !== todayMonth || parseInt(day) !== todayDate)
-                    return <Text>{month}월 {day}일 {notOut.name}</Text>
+                    let notOutDate = strToLocaleWithoutWeekday(notOut.date)
+                    return <Text>{notOutDate} {notOut.name}</Text>
                 }),
                 status: "warning",
-                duration: 1500,
+                duration: 700,
                 isClosable: true,
-                position: 'center'
+                position: 'top'
             })
         }
-    }, []);
+        queryClient.refetchQueries('notOut')
+    }, [date]);
     useEffect(() => {
         dispatch(setToday());
         queryClient.refetchQueries('notOut')
     }, []);
+    useEffect(() => {
+        // console.log('checkoutData: ', checkoutData);
+    }, [checkoutData]);
+
     return (
         <VStack w={'100%'} mt={'2vh'} mb={'10vh'}>
             <HStack w={'100%'} justifyContent={'center'}>
@@ -71,12 +74,12 @@ export default function Timetable() {
                     <ArrowBackIcon fontSize={'3xl'} fontWeight={'extrabold'}/>}
                             onClick={() => {
                                 dispatch(yesterday())
-                                console.log(date)
+                                // console.log(date)
                                 queryClient.refetchQueries(["timetable"]);
                             }}
                 />
                 <Text mt={'2vh'} fontSize={'2xl'} fontWeight={'bold'} marginX={'10px'} textAlign={'center'}
-                      id={'formattedNowDate'}>
+                      id={'formattedNowDateTimetable'}>
                     {formattedDate}
                 </Text>
                 <IconButton rounded={'xl'} w={'6%'} h={'80%'} bg={'#1a2a52'} color={'white'} isRound={true}
@@ -91,7 +94,7 @@ export default function Timetable() {
                     <ArrowForwardIcon fontSize={'3xl'} fontWeight={'extrabold'}/>}
                             onClick={() => {
                                 dispatch(tomorrow())
-                                console.log(date)
+                                // console.log(date)
                             }}
                 />
             </HStack>

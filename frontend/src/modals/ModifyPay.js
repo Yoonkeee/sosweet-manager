@@ -38,10 +38,18 @@ import {
 import {useEffect, useRef, useState} from "react";
 import {useForm} from "react-hook-form";
 import {useMutation, useQueryClient} from "react-query";
-import {addNewDog, cancelCheckin, cancelPay, checkOut, modHistory, modPay} from "../api";
-import {useSelector} from "react-redux";
-import moment from "moment/moment";
+import {
+  addNewDog,
+  cancelCheckin,
+  cancelPay,
+  checkOut,
+  dateStrToTemporal,
+  modHistory,
+  modPay,
+  temporalToLocale
+} from "../api";
 import {ArrowBackIcon, ArrowForwardIcon} from "@chakra-ui/icons";
+import {Temporal} from "@js-temporal/polyfill";
 
 
 function minutesToHHMM(minutes) {
@@ -56,21 +64,20 @@ function minutesToHHMM(minutes) {
 export default function ModifyPay(props) {
   // debugger;
   const [onClose, isOpen] = [props.onClose, props.isOpen];
-  const {name, minutes, date, id} = props.data;
-  console.log(props.data);
+  const {name, minutes, date:propDate, id} = props.data;
   const hours = Math.floor(minutes / 60)
-  console.log(date);
-  const [nowDate, setNowDate] = useState();
+  const [nowDate, setNowDate] = useState(dateStrToTemporal(propDate));
   const [formattedDate, setFormattedDate] = useState();
   useEffect(() => {
-    setNowDate(moment.utc(date, 'YYYY-MM-DD'));
+    setNowDate(dateStrToTemporal(propDate));
+    // setNowDate(moment.utc(propDate, 'YYYY-MM-DD'));
   }, []);
   useEffect(() => {
-    setFormattedDate(moment.utc(nowDate, 'YYYY-MM-DD').format('M월 D일 dddd'));
+    if(nowDate)
+      setFormattedDate(temporalToLocale(nowDate));
   }, [nowDate]);
   const ref = useRef(null)
   let checkoutData = {};
-  console.log(hours);
   const {register, reset, handleSubmit, setValue} = useForm({
     defaultValues: {
       hours: hours, date: nowDate,
@@ -94,18 +101,16 @@ export default function ModifyPay(props) {
     },
   });
   const onSubmit = (data) => {
-    const modDate = moment.utc(document.getElementById('formattedNowDate').innerText, 'M월 D일 dddd').format('YYYY-MM-DD')
-    // const moment = require('moment');
+    const modDate = nowDate.toString()
     checkoutData = {
       name: name, date: modDate, minutes: data.hours * 60, id: id
     }
-    console.log(checkoutData);
     mutation.mutate(checkoutData);
   }
   const cancel = () => {
-    checkoutData = {
-      name: name, date: date, hours: hours, id: id
-    }
+    // checkoutData = {
+    //   name: name, date: date, hours: hours, id: id
+    // }
     cancelMutation.mutate(id);
   };
   const cancelMutation = useMutation(cancelPay, {
@@ -113,7 +118,7 @@ export default function ModifyPay(props) {
       toast({
         title: (<>
           구매 취소! <br/>
-          댕댕이 : {checkoutData.name} <br/>
+          댕댕이 : {name} <br/>
           결제시간 : {hours}시간 <br/>
           결제일 : {formattedDate} <br/>
         </>), status: "success", position: "top", duration: 1000, isClosable: true,
@@ -141,7 +146,7 @@ export default function ModifyPay(props) {
                           textDecoration: 'none', color: 'white', bg: '#526491', rounded: 'xl', transform: 'scale(1.2)'
                         }} aria-label={''} icon={<ArrowBackIcon fontSize={'2xl'} fontWeight={'extrabold'}/>}
                         onClick={() => {
-                          setNowDate(moment(nowDate).subtract(1, 'day'))
+                          setNowDate(nowDate.subtract({days: 1}))
                         }}
             />
             <Text mt={'2vh'} fontSize={'xl'} fontWeight={'semibold'} textAlign={'center'}
@@ -153,7 +158,7 @@ export default function ModifyPay(props) {
                           textDecoration: 'none', color: 'white', bg: '#526491', rounded: 'xl', transform: 'scale(1.2)'
                         }} aria-label={''} icon={<ArrowForwardIcon fontSize={'2xl'} fontWeight={'extrabold'}/>}
                         onClick={() => {
-                          setNowDate(moment(nowDate).add(1, 'day'))
+                          setNowDate(nowDate.add({days: 1}))
                         }}
             />
           </HStack>

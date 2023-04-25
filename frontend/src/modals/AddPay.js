@@ -19,11 +19,10 @@ import {
   VStack
 } from "@chakra-ui/react";
 import {useMutation, useQuery, useQueryClient} from "react-query";
-import {addNewDog, dogsList, getUsedBelts, pay} from "../api";
+import {addNewDog, dogsList, getUsedBelts, pay, temporalToLocale, temporalToStr} from "../api";
 import {useEffect, useState} from "react";
-import moment from "moment";
 import {ArrowBackIcon, ArrowForwardIcon} from "@chakra-ui/icons";
-import {tomorrow, yesterday} from "../store";
+import {Temporal} from "@js-temporal/polyfill";
 
 export default function AddPay({isOpen, onClose}) {
   const {register, reset, handleSubmit, formState: {errors}} = useForm();
@@ -31,12 +30,12 @@ export default function AddPay({isOpen, onClose}) {
   const {isLoading, data} = useQuery(["dogs-list"], dogsList);
   const [name, setName] = useState(0);
   const [belts, setBelts] = useState();
-  const [nowDate, setNowDate] = useState(new Date());
+  const [nowDate, setNowDate] = useState(Temporal.Now.plainDateISO());
   const [formattedDate, setFormattedDate] = useState();
   const [isSwitchOn, setIsSwitchOn] = useState(false);
   const queryClient = useQueryClient();
   useEffect(() => {
-    setFormattedDate(moment.utc(nowDate, 'YYYY-MM-DD').format('M월 D일 dddd'));
+    setFormattedDate(temporalToLocale(nowDate));
   }, [nowDate]);
   const mutation = useMutation(pay, {
     onSuccess: () => {
@@ -50,7 +49,7 @@ export default function AddPay({isOpen, onClose}) {
     },
   });
   const onSubmit = (register) => {
-    register.date = moment.utc(nowDate).format('YYYY-MM-DD');
+    register.date = temporalToStr(nowDate)
     register = {...register, isSwitchOn}
     mutation.mutate(register);
   }
@@ -59,7 +58,7 @@ export default function AddPay({isOpen, onClose}) {
   }));
   useEffect(() => {
     getUsedBelts(name)?.then((res) => {
-      console.log(res);
+      // console.log(res);
       setBelts(res)
     });
   }, [name]);
@@ -79,8 +78,7 @@ export default function AddPay({isOpen, onClose}) {
                       textDecoration: 'none', color: 'white', bg: '#526491', rounded: 'xl', transform: 'scale(1.2)'
                     }} aria-label={''} icon={<ArrowBackIcon fontSize={'3xl'} fontWeight={'extrabold'}/>}
                     onClick={() => {
-                      setNowDate(moment(nowDate).subtract(1, 'day'))
-                      console.log(nowDate)
+                      setNowDate(nowDate.subtract({days: 1}))
                     }}
         />
         <Text mt={'2vh'} fontSize={'2xl'} fontWeight={'semibold'} textAlign={'center'}
@@ -92,8 +90,7 @@ export default function AddPay({isOpen, onClose}) {
                       textDecoration: 'none', color: 'white', bg: '#526491', rounded: 'xl', transform: 'scale(1.2)'
                     }} aria-label={''} icon={<ArrowForwardIcon fontSize={'3xl'} fontWeight={'extrabold'}/>}
                     onClick={() => {
-                      setNowDate(moment(nowDate).add(1, 'day'))
-                      console.log(nowDate)
+                      setNowDate(nowDate.add({days: 1}))
                     }}
         />
       </HStack>

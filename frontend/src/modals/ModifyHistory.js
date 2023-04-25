@@ -31,10 +31,11 @@ import {
 import {useEffect, useRef, useState} from "react";
 import {useForm} from "react-hook-form";
 import {useMutation, useQueryClient} from "react-query";
-import {addNewDog, cancelCheckin, cancelHistory, checkOut, modHistory} from "../api";
+import {addNewDog, cancelCheckin, cancelHistory, checkOut, dateStrToTemporal, getTimeTable, modHistory} from "../api";
 import {useSelector} from "react-redux";
 import moment from "moment/moment";
 import {ArrowBackIcon, ArrowForwardIcon} from "@chakra-ui/icons";
+import {Temporal} from "@js-temporal/polyfill";
 
 
 function minutesToHHMM(minutes) {
@@ -46,26 +47,18 @@ function minutesToHHMM(minutes) {
 }
 
 export default function ModifyHistory(props) {
-  console.log('!');
-  console.log(props.data);
-  console.log('@');
-  // debugger;
   const [onClose, isOpen] = [props.onClose, props.isOpen];
-  // const {belts, checked, checked_date, day, id, in_time, name, out_time, used_minutes} = props.data;
-  // const id = props.data.id;
-  const {id, name, belts, in_time, out_time, date} = props.data;
-  // const [id, name, belts] = [props.data.id, props.data.name, props.data.belts];
-  const [nowDate, setNowDate] = useState(moment.utc(date));
+  const {id, name, belts, in_time, out_time, date:propDate} = props.data;
+  const [tobeDate, setTobeDate] = useState(dateStrToTemporal(propDate));
+  const [originDate, setoriginDate] = useState(dateStrToTemporal(propDate));
   const [formattedDate, setFormattedDate] = useState();
   useEffect(() => {
-    setFormattedDate(moment.utc(nowDate, 'YYYY-MM-DD').format('M월 D일 dddd'));
-  }, [nowDate]);
+    setFormattedDate(tobeDate.toLocaleString('ko-KR', { month: 'long', day: 'numeric', weekday: 'long' }));
+  }, [tobeDate]);
   const ref = useRef(null)
   let checkoutData = {};
   const defaultInTime = in_time.replace(":", '');
   const defaultOutTime = out_time.replace(":", '');
-  console.log(in_time, out_time);
-  console.log(defaultInTime, defaultOutTime);
   let inPinNumber = defaultInTime.split("");
   let outPinNumber = defaultOutTime.split("");
   const {register, reset, handleSubmit, setValue} = useForm(
@@ -80,12 +73,15 @@ export default function ModifyHistory(props) {
   const queryClient = useQueryClient();
   const mutation = useMutation(modHistory, {
     onSuccess: (data) => {
+      // console.log('mod History date, name');
+      // console.log(originDate)
+      // console.log(name)
       toast({
         title: (
           <>
             사용내역 수정! <br/>
             댕댕이 : {checkoutData.name} <br/>
-            사용날짜 : {document.getElementById('formattedNowDate').innerText} <br/>
+            사용날짜 : {formattedDate} <br/>
             입장시간 : {checkoutData.in_time} <br/>
             퇴장시간 : {checkoutData.out_time} <br/>
             이용시간 : {minutesToHHMM(checkoutData.minutes)} <br/>
@@ -98,15 +94,17 @@ export default function ModifyHistory(props) {
       });
       onClose();
       reset();
+      // console.log('refetchQueries');
+      // console.log(originDate)
+      queryClient.refetchQueries(["timetable", originDate]);
+      queryClient.refetchQueries(["checkoutTimetable", originDate]);
+      queryClient.refetchQueries(["history"]);
       queryClient.refetchQueries(["history", name]);
     },
   });
   const onSubmit = (data) => {
     inPinNumber = data.inPinNumber.join("").replace(/(\d{2})(\d{2})/, "$1:$2");
     outPinNumber = data.outPinNumber.join("").replace(/(\d{2})(\d{2})/, "$1:$2");
-    const modDate = moment.utc(document.getElementById('formattedNowDate').innerText,
-      'M월 D일 dddd').format('YYYY-MM-DD')
-    // const moment = require('moment');
     const inTime = moment(inPinNumber, 'HH:mm');
     const outTime = moment(outPinNumber, 'HH:mm');
     if (!outTime.isValid()) {
@@ -136,11 +134,11 @@ export default function ModifyHistory(props) {
       in_time: inPinNumber,
       out_time: outPinNumber,
       belts: data.belts,
-      date: modDate,
+      date: tobeDate,
       minutes: diffMinutes,
       check_today: false,
     }
-    console.log(checkoutData);
+    // console.log(checkoutData);
     mutation.mutate(checkoutData);
   }
   const cancelMutation = useMutation(cancelHistory, {
@@ -160,7 +158,10 @@ export default function ModifyHistory(props) {
       onClose();
       reset();
       queryClient.refetchQueries(["history", name]);
+      queryClient.refetchQueries(["timetable", originDate]);
+      queryClient.refetchQueries(['checkoutTimetable', originDate]);
     },
+
   });
   const cancel = () => {
     cancelMutation.mutate(id)
@@ -181,7 +182,7 @@ export default function ModifyHistory(props) {
                             }} aria-label={''} icon={
                   <ArrowBackIcon fontSize={'2xl'} fontWeight={'extrabold'}/>}
                             onClick={() => {
-                              setNowDate(moment(nowDate).subtract(1, 'day'))
+                              setTobeDate(tobeDate.subtract({days: 1}))
                             }}
                 />
                 <Text mt={'2vh'} fontSize={'xl'} fontWeight={'semibold'} textAlign={'center'}
@@ -194,14 +195,13 @@ export default function ModifyHistory(props) {
                             }} aria-label={''} icon={
                   <ArrowForwardIcon fontSize={'2xl'} fontWeight={'extrabold'}/>}
                             onClick={() => {
-                              setNowDate(moment(nowDate).add(1, 'day'))
+                              setTobeDate(tobeDate.add({days: 1}))
                             }}
               />
             </HStack>
             <HStack w={'100%'}>
               <Text w={'30%'}>입장시간</Text>
               <HStack>
-                {/*<PinInput placeholder='0'>*/}
                 <PinInput placeholder='0' defaultValue={defaultInTime}>
                   <PinInputField w={'40px'} {...register("inPinNumber[0]")} required={true}/>
                   <PinInputField w={'40px'} {...register("inPinNumber[1]")} required={true}/>
