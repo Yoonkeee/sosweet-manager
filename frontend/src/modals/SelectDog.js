@@ -8,13 +8,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  NumberDecrementStepper,
-  NumberIncrementStepper,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  PinInput,
-  PinInputField,
   Select,
   Text,
   useDisclosure,
@@ -22,10 +15,8 @@ import {
   VStack
 } from "@chakra-ui/react";
 import {useForm} from "react-hook-form";
-import {useMutation, useQuery, useQueryClient} from "react-query";
-import {addNewDog, checkIn, dogsList, getHistory, testAPI} from "../api";
-import {useDispatch, useSelector} from "react-redux";
-import {setDog} from "../store";
+import {useMutation, useQuery} from "react-query";
+import {dogsList, getHistory} from "../api";
 import {useNavigate} from "react-router-dom";
 
 export default function SelectDog({setter}) {

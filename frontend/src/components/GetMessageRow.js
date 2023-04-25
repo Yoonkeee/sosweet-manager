@@ -1,22 +1,11 @@
 import {
-  Table,
-  Thead,
-  Tbody,
-  Tfoot,
   Tr,
-  Th,
   Td,
-  TableCaption,
-  TableContainer,
-  Button,
-  HStack,
-  IconButton,
   Text,
-  useDisclosure,
   Checkbox,
   useBreakpointValue,
 } from '@chakra-ui/react'
-import {strToLocaleWithoutWeekday, temporalToLocaleWithoutWeekday} from "../api";
+import {strToLocaleWithoutWeekday} from "../api";
 import {Temporal} from "@js-temporal/polyfill";
 
 export default function GetMessageRow(props) {
@@ -80,7 +69,6 @@ export default function GetMessageRow(props) {
       <Td px={0}>
         <Text textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>
           <Checkbox size={'lg'} borderColor={'black'} position={'inherit'}
-                    // checked={checked.includes(id)}
                     onChange={(e) => {
                       if (e.target.checked) {
                         setChecked([...checked, id]);

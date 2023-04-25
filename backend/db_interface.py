@@ -358,6 +358,16 @@ class Interface:
 
         return True
 
+    def get_used_row_info(self, row_id):
+        select_query = f"""
+        SELECT * FROM used_table WHERE id = {row_id}
+        """
+        print(select_query)
+        self.getter.execute(select_query)
+        columns = [col[0] for col in self.getter.description]
+        data = [dict(zip(columns, row)) for row in self.getter.fetchall()]
+        return data[0]
+
     def sum_paid_time(self, name):
         select_query = f"""
         select sum(minutes) as minutes
@@ -392,6 +402,16 @@ class Interface:
         if used is None:
             used = 0
         return paid - used
+
+    def get_id_info(self, row_id):
+        select_query = f"""
+        SELECT * FROM timetable WHERE id = {row_id}
+        """
+        print(select_query)
+        self.getter.execute(select_query)
+        columns = [col[0] for col in self.getter.description]
+        data = [dict(zip(columns, row)) for row in self.getter.fetchall()]
+        return data[0]
 
     # def subtract_time(self, name, minutes):
     #     update_query = f"""
@@ -516,6 +536,19 @@ class Interface:
         print(update_query)
         self.setter.execute(update_query)
         return True
+
+    def get_id_belt(self, row_id):
+        select_query = f"""
+        select belts from timetable
+        where id = {row_id};
+        """
+        self.getter.execute(select_query)
+        columns = [col[0] for col in self.getter.description]
+        data = [dict(zip(columns, row)) for row in self.getter.fetchall()]
+        belts = data[0]['belts']
+        if not belts:
+            return 0
+        return belts
 
     def set_belt(self, row_id, belt):
         update_query = f"""

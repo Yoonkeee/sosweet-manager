@@ -2,49 +2,26 @@ import {
     Box,
     Flex,
     Text,
-    IconButton,
     Button,
     Stack,
-    Collapse,
-    Icon, // Link,
+    // Link,
     Popover,
     PopoverTrigger,
     PopoverContent,
     useColorModeValue,
-    useBreakpointValue,
     useDisclosure,
     Image,
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalCloseButton,
-    ModalBody,
-    ModalFooter,
-    Input,
-    InputGroup,
-    InputLeftElement,
     VStack,
-    SelectField,
-    HStack,
-    Select,
-    Switch, useToast,
+    useToast,
 } from '@chakra-ui/react';
-import {
-    HamburgerIcon, CloseIcon, ChevronDownIcon, ChevronRightIcon,
-} from '@chakra-ui/icons';
 import {Link} from 'react-router-dom';
 import NewDog from "../modals/NewDog";
 import {useMutation} from "react-query";
 import {addNewDog} from "../api";
-import {useForm} from "react-hook-form";
 import ModifyDog from "../modals/ModifyDog";
 import AddPay from "../modals/AddPay";
 import Cookies from "js-cookie";
 import axios from "axios";
-import DogsList from "../routes/DogsList";
-import {useEffect, useState} from "react";
-import {Helmet} from "react-helmet";
 import {useDispatch} from "react-redux";
 import {setToday} from "../store";
 

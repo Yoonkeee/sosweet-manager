@@ -2,22 +2,19 @@ import {
     Table,
     Thead,
     Tbody,
-    Tfoot,
     Tr,
     Th,
     Td,
-    TableCaption,
-    TableContainer, Box, Text, HStack, VStack, Button, IconButton, useToast,
+    TableContainer, Text, HStack, VStack, IconButton, useToast,
 } from '@chakra-ui/react'
 import TimetableRow from "../components/TimetableRow";
 import {ArrowBackIcon, ArrowForwardIcon} from "@chakra-ui/icons";
 import {useSelector, useDispatch} from "react-redux";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {useQuery, useQueryClient} from "react-query";
-import {dogsList, getCheckoutTimetable, getTimeTable, notOutTimetable, strToLocaleWithoutWeekday} from "../api";
-import {tomorrow, yesterday, setToday, getTemporal, makeTemporal} from "../store";
+import {getCheckoutTimetable, getTimeTable, notOutTimetable, strToLocaleWithoutWeekday} from "../api";
+import {tomorrow, yesterday, setToday, makeTemporal} from "../store";
 import CheckoutTimetableRow from "../components/CheckoutTimetableRow";
-import {Temporal} from "@js-temporal/polyfill";
 
 export default function Timetable() {
     let date = makeTemporal(useSelector((state) => state.currentDate))

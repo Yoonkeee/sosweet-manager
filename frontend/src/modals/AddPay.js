@@ -4,7 +4,6 @@ import {
   HStack,
   IconButton,
   Input,
-  InputGroup,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -19,7 +18,7 @@ import {
   VStack
 } from "@chakra-ui/react";
 import {useMutation, useQuery, useQueryClient} from "react-query";
-import {addNewDog, dogsList, getUsedBelts, pay, temporalToLocale, temporalToStr} from "../api";
+import {dogsList, getUsedBelts, pay, temporalToLocale, temporalToStr} from "../api";
 import {useEffect, useState} from "react";
 import {ArrowBackIcon, ArrowForwardIcon} from "@chakra-ui/icons";
 import {Temporal} from "@js-temporal/polyfill";

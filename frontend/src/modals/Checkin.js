@@ -18,9 +18,9 @@ import {
 } from "@chakra-ui/react";
 import {useForm} from "react-hook-form";
 import {useMutation, useQuery, useQueryClient} from "react-query";
-import {addNewDog, checkIn, dogsList} from "../api";
-import {useEffect, useRef, useState} from "react";
+import {checkIn, dogsList} from "../api";
 import {useSelector} from "react-redux";
+import moment from "moment";
 
 export default function Checkin() {
   const {isLoading, data} = useQuery(["dogs-list"], dogsList);
@@ -49,18 +49,31 @@ export default function Checkin() {
       reset();
       queryClient.refetchQueries(["timetable"]);
       queryClient.refetchQueries(["checkoutTimetable"]);
+      queryClient.refetchQueries(["timetable", date]);
+      queryClient.refetchQueries(['checkoutTimetable', date]);
     },
   });
   const onSubmit = (data) => {
     const pinNumber = data.pinNumber.join("").replace(/(\d{2})(\d{2})/, "$1:$2");
-    console.log(pinNumber); // outputs "12:34"
+    let inTime = moment(pinNumber, 'HH:mm');
+    // console.log(inTime); // outputs "12:34"
+    if (!inTime.isValid()) {
+      toast({
+        title: "입장 시간이 올바른 형식이 아닙니다.",
+        status: "error",
+        position: "top",
+        duration: 1000,
+        isClosable: true,
+      });
+      return;
+    }
     dogData = {
       name: data.dogName,
       in_time: pinNumber,
       date: date,
       id: Date.now()
     };
-    console.log(dogData)
+    // console.log(dogData)
     mutation.mutate(dogData);
   };
   const options = data?.map(item => ({

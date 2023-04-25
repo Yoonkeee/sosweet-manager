@@ -1,8 +1,5 @@
 import {
-  Box,
   Button,
-  FormControl,
-  FormLabel,
   Heading,
   HStack,
   IconButton,
@@ -14,23 +11,13 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  NumberDecrementStepper,
-  NumberIncrementStepper,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  PinInput,
-  PinInputField,
   Popover,
   PopoverArrow,
   PopoverBody,
   PopoverCloseButton,
   PopoverContent,
-  PopoverFooter,
-  PopoverHeader,
   PopoverTrigger,
   Portal,
-  Switch,
   Text,
   useToast,
   VStack
@@ -39,17 +26,12 @@ import {useEffect, useRef, useState} from "react";
 import {useForm} from "react-hook-form";
 import {useMutation, useQueryClient} from "react-query";
 import {
-  addNewDog,
-  cancelCheckin,
   cancelPay,
-  checkOut,
   dateStrToTemporal,
-  modHistory,
   modPay,
   temporalToLocale
 } from "../api";
 import {ArrowBackIcon, ArrowForwardIcon} from "@chakra-ui/icons";
-import {Temporal} from "@js-temporal/polyfill";
 
 
 function minutesToHHMM(minutes) {

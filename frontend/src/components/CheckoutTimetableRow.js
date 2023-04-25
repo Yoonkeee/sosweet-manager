@@ -1,19 +1,8 @@
 import {
-    Table,
-    Thead,
-    Tbody,
-    Tfoot,
     Tr,
-    Th,
     Td,
-    TableCaption,
-    TableContainer,
     Button,
-    HStack,
-    IconButton,
-    Text,
     useDisclosure,
-    Tooltip,
     useBreakpointValue,
     useBreakpoint,
     useToast,
@@ -23,19 +12,15 @@ import {
     PopoverArrow,
     PopoverCloseButton, PopoverBody, Heading, Popover,
 } from '@chakra-ui/react'
-import {MinusIcon, PlusSquareIcon, SearchIcon} from "@chakra-ui/icons";
 import {useEffect, useRef, useState} from "react";
 // import "react-icons/all";
-import {BiPlus} from "react-icons/bi";
-import Checkout from "../modals/Checkout";
-import ChangeCheckInTime from "../modals/ChangeCheckInTime";
-import {cancelCheckin, cancelHistory, getHistory, setBelt} from "../api";
+import {cancelCheckin, cancelHistory, getHistory} from "../api";
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import DogInfo from "../modals/DogInfo";
 import ModifyHistory from "../modals/ModifyHistory";
 
 export default function CheckoutTimetableRow(props) {
-    var {id, name, belts, in_time, out_time, date} = props.data;
+    let {id, name, belts, in_time, out_time, date} = props.data;
     // var {id, name, in_time, out_time} = props.data
     const {
         isOpen: isOutOpen, onOpen: onOutOpen, onClose: onOutClose

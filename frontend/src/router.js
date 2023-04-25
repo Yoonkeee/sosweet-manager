@@ -1,8 +1,7 @@
 import {createBrowserRouter} from "react-router-dom";
 import Root from "./Root";
-import {Heading, Image} from "@chakra-ui/react";
+import {Image} from "@chakra-ui/react";
 import Timetable from "./routes/Timetable";
-import NewDog from "./modals/NewDog";
 import GetMessage from "./routes/GetMessage";
 import History from "./routes/History";
 import DogsList from "./routes/DogsList";

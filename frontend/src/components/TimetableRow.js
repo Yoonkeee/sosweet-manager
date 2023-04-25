@@ -1,22 +1,14 @@
 import {
-    Table,
-    Thead,
-    Tbody,
-    Tfoot,
     Tr,
-    Th,
     Td,
-    TableCaption,
-    TableContainer,
     Button,
     HStack,
     IconButton,
     Text,
     useDisclosure,
-    Tooltip,
     useBreakpointValue, useBreakpoint,
 } from '@chakra-ui/react'
-import {MinusIcon, PlusSquareIcon, SearchIcon} from "@chakra-ui/icons";
+import {MinusIcon} from "@chakra-ui/icons";
 import {useEffect, useState} from "react";
 // import "react-icons/all";
 import {BiPlus} from "react-icons/bi";
@@ -27,8 +19,8 @@ import DogInfo from "../modals/DogInfo";
 import {useQueryClient} from "react-query";
 
 export default function TimetableRow(props) {
-    console.log('in timetable row')
-    console.log(props.data)
+    // console.log('in timetable row')
+    // console.log(props.data)
     const {id, name, in_time, out_time, belts: loaded_belts, date} = props.data
     const [belts, setBelts] = useState(loaded_belts)
     const {
@@ -40,8 +32,8 @@ export default function TimetableRow(props) {
     const queryClient = useQueryClient()
     useEffect(() => {
         if (belts)
-            console.log('belts effected')
-        console.log(belts)
+            // console.log('belts effected')
+        // console.log(belts)
         setBelt([id, belts])
         queryClient.refetchQueries(["timetable", date])
     }, [belts]);

@@ -1,6 +1,5 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import {QueryFunctionContext} from "react-query";
 import {Temporal} from "@js-temporal/polyfill";
 
 const instance = axios.create({

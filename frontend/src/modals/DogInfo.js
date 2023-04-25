@@ -1,9 +1,7 @@
 import {
     Badge,
-    Box,
     Button, HStack,
     Input,
-    InputGroup,
     Modal,
     ModalBody,
     ModalCloseButton,
@@ -11,16 +9,12 @@ import {
     ModalFooter,
     ModalHeader,
     ModalOverlay,
-    Select,
-    Stack,
-    Text, Tooltip,
-    useDisclosure,
-    useToast,
+    Text, useToast,
     VStack
 } from "@chakra-ui/react";
 import {useForm} from "react-hook-form";
 import {useMutation, useQuery, useQueryClient} from "react-query";
-import {addNewDog, dogsList, getDogInfo, modDog} from "../api";
+import {getDogInfo, modDog} from "../api";
 import {useEffect, useState} from "react";
 import {formatMinuteToTime} from "../api";
 
@@ -40,7 +34,7 @@ export default function DogInfo({isOpen, onClose, name}) {
         },
     });
     const onSubmit = (res) => {
-        console.log(res);
+        // console.log(res);
         res = {...res, name: name};
         mutation.mutate(res);
     }

@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Input,
   InputGroup,
@@ -10,17 +9,12 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Select,
-  Stack,
-  Text,
-  useDisclosure,
   useToast,
   VStack
 } from "@chakra-ui/react";
 import {useForm} from "react-hook-form";
 import {addNewDog, dogsList} from "../api";
 import {useMutation, useQuery, useQueryClient} from "react-query";
-import {useParams} from "react-router-dom";
 
 export default function NewDog({isOpen, onClose}) {
   const {register, reset, handleSubmit} = useForm();

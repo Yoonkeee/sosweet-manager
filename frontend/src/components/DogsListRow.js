@@ -1,50 +1,24 @@
 import {
-    Table,
-    Thead,
-    Tbody,
-    Tfoot,
     Tr,
-    Th,
     Td,
-    TableCaption,
-    TableContainer,
-    Button,
     HStack,
-    IconButton,
     Text,
-    useDisclosure,
-    Tooltip,
-    useBreakpointValue, VStack,
+    useBreakpointValue,
 } from '@chakra-ui/react'
-import {MinusIcon, PlusSquareIcon, SearchIcon} from "@chakra-ui/icons";
 import {useEffect, useState} from "react";
-// import "react-icons/all";
-import {BiPlus} from "react-icons/bi";
-import Checkout from "../modals/Checkout";
-import ChangeCheckInTime from "../modals/ChangeCheckInTime";
-import moment from "moment";
 import {formatMinuteToTime} from "../api";
 
 export default function DogsListRow(props) {
-    console.log(props.data);
-    var minutes = props.data.remaining_minutes;
-    var data = props.data
-    var remainingMinutes = props.data.remaining_minutes;
-    var remainingDuration = moment.utc(Math.abs(remainingMinutes) * 60 * 1000);
-    console.log(remainingMinutes)
-    console.log(remainingDuration.format('H:mm'))
-    var formattedDuration = formatMinuteToTime(remainingMinutes);
+    // console.log(props.data);
+    let minutes = props.data.remaining_minutes;
+    let data = props.data
+    let remainingMinutes = props.data.remaining_minutes;
+    let formattedDuration = formatMinuteToTime(remainingMinutes);
 
     const showBreed = useBreakpointValue({base: false, md: true});
     const showGender = useBreakpointValue({base: false, md: true});
     const showPhone = useBreakpointValue({base: false, md: true});
     const showWeight = useBreakpointValue({base: false, md: true});
-    // useEffect(() => {
-    //   data = props.data
-    //   remainingMinutes = props.data.remaining_minutes;
-    //   remainingDuration = moment.utc(Math.abs(remainingMinutes) * 60 * 1000);
-    //   formattedDuration = (remainingMinutes < 0 ? '-' : '') + remainingDuration.format('H:mm');
-    // }, []);
 
     const [nameColor, setNameColor] = useState('#1a2a52')
     useEffect(() => {

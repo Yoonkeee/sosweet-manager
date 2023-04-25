@@ -1,4 +1,4 @@
-import {Button, Heading, HStack, Image, Text, VStack} from "@chakra-ui/react";
+import {Button, Heading, Image, Text, VStack} from "@chakra-ui/react";
 import {Link} from "react-router-dom";
 
 export default function NotFound() {

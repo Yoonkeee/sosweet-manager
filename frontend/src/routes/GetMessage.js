@@ -1,8 +1,5 @@
 import {
-    Box,
     Button,
-    effect,
-    HStack,
     Select,
     Table,
     TableContainer,
@@ -13,19 +10,12 @@ import {
     Tr,
     useBreakpointValue,
     useDisclosure,
-    useToast,
     VStack
 } from "@chakra-ui/react";
 import GetMessageRow from "../components/GetMessageRow";
-import HistoryRow from "../components/HistoryRow";
-import TimetableRow from "../components/TimetableRow";
-import {useMutation, useQuery, useQueryClient} from "react-query";
-import {dogsList, getHistory, uncheckedDogsList} from "../api";
-import {useDispatch, useSelector} from "react-redux";
+import {useQuery, useQueryClient} from "react-query";
+import {getHistory, uncheckedDogsList} from "../api";
 import {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
-import {useForm} from "react-hook-form";
-import SelectDog from "../modals/SelectDog";
 import MakeMessage from "../modals/MakeMessage";
 
 export default function GetMessage() {
@@ -60,9 +50,6 @@ export default function GetMessage() {
         setChecked(ids)
         setName(e.target.value);
         setSelected(true)
-        console.log('checked!');
-        console.log(checked);
-        console.log('checked!');
     };
     useEffect(() => {
         if (selected) {
@@ -132,6 +119,7 @@ export default function GetMessage() {
                             keys={item.id}
                             data={item}
                             state={[checked, setChecked]}
+                            isEmpty={checked.length === 0}
                             selectedName={name}
                         />
                     </>))}

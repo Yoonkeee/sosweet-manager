@@ -1,8 +1,5 @@
 import {
-  Box,
-  Button,
-  effect,
-  HStack, Select,
+  Select,
   Table,
   TableContainer,
   Tbody,
@@ -10,20 +7,13 @@ import {
   Th,
   Thead,
   Tr, useBreakpointValue,
-  useDisclosure,
   useToast,
   VStack
 } from "@chakra-ui/react";
-import GetMessageRow from "../components/GetMessageRow";
 import HistoryRow from "../components/HistoryRow";
-import TimetableRow from "../components/TimetableRow";
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import {dogsList, getHistory} from "../api";
-import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
-import {useForm} from "react-hook-form";
-import SelectDog from "../modals/SelectDog";
 
 export default function History() {
   const toast = useToast();
@@ -60,7 +50,7 @@ export default function History() {
 
   useEffect(() => {
     if (name) {
-      console.log('mutated '+name);
+      // console.log('mutated '+name);
       queryClient.refetchQueries(["history", name]);
       // mutation.mutate(name);
     }

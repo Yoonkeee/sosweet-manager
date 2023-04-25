@@ -1,8 +1,7 @@
 import {Outlet} from "react-router-dom";
-import {Box, Flex, Image} from "@chakra-ui/react";
+import {Box} from "@chakra-ui/react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import {atom, useRecoilState} from "recoil";
 import {Helmet} from "react-helmet"
 
 export default function Root() {

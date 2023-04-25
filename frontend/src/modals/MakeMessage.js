@@ -1,9 +1,6 @@
 import {
-    Box,
     Button,
     Heading,
-    Input,
-    InputGroup,
     Modal,
     ModalBody,
     ModalCloseButton,
@@ -18,17 +15,12 @@ import {
     PopoverContent,
     PopoverTrigger,
     Portal,
-    Select,
-    Stack,
     Text,
-    useDisclosure,
-    useToast,
-    VStack
+    useToast
 } from "@chakra-ui/react";
-import {useForm} from "react-hook-form";
 import {useEffect, useRef, useState} from "react";
-import {useMutation, useQuery, useQueryClient} from "react-query";
-import {addNewDog, checkUsedDate, makeMessage, uncheckedDogsList} from "../api";
+import {useQueryClient} from "react-query";
+import {checkUsedDate, makeMessage} from "../api";
 import copy from 'copy-to-clipboard';
 
 export default function MakeMessage({isOpen, onClose, checked}) {
@@ -46,7 +38,7 @@ export default function MakeMessage({isOpen, onClose, checked}) {
     const sendButton = () => {
         onClose()
         checkUsedDate(checked).then((res) => {
-            console.log(res)
+            // console.log(res)
             if (res) {
                 toast({
                     title: "전송 완료 처리했어요~~", status: "success", position: "top", duration: 1500, isClosable: true,

@@ -1,19 +1,18 @@
 import {
-  Button, ChakraProvider,
-  HStack,
+  Button, HStack,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent, ModalFooter,
   ModalHeader,
-  ModalOverlay, PinInput, PinInputField, Select, Text,
-  useDisclosure, useToast,
+  ModalOverlay, PinInput, PinInputField, Text,
+  useToast,
   VStack
 } from "@chakra-ui/react";
 import {useForm} from "react-hook-form";
 import {useSelector} from "react-redux";
 import {useMutation, useQueryClient} from "react-query";
-import {changeCheckIn, checkIn} from "../api";
+import {changeCheckIn} from "../api";
 import moment from "moment";
 
 export default function ChangeCheckInTime({isOpen, onClose, id, name, in_or_out}) {
@@ -38,14 +37,16 @@ export default function ChangeCheckInTime({isOpen, onClose, id, name, in_or_out}
       });
       queryClient.refetchQueries(["timetable"]);
       queryClient.refetchQueries(["checkoutTimetable"]);
-      console.log('체크인/아웃 수정 성공');
+      queryClient.refetchQueries(["timetable", date]);
+      queryClient.refetchQueries(['checkoutTimetable', date]);
+      // console.log('체크인/아웃 수정 성공');
       onClose();
       reset();
     },
   });
   const onSubmit = (data) => {
     const pinNumber = data.pinNumber.join("").replace(/(\d{2})(\d{2})/, "$1:$2");
-    console.log(pinNumber); // outputs "12:34"
+    // console.log(pinNumber); // outputs "12:34"
     const outTime = moment(pinNumber, 'HH:mm');
     if (!outTime.isValid()) {
       toast({
@@ -64,9 +65,9 @@ export default function ChangeCheckInTime({isOpen, onClose, id, name, in_or_out}
       id: id,
       in_or_out: in_or_out
     };
-    console.log(dogData)
+    // console.log(dogData)
     mutation.mutate(dogData);
-    console.log('체크인 수정 요청');
+    // console.log('체크인 수정 요청');
   };
   return (<>
     <Modal isOpen={isOpen} onClose={onClose}>

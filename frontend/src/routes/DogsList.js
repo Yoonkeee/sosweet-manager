@@ -2,21 +2,17 @@ import {
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
-  Td,
-  TableCaption,
-  TableContainer, Box, Text, HStack, VStack, useBreakpointValue,
+  TableContainer, Text, VStack, useBreakpointValue,
 } from '@chakra-ui/react'
-import TimetableRow from "../components/TimetableRow";
 import DogsListRow from "../components/DogsListRow";
-import {useQuery, useQueryClient} from "react-query";
+import {useQuery} from "react-query";
 import {dogsList} from "../api";
 
 export default function DogsList() {
   const {isLoading, data} = useQuery(["dogs-list"], dogsList, { cacheTime: 0 });
-  console.log(data)
+  // console.log(data)
   const showBreed = useBreakpointValue({ base: false, md: true });
   const showGender = useBreakpointValue({ base: false, md: true });
   const showPhone = useBreakpointValue({ base: false, md: true });

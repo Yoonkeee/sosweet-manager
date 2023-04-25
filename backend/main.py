@@ -154,6 +154,14 @@ async def check_out(request: DictModel):
     return {"message": "check-out"}
 
 
+#get_used_row_info
+@app.get("/api/get/used-row-info/{row_id}")
+async def get_used_row_info(row_id: int):
+    print('in get_used_row_info')
+    print(row_id)
+    return db_interface.get_used_row_info(row_id)
+
+
 @app.post("/api/post/change-check-in")
 async def change_check_in(request: DictModel):
     print('in change_check_in')
@@ -262,6 +270,16 @@ async def mod_pay(request: DictModel):
     return {"message": "pay"}
 
 
+# get_id_belt
+@app.get('/api/get/id-belt/{row_id}')
+async def get_id_belt(row_id: int):
+    print('in get_id_belt')
+    print(row_id)
+    result = db_interface.get_id_belt(row_id)
+    print(result)
+    return result
+
+
 # add belt +1
 @app.get('/api/get/set-belt/{row_id}/{belts}')
 async def set_belt(row_id: int, belts: int):
@@ -318,6 +336,15 @@ async def not_out_timetable():
     print(result)
     return result
 
+
+# get_id_info
+@app.get('/api/get/id-info/{row_id}')
+async def get_id_info(row_id: int):
+    print('in get_id_info')
+    print(row_id)
+    result = db_interface.get_id_info(row_id)
+    print(result)
+    return result
 
 # @app.get("/api/post/add-new-dog/")
 # async def add_new_dog():

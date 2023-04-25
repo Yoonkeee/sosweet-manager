@@ -1,6 +1,5 @@
 import {Button, Td, Text, Tr, useDisclosure,} from '@chakra-ui/react'
 // import "react-icons/all";
-import ModifyHistory from "../modals/ModifyHistory";
 import ModifyPay from "../modals/ModifyPay";
 import {strToLocaleWithoutWeekday} from "../api";
 

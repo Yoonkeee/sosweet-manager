@@ -1,36 +1,17 @@
 import {
   Box,
-  Button,
   Flex,
-  HStack,
   Image,
-  Input,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, PinInput, PinInputField,
-  Select,
   Spacer,
-  Stack,
-  Switch,
-  Text,
   useDisclosure,
-  VStack,
+
 } from "@chakra-ui/react";
-import {Link, useLocation} from "react-router-dom";
-import GetMessage from "../routes/GetMessage";
-import History from "../routes/History";
-import SelectDog from "../modals/SelectDog";
+import {useLocation} from "react-router-dom";
 import Checkin from "../modals/Checkin";
-import MakeMessage from "../modals/MakeMessage";
 
 export default function Footer() {
   const location = useLocation().pathname;
   const {isOpen, onOpen, onClose} = useDisclosure();
-  console.log(location)
   return (<Flex
     alignItems="center"
     justifyContent="space-between"

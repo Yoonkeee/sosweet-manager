@@ -1,6 +1,5 @@
 import {
-  Box,
-  Button, FormControl, FormLabel, Heading,
+  Button, Heading,
   HStack, IconButton,
   Modal,
   ModalBody,
@@ -21,21 +20,16 @@ import {
   PopoverBody,
   PopoverCloseButton,
   PopoverContent,
-  PopoverFooter,
-  PopoverHeader,
   PopoverTrigger,
-  Portal, Switch,
-  Text, useToast,
+  Portal, Text, useToast,
   VStack
 } from "@chakra-ui/react";
 import {useEffect, useRef, useState} from "react";
 import {useForm} from "react-hook-form";
 import {useMutation, useQueryClient} from "react-query";
-import {addNewDog, cancelCheckin, cancelHistory, checkOut, dateStrToTemporal, getTimeTable, modHistory} from "../api";
-import {useSelector} from "react-redux";
+import {cancelHistory, dateStrToTemporal, modHistory} from "../api";
 import moment from "moment/moment";
 import {ArrowBackIcon, ArrowForwardIcon} from "@chakra-ui/icons";
-import {Temporal} from "@js-temporal/polyfill";
 
 
 function minutesToHHMM(minutes) {

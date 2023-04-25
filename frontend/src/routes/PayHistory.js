@@ -1,29 +1,16 @@
 import {
-  Box,
-  Button,
-  effect,
-  HStack, Select,
   Table,
   TableContainer,
   Tbody,
-  Text,
   Th,
   Thead,
   Tr,
-  useDisclosure,
   useToast,
   VStack
 } from "@chakra-ui/react";
-import GetMessageRow from "../components/GetMessageRow";
-import HistoryRow from "../components/HistoryRow";
-import TimetableRow from "../components/TimetableRow";
-import {useMutation, useQuery, useQueryClient} from "react-query";
-import {dogsList, getHistory, getPayHistory} from "../api";
-import {useDispatch, useSelector} from "react-redux";
-import {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
-import {useForm} from "react-hook-form";
-import SelectDog from "../modals/SelectDog";
+import {useQuery, useQueryClient} from "react-query";
+import {getPayHistory} from "../api";
+import {useState} from "react";
 import PayHistoryRow from "../components/PayHistoryRow";
 
 export default function PayHistory() {
@@ -78,7 +65,7 @@ export default function PayHistory() {
           <Tbody>
             {data && data.map((item) => (
               <>
-                <PayHistoryRow data={item}/>
+                <PayHistoryRow data={item} key={item.id}/>
               </>
             ))}
           </Tbody>
