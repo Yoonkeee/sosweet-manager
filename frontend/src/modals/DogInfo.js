@@ -25,7 +25,6 @@ import {useEffect, useState} from "react";
 import {formatMinuteToTime} from "../api";
 
 export default function DogInfo({isOpen, onClose, name}) {
-    console.log('DogInfo');
     const {register, reset, handleSubmit, formState: {errors}} = useForm();
     const toast = useToast();
     const [info, setInfo] = useState('');
@@ -78,7 +77,7 @@ export default function DogInfo({isOpen, onClose, name}) {
                 dogWeight: data.weight,
             })
         }
-    }, [isOpen]);
+    }, [isLoading]);
     const onReset = () => {
         reset({
             officialName: '',

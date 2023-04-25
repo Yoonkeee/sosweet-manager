@@ -117,7 +117,8 @@ export default function Timetable() {
                         {data && data.length !== 0 && checkoutData && checkoutData.length !== 0 &&
                             <Tr borderY="2px solid"><Td p={'3vh'}/><Td p={'3vh'}/><Td p={'3vh'}/><Td p={'3vh'}/><Td
                                 p={'3vh'}/></Tr>}
-                        {checkoutData && checkoutData.length !== 0 && checkoutData.map((item) => (
+                        {checkoutData && checkoutData.map((item) => (
+                        // {checkoutData && checkoutData.length !== 0 && checkoutData.map((item) => (
                             <CheckoutTimetableRow
                                 data={item}
                                 key={item.id}
