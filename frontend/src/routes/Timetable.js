@@ -32,8 +32,8 @@ export default function Timetable() {
     const toastId = 'notOutToast'
     // notout 체크아웃 리페치
     useEffect(() => {
-        toast.closeAll()
         if (notOutData && notOutData.length > 0) {
+            toast.closeAll()
             toast({
                 // id: toastId + Temporal.Now.instant.toString(),
                 title: "체크아웃 하지 않은 댕댕이가 있습니다.",
