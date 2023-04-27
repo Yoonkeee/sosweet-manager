@@ -17,7 +17,7 @@ import {
 import {Link} from 'react-router-dom';
 import NewDog from "../modals/NewDog";
 import {useMutation} from "react-query";
-import {addNewDog} from "../api";
+import {addNewDog, mainColor} from "../api";
 import ModifyDog from "../modals/ModifyDog";
 import AddPay from "../modals/AddPay";
 import Cookies from "js-cookie";
@@ -26,74 +26,28 @@ import {useDispatch} from "react-redux";
 import {setToday} from "../store";
 
 export default function Header() {
-    const {isOpen, onToggle} = useDisclosure();
-    const toast = useToast();
-    const instance = axios.create({
-        baseURL: "/api", withCredentials: true,
-    });
-    const test = () => {
-        instance.get('test', {
-            headers: {
-                "X-CSRFToken": Cookies.get("csrftoken") || "",
-            },
-        }).then((response) => {
-            if (response) {
-                toast({
-                    title: "CORS 테스트 성공",
-                    description: "CORS 테스트 성공",
-                    status: "success",
-                    duration: 500,
-                    isClosable: true,
-                })
-            } else {
-                toast({
-                    title: "CORS 테스트 실패",
-                    description: "CORS 테스트 실패",
-                    status: "error",
-                    duration: 500,
-                    isClosable: true,
-                })
-            }
-        })
-    }
-
-
     return (
-
-        <Box h={'10vh'}>
-            <Flex
-                bg={'#1a2a52'}
-                color={'white'}
-                py={{base: 2}}
-                px={{base: 4}}
-                h={'100%'}
-                borderStyle={'solid'}
-                borderColor={useColorModeValue('white',)}
-                align={'center'}>
-                <Link to={'/'}>
-                    <Image
-                        src={'logo_dog.png'}
-                        h={'8vh'}
-                        filter={'invert(1)'}
-                        _hover={{transform: 'scale(1.2)', transition: 'all 0.5s ease-in-out'}}
-                    />
-                </Link>
-
-                <Flex display={{base: 'flex', md: 'flex'}} ml={10}>
-                    {/*<Flex display={{base: 'flex'}} ml={10}>*/}
-                    <DesktopNav key={'DesktopNav'}/>
-                    {/*<Button bg={'none'} onClick={test}>CORS TEST</Button>*/}
-                </Flex>
-            </Flex>
-
-
-            {/*<Collapse in={isOpen} animateOpacity>*/}
-            {/*  <MobileNav/>*/}
-            {/*</Collapse>*/}
+        <Box
+            display={'flex'}
+            alignContent={'center'}
+            justifyContent={'center'}
+            h={'10vh'}
+            // borderBottom={'2px'}
+            // borderColor={'white'}
+            background={mainColor}
+        >
+            <Link to={'/'}>
+                <Image
+                    h={'7vh'}
+                    mt={'1.2vh'}
+                    src={'logo_word.png'}
+                    filter={'invert(1)'}
+                />
+            </Link>
         </Box>
-    );
+    )
 }
-
+//
 const DesktopNav = () => {
     const linkColor = useColorModeValue('white', 'gray.200');
     const linkHoverColor = useColorModeValue('white', 'white');

@@ -22,9 +22,9 @@ import {checkIn, dogsList} from "../api";
 import {useSelector} from "react-redux";
 import moment from "moment";
 
-export default function Checkin() {
+export default function Checkin({isOpen, onClose}) {
   const {isLoading, data} = useQuery(["dogs-list"], dogsList);
-  const {isOpen, onOpen, onClose} = useDisclosure()
+  // const {isOpen, onOpen, onClose} = useDisclosure()
   const {register, reset, handleSubmit, formState: {errors}} = useForm();
   const toast = useToast();
   const queryClient = useQueryClient();
@@ -81,12 +81,12 @@ export default function Checkin() {
     label: item.name,
   }));
   return (<>
-    <Button
-      onClick={onOpen}
-      colorScheme={'white'}
-      fontSize={'1.5rem'}>
-      체크인
-    </Button>
+    {/*<Button*/}
+    {/*  onClick={onOpen}*/}
+    {/*  colorScheme={'white'}*/}
+    {/*  fontSize={'1.5rem'}>*/}
+    {/*  체크인*/}
+    {/*</Button>*/}
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay/>
       <ModalContent>

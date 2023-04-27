@@ -49,10 +49,23 @@ const selectedDog = createSlice({
   }
 });
 
-export default configureStore({
-  reducer: { currentDate: currentDate.reducer,
-       selectedDog: selectedDog.reducer}
+const statusBarHeight = createSlice({
+  name: 'statusBarHeight',
+  initialState: 0,
+  reducers: {
+    setStatusBarHeight: (state, action) => {
+        return action.payload;
+    }
+  }
 });
+
+export default configureStore({
+  reducer: {
+    currentDate: currentDate.reducer,
+    selectedDog: selectedDog.reducer,
+    statusBarHeight: statusBarHeight.reducer
+  }});
 
 export let { yesterday, getTemporal, tomorrow, setToday } = currentDate.actions;
 export let { setDog } = selectedDog.actions;
+export let { setStatusBarHeight } = statusBarHeight.actions;

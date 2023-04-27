@@ -18,21 +18,16 @@ export default function DogsList() {
   const showPhone = useBreakpointValue({ base: false, md: true });
   const showWeight = useBreakpointValue({ base: false, md: true });
   return (
-    <VStack w={'100%'} mt={'2vh'} mb={'10vh'}>
-      <Text mt={'2vh'} fontSize={'2xl'} fontWeight={'bold'} textAlign={'center'}>
+    <VStack w={'100%'} mt={'2vh'}>
+      <Text mt={'1vh'} fontSize={'3xl'} fontWeight={'extrabold'} textAlign={'center'}>
         🥰쏘스윗 댕댕이 목록🥰
       </Text>
       <TableContainer w={'100%'}>
         <Table variant='striped' colorScheme='blue' layout={'fixed'}>
           {/*<TableCaption>Imperial to metric conversion factors</TableCaption>*/}
-          <Thead w={'100%'} borderBottomColor={'black'} borderBottomWidth={5} textAlign={'center'}>
-            {/*<Box w={'100%'}>*/}
-            {/*<HStack w={'100%'}>*/}
-            {/*<Text></Text>*/}
-            {/*<Text></Text>*/}
-            {/*</HStack>*/}
-            {/*</Box>*/}
-            <Tr textAlign={'center'}>
+          <Thead w={'100%'} borderBottomColor={'black'} borderBottomWidth={5} textAlign={'center'}
+                 position={'sticky'} top={0}>
+            <Tr textAlign={'center'} position={'sticky'} top={0}>
               <Th textAlign={'center'} w={'15vw'} px={0} fontSize={'xl'}>이름</Th>
               <Th textAlign={'center'} px={0} fontSize={'xl'}>특이사항</Th>
               {showBreed && <Th textAlign={'center'} w={'10vw'} px={0} fontSize={'xl'}>견종</Th>}
