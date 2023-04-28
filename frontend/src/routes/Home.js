@@ -1,8 +1,9 @@
 import {useEffect} from "react";
-import {AspectRatio, Box, Button, HStack, Image, Text} from "@chakra-ui/react";
+import {AspectRatio, Box, Button, HStack, Image, Text, useDisclosure} from "@chakra-ui/react";
 import {homeBoxBetweenMargin, homeBoxPadding, homeBoxWidth, homeGapY, homePaddingX, mainColor} from "../api";
 import {useSelector} from "react-redux";
 import {Link} from "react-router-dom";
+import ModifyDog from "../modals/ModifyDog";
 
 
 export default function Home() {
@@ -77,7 +78,7 @@ export default function Home() {
                 />
                 {/*  RIGHT  */}
                 <HomeRectBoxTwoByOne
-                    link={'/pay_history'}
+                    link={'/pay-history'}
                     title={'결제 내역'}
                     image={'프로1.png'}
                     letterColor={mainColor}
@@ -93,9 +94,10 @@ export default function Home() {
                 mb={homeGapY}
             >
                 {/*  LEFT  */}
-                <HomeRectBoxTwoByOne
-                    link={'/'}
-                    title={'남는버튼'}
+                <HomeRectBoxTwoByOneModal
+                    // link={''}
+                    component={ModifyDog}
+                    title={'🐶 수정'}
                     image={'프로1.png'}
                     letterColor={mainColor}
                 />
@@ -170,5 +172,39 @@ const HomeRectBoxTwoByOne = (props) => {
                 </Box>
             </Link>
         </AspectRatio>
+    )
+}
+const HomeRectBoxTwoByOneModal = (props) => {
+    const {isOpen, onOpen, onClose} = useDisclosure()
+    return (
+        <>
+            <AspectRatio w={homeBoxWidth} ratio={2}>
+                <Button onClick={onOpen} w={'100%'} h={'100%'} p={0} m={0}>
+                    <Box
+                        border={`2px solid ${mainColor}`}
+                        bgColor={'white'}
+                        dropShadow={'lg'}
+                        w={'100%'}
+                        h={'100%'}
+                        rounded={'2xl'}
+                    >
+                        <Image src={props.image} w={'100%'} rounded="xl"/>
+                        <Text
+                            position="absolute"
+                            bottom={homeBoxPadding}
+                            left={homeBoxPadding}
+                            top={homeBoxPadding}
+                            textAlign="center"
+                            fontSize="2xl"
+                            fontWeight="extrabold"
+                            color={props.letterColor}
+                        >
+                            {props.title}
+                        </Text>
+                    </Box>
+                </Button>
+            </AspectRatio>
+            <props.component isOpen={isOpen} onClose={onClose}/>
+        </>
     )
 }
