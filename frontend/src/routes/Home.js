@@ -8,7 +8,7 @@ import ModifyDog from "../modals/ModifyDog";
 
 export default function Home() {
     return (
-        <Box w={'100%'} m={0} p={0} bgColor={'gray.200'}
+        <Box w={'100%'} h={'100%'} m={0} p={0} bgColor={'gray.200'}
              paddingTop={homeGapY}
             // marginBottom={'150px'}
         >
