@@ -48,16 +48,19 @@ export default function Home() {
                 <HomeSquareBox
                     link={'/dogs-list'}
                     title={'🐶 목록'}
-                    image={'박프로.webp'}
-                    letterColor={'#752D2A'}
+                    image={'프로4.png'}
+                    bgColor={'#FEBE8C'}
+                    letterColor={'#1F7480'}
                 />
                 <Box vw={homeBoxBetweenMargin}/>
                 {/*  RIGHT  */}
                 <HomeSquareBox
                     link={'/get-message'}
                     title={'메세지'}
-                    image={'박하로.webp'}
-                    letterColor={'#ffffff'}
+                    image={'프로3.png'}
+                    letterColor={'white'}
+                    bgColor={'#95BDFF'}
+                    // letterColor={'#95BDFF'}
                 />
             </HStack>
 
@@ -74,14 +77,16 @@ export default function Home() {
                     link={'/history'}
                     title={'이용 내역'}
                     image={'프로1.png'}
+                    bgColor={'#DFFFD8'}
                     letterColor={mainColor}
                 />
                 {/*  RIGHT  */}
                 <HomeRectBoxTwoByOne
                     link={'/pay-history'}
                     title={'결제 내역'}
-                    image={'프로1.png'}
-                    letterColor={mainColor}
+                    image={'프로2.png'}
+                    bgColor={'#F7C8E0'}
+                    letterColor={'white'}
                 />
             </HStack>
 
@@ -105,8 +110,9 @@ export default function Home() {
                 <HomeRectBoxTwoByOne
                     link={'/'}
                     title={'뭐만들지?'}
-                    image={'프로1.png'}
-                    letterColor={mainColor}
+                    image={'프로2.png'}
+                    bgColor={mainColor}
+                    letterColor={'white'}
                 />
             </HStack>
             <Box h={'4vh'}/>
@@ -124,6 +130,7 @@ const HomeSquareBox = (props) => {
                     w={'100%'}
                     h={'100%'}
                     rounded={'2xl'}
+                    bgColor={props.bgColor}
                 >
                     <Image src={props.image} rounded="xl"/>
                     <Text
@@ -150,7 +157,7 @@ const HomeRectBoxTwoByOne = (props) => {
             <Link to={props.link} w={'100%'} h={'100%'}>
                 <Box
                     border={`2px solid ${mainColor}`}
-                    bgColor={'white'}
+                    bgColor={props.bgColor}
                     dropShadow={'lg'}
                     w={'100%'}
                     h={'100%'}
