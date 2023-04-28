@@ -1,38 +1,88 @@
 import {
-  Box,
-  Flex,
-  Image,
-  Spacer,
-  useDisclosure,
-
+    Box, Button,
+    Flex, HStack,
+    Image,
+    Spacer, Stack,
+    useDisclosure, VStack,
+    Text, Icon
 } from "@chakra-ui/react";
-import {useLocation} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import Checkin from "../modals/Checkin";
+import {mainColor} from "../api";
+import {AddIcon, TimeIcon} from "@chakra-ui/icons";
+import {FaDog, FaWonSign} from "react-icons/fa";
+import AddPay from "../modals/AddPay";
+import NewDog from "../modals/NewDog";
 
 export default function Footer() {
-  const location = useLocation().pathname;
-  const {isOpen, onOpen, onClose} = useDisclosure();
-  return (<Flex
-    alignItems="center"
-    justifyContent="space-between"
-    h={'10vh'}
-    background={'#1a2a52'}
-  >
-    <Spacer/>
-    <Box w={'10vw'} />
-    <Box>
-      <Image
-        h={'8vh'}
-        mb={'1.5vh'}
-        src={'logo_word.png'}
-        filter={'invert(1)'}
-      />
-    </Box>
-    <Box w={'10vw'}>
-      {location === '/timetable' ? (
-          <Checkin/>) : <></>}
-    </Box>
-    <Spacer/>
-  </Flex>)
+    const location = useLocation().pathname;
+    return (
+        <HStack
+            display={'flex'}
+            alignContent={'center'}
+            justifyContent={'space-between'}
+            alignItems={'flex-start'}
+            h={'10vh'}
+            paddingTop={'0.2vh'}
+            px={'10vw'}
+            background={'#ffffff'}
+            borderTop={`3px solid ${mainColor}`}
+        >
+            <FooterButtonModal
+                icon={FaDog}
+                component={NewDog}
+                text={'신규'}
+            />
+            <FooterButtonModal
+                icon={FaWonSign}
+                component={AddPay}
+                text={'결제'}
+            />
+            <Box>
+                <Link to={'/'}>
+                    <Image
+                        h={'8vh'}
+                        src={'logo_dog_btn.png'}
+                    />
+                </Link>
+            </Box>
+            <FooterButtonLink
+                icon={TimeIcon}
+                link={'/timetable'}
+                text={'시간표'}
+            />
+            <FooterButtonModal
+                icon={AddIcon}
+                component={Checkin}
+                text={'체크인'}
+            />
+        </HStack>)
 }
-
+const FooterButtonModal = (props) => {
+    const {isOpen, onOpen, onClose} = useDisclosure();
+    return (
+        <Button bgColor={'transparent'} h={'100%'} paddingTop={'1vh'} w={'10vw'}
+                onClick={onOpen}>
+            <VStack m={0} p={0} h={'100%'} w={'100%'}>
+                {/*{props.icon()}*/}
+                <Icon as={props.icon} boxSize={7}/>
+                {/*<FontAwesomeIcon icon="fa-regular fa-sack-dollar" />*/}
+                {/*// <props.icon boxSize={6}/>*/}
+                <Text marginY={0} p={0} fontSize={'sm'}>{props.text}</Text>
+                <props.component isOpen={isOpen} onClose={onClose}/>
+            </VStack>
+        </Button>
+    )
+}
+const FooterButtonLink = (props) => {
+    return (
+                <Link to={props.link} w={'100%'} h={'100%'}>
+        <Button bgColor={'transparent'} h={'100%'} paddingTop={'1vh'} w={'10vw'}>
+            <VStack m={0} p={0} h={'100%'} w={'100%'}>
+                    <Icon as={props.icon} boxSize={7}/>
+                    <Text marginY={0} p={0} fontSize={'sm'}>{props.text}</Text>
+            </VStack>
+        </Button>
+                </Link>
+    )
+}

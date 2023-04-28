@@ -7,13 +7,24 @@ import router from "./router";
 import {QueryClient, QueryClientProvider} from "react-query";
 import {Provider} from "react-redux";
 import store from "./store";
+import { theme as chakraTheme } from '@chakra-ui/react'
+import { extendTheme } from '@chakra-ui/react'
+const theme = extendTheme({
+    fonts: {
+        ...chakraTheme.fonts,
+        body: `Single Day, Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"`,
+        heading: `Single Day, Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"`
+    },
+})
 
+export default theme
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const queryClient = new QueryClient();
 document.documentElement.style.backgroundColor = "white";
 root.render(// <React.StrictMode>
   <QueryClientProvider client={queryClient}>
     <ChakraProvider>
+    {/*<ChakraProvider theme={theme}>*/}
       <Provider store={store}>
         <RouterProvider router={router}/>
       </Provider>

@@ -7,6 +7,8 @@ import History from "./routes/History";
 import DogsList from "./routes/DogsList";
 import PayHistory from "./routes/PayHistory";
 import NotFound from "./components/NotFound";
+import Home from "./routes/Home";
+import Hotelling from "./routes/Hotelling";
 // import Home from "./routes/Home";
 // import Company from "./routes/Company";
 // import CompanyDetail from "./components/CompanyDetail";
@@ -23,8 +25,12 @@ const router = createBrowserRouter([
     children: [
       {
         path: '',
-        // element: <Home />
-        element: <Image h={'80vh'} w={'100vw'} src={'main_img.jpeg'} objectFit={'cover'}></Image>
+        element: <Home />
+        // element: <Image h={'80vh'} w={'100vw'} src={'main_img.jpeg'} objectFit={'cover'}></Image>
+      },
+      {
+        path: 'hotelling',
+        element: <Hotelling/>
       },
       {
         path: 'timetable',

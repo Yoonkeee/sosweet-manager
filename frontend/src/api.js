@@ -1,28 +1,28 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import {Temporal} from "@js-temporal/polyfill";
+import {useSelector} from "react-redux";
 
 const instance = axios.create({
   baseURL: "/api", withCredentials: true,
 });
 
-// export const getRoomReviews = ({ queryKey }: QueryFunctionContext) => {
-//   const [_, roomPk] = queryKey;
-//   return instance
-//     .get(`rooms/${roomPk}/reviews`)
-//     .then((response) => response.data);
-// };
+export const mainColor = '#1a2a52'
+export const homeBoxWidth = '45.4vw'
+export const homePaddingX = '3.41vw'
+export const homeBoxBetweenMargin = '2.32vw'
+export const homeBoxPadding = '3.56vw'
 
-// export const addNewDog = ({ queryKey }: QueryFunctionContext) => {
-//   const [_, data] = queryKey
-//   console.log(data);
-//   instance.post("post/add-new-dog", {data},
-//     {
-//       headers: {
-//         "X-CSRFToken": Cookies.get("csrftoken") || "",
-//       },
-//     }).then((response) => {console.log(response.data)});
-// }
+function getHomePaddingTop () {
+  const gap = window.outerHeight - window.innerHeight;
+  let unitVh = window.innerHeight / 100;
+  const height = window.innerHeight - gap;
+  const paddingVh = 1.36
+  const result = (paddingVh * unitVh * 100) / height;
+  return result + 'vh';
+}
+export const homeGapY = getHomePaddingTop();
+
 export const formatMinuteToTime = (minutes) => {
   let result = ''
   let hours = Math.floor(Math.abs(minutes / 60));
