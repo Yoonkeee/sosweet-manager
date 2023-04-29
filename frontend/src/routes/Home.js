@@ -1,14 +1,35 @@
 import {useEffect} from "react";
-import {AspectRatio, Box, Button, HStack, Image, Text, useDisclosure} from "@chakra-ui/react";
-import {homeBoxBetweenMargin, homeBoxPadding, homeBoxWidth, homeGapY, homePaddingX, mainColor} from "../api";
+import {AspectRatio, Box, Button, HStack, Image, Text, useBreakpointValue, useDisclosure} from "@chakra-ui/react";
+import {mainColor} from "../api";
 import {useSelector} from "react-redux";
 import {Link} from "react-router-dom";
 import ModifyDog from "../modals/ModifyDog";
 
 
+let homeBoxWidth;
+let homePaddingX;
+let homeBoxBetweenMargin;
+let homeBoxPadding;
+function getHomePaddingTop () {
+    const gap = window.outerHeight - window.innerHeight;
+    let unitVh = window.innerHeight / 100;
+    const height = window.innerHeight - gap;
+    const paddingVh = 1.36
+    const result = (paddingVh * unitVh * 100) / height;
+    return result + 'vh';
+}
+export const homeGapY = getHomePaddingTop();
 export default function Home() {
+
+// export const homeBoxWidth = (45.4 * viewRatio) + 'vw'
+    const viewRatio = useBreakpointValue({ base: 1, md: 0.4 });
+    homeBoxWidth = (45.4 * viewRatio) + 'vw'
+    homePaddingX = (3.41 * viewRatio) + 'vw'
+    homeBoxBetweenMargin = (2.32 * viewRatio) + 'vw'
+    homeBoxPadding = (3.56 * viewRatio) + 'vw'
+
     return (
-        <Box w={'100%'} h={'100%'} m={0} p={0} bgColor={'gray.200'}
+        <Box w={'100%'} h={'100%'} m={0} p={0} bgColor={'gray.200'} mb={'10vh'}
              paddingTop={homeGapY}
             // marginBottom={'150px'}
         >

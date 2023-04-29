@@ -18,13 +18,12 @@ export default function DogsList() {
   const showPhone = useBreakpointValue({ base: false, md: true });
   const showWeight = useBreakpointValue({ base: false, md: true });
   return (
-    <VStack w={'100%'} mt={'2vh'}>
+    <VStack w={'100%'} mt={'2vh'} mb={'10vh'}>
       <Text mt={'1vh'} fontSize={'3xl'} fontWeight={'extrabold'} textAlign={'center'}>
         🥰쏘스윗 댕댕이 목록🥰
       </Text>
       <TableContainer w={'100%'}>
         <Table variant='striped' colorScheme='blue' layout={'fixed'}>
-          {/*<TableCaption>Imperial to metric conversion factors</TableCaption>*/}
           <Thead w={'100%'} borderBottomColor={'black'} borderBottomWidth={5} textAlign={'center'}
                  position={'sticky'} top={0}>
             <Tr textAlign={'center'} position={'sticky'} top={0}>

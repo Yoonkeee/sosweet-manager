@@ -28,6 +28,7 @@ export default function Root() {
 //         font-weight: normal;
 //         font-style: normal;
 //     }
+
     return (
         <>
             <Helmet>
@@ -169,13 +170,14 @@ export default function Root() {
                     <Header/>
                 </Box>
                 {/*<Flex overflowX={'hidden'}>*/}
-                <Box overflowX={'hidden'} h={'80vh'}>
+                <Box overflowX={'hidden'}>
                 {/*<Box overflowX={'hidden'} h={`calc(80vh - ${statusBarHeight}px)`}>*/}
-                    <Outlet overflowX={'hidden'} h={'80vh'}/>
+                    <Outlet overflowX={'hidden'} mb={'10vh'}/>
+                    {/*<Outlet overflowX={'hidden'} h={'80vh'}/>*/}
                     {/*<Box h={'10vh'} bgColor={'gray.200'}/>*/}
                 </Box>
                 {/*</Flex>*/}
-                <Box position="fixed" bottom={0} w={'100%'}>
+                <Box position="fixed" bottom={0} w={'100%'} h={'10vh'}>
                 {/*<Box position="fixed" bottom={0} h={'10vh'} w={'100%'}>*/}
                     {/*<Box position="fixed" bottom={0} left={`calc((100% - ${mainWidth})/2)`} w={mainWidth}>*/}
                     <Footer/>
