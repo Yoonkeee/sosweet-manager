@@ -57,7 +57,7 @@ export default function Timetable() {
     }, [checkoutData]);
 
     return (
-        <VStack w={'100%'} mt={'2vh'} mb={'10vh'}>
+        <VStack w={'100%'} mt={'2vh'} mb={'10vh'} minH={'80vh'}>
             <HStack w={'100%'} justifyContent={'center'}>
                 <IconButton rounded={'xl'} w={'6%'} h={'80%'} bg={'#1a2a52'} color={'white'} isRound={true}
                             position={'inherit'}

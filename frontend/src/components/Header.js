@@ -26,12 +26,26 @@ import {useDispatch} from "react-redux";
 import {setToday} from "../store";
 
 export default function Header() {
+    let statusBarHeight;
+    if (window.innerWidth < 500) {
+        statusBarHeight = 'env(safe-area-inset-top)';
+    } else {
+        statusBarHeight = '0';
+    }
+    // console.log('statusBarHeight : ' + (window.outerHeight - window.innerHeight) + 'px');
+    // console.log('inner Height : ' + window.innerHeight + 'px');
+    // console.log('20vh : ' + parseInt(window.innerHeight * 0.2) + 'px');
+
     return (
         <Box
+            zIndex={1}
+            // position={'absolute'}
             display={'flex'}
             alignContent={'center'}
             justifyContent={'center'}
+            // mt={statusBarHeight}
             h={'10vh'}
+            // h={`calc(10vh + ${statusBarHeight})`}
             // borderBottom={'2px'}
             // borderColor={'white'}
             background={mainColor}
@@ -47,201 +61,201 @@ export default function Header() {
         </Box>
     )
 }
+
+// const DesktopNav = () => {
+//     const linkColor = useColorModeValue('white', 'gray.200');
+//     const linkHoverColor = useColorModeValue('white', 'white');
+//     const popoverContentBgColor = '#1a2a52';
+//     const dispatch = useDispatch();
 //
-const DesktopNav = () => {
-    const linkColor = useColorModeValue('white', 'gray.200');
-    const linkHoverColor = useColorModeValue('white', 'white');
-    const popoverContentBgColor = '#1a2a52';
-    const dispatch = useDispatch();
-
-    return (// 메인 메뉴
-        <Stack direction={'row'} spacing={4}>
-            {NAV_ITEMS.map((navItem) => (<Box key={navItem.label}>
-                <Popover
-                    trigger={'hover'}
-                    placement={'bottom-start'}>
-                    <PopoverTrigger>
-                        <Link to={navItem.link} onClick={navItem.label === '시간표' ? () => dispatch(setToday()) : null}>
-                            <Button
-                                p={2}
-                                href={navItem.href ?? '#'}
-                                fontSize={'3xl'}
-                                fontWeight={800}
-                                color={linkColor}
-                                bg={'none'}
-                                _hover={{
-                                    textDecoration: 'none',
-                                    color: linkHoverColor,
-                                    bg: '#526491',
-                                    rounded: 'xl',
-                                    transform: 'scale(1.2)',
-                                }}>
-                                {navItem.label}
-                            </Button>
-                        </Link>
-                    </PopoverTrigger>
-
-                    {navItem.children && (<PopoverContent
-                            // isOpen={isPopoverOpen}
-                            // onClick={handleClose}
-                            border={0}
-                            boxShadow={'xl'}
-                            bg={popoverContentBgColor}
-                            p={4}
-                            rounded={'xl'}
-                            minW={'sm'}>
-                            <Stack>
-                                {navItem.children.map((child) => {
-                                    if (child.label === '신규 등록') {
-                                        return <AddNewDog {...child} key={child.label}/>
-                                    } else if (child.label === '결제 내역 등록') {
-                                        return <AddNewPay {...child} key={child.label}/>
-                                    } else if (child.label === '등록정보 수정') {
-                                        return <ModDog {...child} key={child.label}/>
-                                    } else {
-                                        return <DesktopSubNav {...child} key={child.label}/>
-                                    }
-                                })}
-                            </Stack>
-                        </PopoverContent>
-                    )}
-                </Popover>
-            </Box>))}
-        </Stack>);
-};
-const ModDog = (child) => {
-    const {isOpen, onOpen, onClose} = useDisclosure()
-    const {label, subLink, subLabel} = child;
-    const mutation = useMutation(addNewDog);
-    return (<>
-        <Box
-            cursor={'pointer'}
-            onClick={onOpen}
-            role={'group'}
-            display={'block'}
-            bg={'none'}
-            p={2}
-            rounded={'md'}
-            _hover={{bg: '#526491'}}>
-            <Button onClick={onOpen} bg={'transparent'} _hover={''} p={0}>
-                <Stack direction={'row'} align={'center'}>
-                    {/*서브메뉴 - 라벨*/}
-                    <VStack alignItems={'flex-start'}>
-                        <Text
-                            transition={'all .3s ease'}
-                            // _groupHover={{color: 'white'}}
-                            fontSize={'xl'}
-                            fontWeight={800}>
-                            {label}
-                        </Text>
-                        {/*서브메뉴 - 라벨 디스크립션*/}
-                        <Text fontSize={'md'} fontWeight={500}>{subLabel}</Text>
-                    </VStack>
-                </Stack>
-            </Button>
-        </Box>
-        <ModifyDog isOpen={isOpen} onClose={onClose}/>
-    </>);
-}
-
-const AddNewDog = (child) => {
-    const {isOpen, onOpen, onClose} = useDisclosure()
-    const {label, subLink, subLabel} = child;
-    return (<>
-        <Box
-            cursor={'pointer'}
-            onClick={onOpen}
-            role={'group'}
-            display={'block'}
-            bg={'none'}
-            p={2}
-            rounded={'md'}
-            _hover={{bg: '#526491'}}>
-            <Button onClick={onOpen} bg={'transparent'} _hover={''} p={0}>
-                <Stack direction={'row'} align={'center'}>
-                    {/*서브메뉴 - 라벨*/}
-                    <VStack alignItems={'flex-start'}>
-                        <Text
-                            transition={'all .3s ease'}
-                            // _groupHover={{color: 'white'}}
-                            fontSize={'xl'}
-                            fontWeight={800}>
-                            {label}
-                        </Text>
-                        {/*서브메뉴 - 라벨 디스크립션*/}
-                        <Text fontSize={'md'} fontWeight={500}>{subLabel}</Text>
-                    </VStack>
-                </Stack>
-            </Button>
-        </Box>
-        <NewDog isOpen={isOpen} onClose={onClose}/>
-    </>);
-}
-
-
-const AddNewPay = (child) => {
-    const {isOpen, onOpen, onClose} = useDisclosure()
-    const {label, subLink, subLabel} = child;
-    return (<>
-        <Box
-            cursor={'pointer'}
-            onClick={onOpen}
-            role={'group'}
-            display={'block'}
-            bg={'none'}
-            p={2}
-            rounded={'md'}
-            _hover={{bg: '#526491'}}>
-            <Button bg={'transparent'} _hover={''} p={0}>
-                <Stack direction={'row'} align={'center'}>
-                    {/*서브메뉴 - 라벨*/}
-                    <VStack alignItems={'flex-start'}>
-                        <Text
-                            transition={'all .3s ease'}
-                            // _groupHover={{color: 'white'}}
-                            fontSize={'xl'}
-                            fontWeight={800}>
-                            {label}
-                        </Text>
-                        {/*서브메뉴 - 라벨 디스크립션*/}
-                        <Text fontSize={'md'} fontWeight={500}>{subLabel}</Text>
-                    </VStack>
-                </Stack>
-            </Button>
-        </Box>
-        {/*<Button onClick={onOpen}>Open Modal</Button>*/}
-        <AddPay isOpen={isOpen} onClose={onClose}/>
-    </>);
-};
-
-const DesktopSubNav = ({label, subLink, subLabel}: NavItem) => {
-    return (// 서브 메뉴
-        <Box
-            role={'group'}
-            display={'block'}
-            bg={'none'}
-            p={2}
-            rounded={'md'}
-            _hover={{bg: '#526491'}}>
-            <Stack>
-                <Link to={subLink}>
-                    {/*서브메뉴 - 라벨*/}
-                    <VStack alignItems={'flex-start'}>
-                        <Text
-                            transition={'all .3s ease'}
-                            _groupHover={{color: 'white'}}
-                            fontSize={'xl'}
-                            fontWeight={800}>
-                            {label}
-                        </Text>
-                        {/*서브메뉴 - 라벨 디스크립션*/}
-                        <Text fontSize={'md'} fontWeight={500}>{subLabel}</Text>
-                    </VStack>
-                </Link>
-            </Stack>
-        </Box>);
-};
-
+//     return (// 메인 메뉴
+//         <Stack direction={'row'} spacing={4}>
+//             {NAV_ITEMS.map((navItem) => (<Box key={navItem.label}>
+//                 <Popover
+//                     trigger={'hover'}
+//                     placement={'bottom-start'}>
+//                     <PopoverTrigger>
+//                         <Link to={navItem.link} onClick={navItem.label === '시간표' ? () => dispatch(setToday()) : null}>
+//                             <Button
+//                                 p={2}
+//                                 href={navItem.href ?? '#'}
+//                                 fontSize={'3xl'}
+//                                 fontWeight={800}
+//                                 color={linkColor}
+//                                 bg={'none'}
+//                                 _hover={{
+//                                     textDecoration: 'none',
+//                                     color: linkHoverColor,
+//                                     bg: '#526491',
+//                                     rounded: 'xl',
+//                                     transform: 'scale(1.2)',
+//                                 }}>
+//                                 {navItem.label}
+//                             </Button>
+//                         </Link>
+//                     </PopoverTrigger>
+//
+//                     {navItem.children && (<PopoverContent
+//                             // isOpen={isPopoverOpen}
+//                             // onClick={handleClose}
+//                             border={0}
+//                             boxShadow={'xl'}
+//                             bg={popoverContentBgColor}
+//                             p={4}
+//                             rounded={'xl'}
+//                             minW={'sm'}>
+//                             <Stack>
+//                                 {navItem.children.map((child) => {
+//                                     if (child.label === '신규 등록') {
+//                                         return <AddNewDog {...child} key={child.label}/>
+//                                     } else if (child.label === '결제 내역 등록') {
+//                                         return <AddNewPay {...child} key={child.label}/>
+//                                     } else if (child.label === '등록정보 수정') {
+//                                         return <ModDog {...child} key={child.label}/>
+//                                     } else {
+//                                         return <DesktopSubNav {...child} key={child.label}/>
+//                                     }
+//                                 })}
+//                             </Stack>
+//                         </PopoverContent>
+//                     )}
+//                 </Popover>
+//             </Box>))}
+//         </Stack>);
+// };
+// const ModDog = (child) => {
+//     const {isOpen, onOpen, onClose} = useDisclosure()
+//     const {label, subLink, subLabel} = child;
+//     const mutation = useMutation(addNewDog);
+//     return (<>
+//         <Box
+//             cursor={'pointer'}
+//             onClick={onOpen}
+//             role={'group'}
+//             display={'block'}
+//             bg={'none'}
+//             p={2}
+//             rounded={'md'}
+//             _hover={{bg: '#526491'}}>
+//             <Button onClick={onOpen} bg={'transparent'} _hover={''} p={0}>
+//                 <Stack direction={'row'} align={'center'}>
+//                     {/*서브메뉴 - 라벨*/}
+//                     <VStack alignItems={'flex-start'}>
+//                         <Text
+//                             transition={'all .3s ease'}
+//                             // _groupHover={{color: 'white'}}
+//                             fontSize={'xl'}
+//                             fontWeight={800}>
+//                             {label}
+//                         </Text>
+//                         {/*서브메뉴 - 라벨 디스크립션*/}
+//                         <Text fontSize={'md'} fontWeight={500}>{subLabel}</Text>
+//                     </VStack>
+//                 </Stack>
+//             </Button>
+//         </Box>
+//         <ModifyDog isOpen={isOpen} onClose={onClose}/>
+//     </>);
+// }
+//
+// const AddNewDog = (child) => {
+//     const {isOpen, onOpen, onClose} = useDisclosure()
+//     const {label, subLink, subLabel} = child;
+//     return (<>
+//         <Box
+//             cursor={'pointer'}
+//             onClick={onOpen}
+//             role={'group'}
+//             display={'block'}
+//             bg={'none'}
+//             p={2}
+//             rounded={'md'}
+//             _hover={{bg: '#526491'}}>
+//             <Button onClick={onOpen} bg={'transparent'} _hover={''} p={0}>
+//                 <Stack direction={'row'} align={'center'}>
+//                     {/*서브메뉴 - 라벨*/}
+//                     <VStack alignItems={'flex-start'}>
+//                         <Text
+//                             transition={'all .3s ease'}
+//                             // _groupHover={{color: 'white'}}
+//                             fontSize={'xl'}
+//                             fontWeight={800}>
+//                             {label}
+//                         </Text>
+//                         {/*서브메뉴 - 라벨 디스크립션*/}
+//                         <Text fontSize={'md'} fontWeight={500}>{subLabel}</Text>
+//                     </VStack>
+//                 </Stack>
+//             </Button>
+//         </Box>
+//         <NewDog isOpen={isOpen} onClose={onClose}/>
+//     </>);
+// }
+//
+//
+// const AddNewPay = (child) => {
+//     const {isOpen, onOpen, onClose} = useDisclosure()
+//     const {label, subLink, subLabel} = child;
+//     return (<>
+//         <Box
+//             cursor={'pointer'}
+//             onClick={onOpen}
+//             role={'group'}
+//             display={'block'}
+//             bg={'none'}
+//             p={2}
+//             rounded={'md'}
+//             _hover={{bg: '#526491'}}>
+//             <Button bg={'transparent'} _hover={''} p={0}>
+//                 <Stack direction={'row'} align={'center'}>
+//                     {/*서브메뉴 - 라벨*/}
+//                     <VStack alignItems={'flex-start'}>
+//                         <Text
+//                             transition={'all .3s ease'}
+//                             // _groupHover={{color: 'white'}}
+//                             fontSize={'xl'}
+//                             fontWeight={800}>
+//                             {label}
+//                         </Text>
+//                         {/*서브메뉴 - 라벨 디스크립션*/}
+//                         <Text fontSize={'md'} fontWeight={500}>{subLabel}</Text>
+//                     </VStack>
+//                 </Stack>
+//             </Button>
+//         </Box>
+//         {/*<Button onClick={onOpen}>Open Modal</Button>*/}
+//         <AddPay isOpen={isOpen} onClose={onClose}/>
+//     </>);
+// };
+//
+// const DesktopSubNav = ({label, subLink, subLabel}: NavItem) => {
+//     return (// 서브 메뉴
+//         <Box
+//             role={'group'}
+//             display={'block'}
+//             bg={'none'}
+//             p={2}
+//             rounded={'md'}
+//             _hover={{bg: '#526491'}}>
+//             <Stack>
+//                 <Link to={subLink}>
+//                     {/*서브메뉴 - 라벨*/}
+//                     <VStack alignItems={'flex-start'}>
+//                         <Text
+//                             transition={'all .3s ease'}
+//                             _groupHover={{color: 'white'}}
+//                             fontSize={'xl'}
+//                             fontWeight={800}>
+//                             {label}
+//                         </Text>
+//                         {/*서브메뉴 - 라벨 디스크립션*/}
+//                         <Text fontSize={'md'} fontWeight={500}>{subLabel}</Text>
+//                     </VStack>
+//                 </Link>
+//             </Stack>
+//         </Box>);
+// };
+//
 // const MobileNav = () => {
 //   return (<Stack
 //     bg={'#1a2a52'}
@@ -250,7 +264,7 @@ const DesktopSubNav = ({label, subLink, subLabel}: NavItem) => {
 //     {NAV_ITEMS.map((navItem) => (<MobileNavItem key={navItem.label} {...navItem} />))}
 //   </Stack>);
 // };
-
+//
 // const MobileNavItem = ({label, children, href}: NavItem) => {
 //     const {isOpen, onToggle} = useDisclosure();
 //
