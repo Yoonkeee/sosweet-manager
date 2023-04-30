@@ -3,10 +3,11 @@ import {
     Td,
     HStack,
     Text,
-    useBreakpointValue, Box,
+    useBreakpointValue, Box, useDisclosure,
 } from '@chakra-ui/react'
 import {useEffect, useState} from "react";
 import {formatMinuteToTime} from "../api";
+import DogInfo from "../modals/DogInfo";
 
 export default function DogsListRow(props) {
     // console.log(props.data);
@@ -26,8 +27,9 @@ export default function DogsListRow(props) {
             setNameColor('red')
         }
     }, [remainingMinutes]);
+    const {isOpen, onOpen, onClose} = useDisclosure()
     return (<>
-        <Tr textAlign={'center'}>
+        <Tr textAlign={'center'} onClick={onOpen} cursor={'pointer'}>
             <Td borderRight="1px solid" borderColor="gray.300" textAlign={'center'} p={2}>
                 <Text fontSize={'md'} textAlign={'center'} fontWeight={'semibold'} textColor={'#1a2a52'}>
                     {data.name}
@@ -72,5 +74,6 @@ export default function DogsListRow(props) {
                 </Text>
             </Td>
         </Tr>
+        {isOpen ? <DogInfo isOpen={isOpen} onClose={onClose} name={data.name}/> : ''}
     </>)
 }
