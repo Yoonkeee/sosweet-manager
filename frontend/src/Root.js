@@ -1,5 +1,5 @@
 import {Outlet, useLocation} from "react-router-dom";
-import {Box, Flex, Img, Text} from "@chakra-ui/react";
+import {Box, Flex, HStack, Img, Text} from "@chakra-ui/react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import {Helmet} from "react-helmet"
@@ -26,7 +26,7 @@ export default function Root() {
     let statusBarHeight = useSelector(state => state.statusBarHeight)
     let location = useLocation().pathname;
     window.pulltorefresh = true;
-    const { pathname } = useLocation();
+    const {pathname} = useLocation();
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [pathname]);
@@ -35,16 +35,27 @@ export default function Root() {
     const loading = useRef(null);
     const touchStartY = useRef(0);
     const loadingHeight = useRef(0);
-    const handleRefresh = useRef(() => {window.location.reload()});
-    const MAX_HEIGHT = 100;
+    const handleRefresh = useRef(() => {
+        window.location.reload()
+    });
+    const pxForVh = window.innerHeight / 100;
+    const MAX_HEIGHT = pxForVh * 17;
+
+    // const loadingBox = () => <Box h={'10vh'} bgColor={'red'}/>
     function handleTouchStart(e) {
         if (!div.current || div.current.scrollTop !== 0) return;
         touchStartY.current = e.changedTouches[0].screenY;
         const el = document.createElement('div');
-        // el.classList.add('loading-element'); // 스타일을 지정해주자.
+        el.style.cssText = 'background-color: "#1a2a52; transition: height 0s';
+        // el.style.cssText = '';
+        // el.style.cssText = 'background-color: red; transition: height 0.3s ease-in-out;';
+        // el.style.backgroundColor = 'red';
+        // el.style.backgroundColor = 'transition: height 0.3s ease-in-out';
+        // el.classList.add('loadingBox'); // 스타일을 지정해주자.
         div.current.prepend(el); // 스크롤되는 요소의 최상단에 추가해준다.
         loading.current = el;
     }
+
     function handleTouchMove(e) {
         // 만약 로딩 요소가 생성되었다면
         if (loading.current) {
@@ -53,11 +64,13 @@ export default function Root() {
             // const height = Math.floor((screenY - touchStartY.current) * 0.3);
             // height 가 0 보다 크다면
             if (height >= 0) {
-            //     loading.current.style.height = `${height}px`;
+                loading.current.style.height = `${height}px`;
                 loadingHeight.current = height;
             }
+            loading.current.style.cssText = 'transition: height 0.3s; height: 0px';
         }
     }
+
     function handleTouchEnd() {
         // 로딩 요소의 높이가 MAX_HEIGHT 보다 크다면
         if (loading.current && loadingHeight.current >= MAX_HEIGHT) {
@@ -65,17 +78,20 @@ export default function Root() {
             // 새로고침 함수를 실행한다.
             handleRefresh.current();
             // div.current.removeChild(loading.current); // 로딩 요소를 제거
-            // loading.current = null;
+            loading.current = null;
             loadingHeight.current = 0;
             touchStartY.current = 0;
         } else {
-            console.log(loadingHeight.current)
+            // loading.current.style.cssText = 'transition: height 0.3s; height: 0px';
+            // loading.current.style.height = `0px`;
+            // console.log(loadingHeight.current)
             touchStartY.current = 0;
         }
     }
-    document.addEventListener('touchstart', handleTouchStart, { passive: true })
-    document.addEventListener('touchmove', handleTouchMove, { passive: true })
-    document.addEventListener('touchend', handleTouchEnd, { passive: true })
+
+    document.addEventListener('touchstart', handleTouchStart, {passive: true})
+    document.addEventListener('touchmove', handleTouchMove, {passive: true})
+    document.addEventListener('touchend', handleTouchEnd, {passive: true})
     return (
         <>
             <Helmet>
@@ -193,7 +209,8 @@ export default function Root() {
             </Helmet>
             <Box m={'0'} overflow={'hidden'} style={{fontFamily: "GmarketSans"}} bgColor={mainColor} ref={div}>
                 <Box w={'100%'} h={'10vh'} top={0} position="fixed" zIndex={1} bgColor={mainColor}>
-                <Box h={statusBarHeight} bgColor={mainColor} textAlign={'center'} justifyContent={'center'} zIndex={55} />
+                    <Box h={statusBarHeight} bgColor={mainColor} textAlign={'center'} justifyContent={'center'}
+                         zIndex={55}/>
                     <Header/>
                 </Box>
                 <Box overflowX={'hidden'} bgColor={'white'} zIndex={54}
@@ -201,7 +218,14 @@ export default function Root() {
                     <Box
                         h={`calc(10vh + ${statusBarHeight})`} display={'flex'} bgColor={mainColor}
                         justifyContent={'center'} alignItems={'flex-end'} zIndex={55}>
-                        <Img src={'refresh_icon.png'} w={'50vw'}/>
+                        <HStack alignItems={'flex-end'}>
+                            <Text
+                                mb={'0.2em'}
+                                lineHeight={'1.1em'}
+                                fontSize={'small'} fontWeight={'extrabold'} fontFamily={'SingleDay'} color={'white'}
+                            >새<br/>로<br/>고<br/>침</Text>
+                            <Img src={'refresh_icon.png'} w={'50vw'}/>
+                        </HStack>
                         {/*window.location.reload()*/}
                         {/*<Text color={'white'}>*/}
                         {/*    새로고침*/}
