@@ -68,7 +68,7 @@ export default function AddPay({isOpen, onClose}) {
     setBelts(0)
   }}>
     <ModalOverlay/>
-    <ModalContent>
+    <ModalContent top={'30vh'}>
       <ModalHeader>결제 등록!</ModalHeader>
       <ModalCloseButton/>
       <HStack w={'100%'} justifyContent={'center'} mb={'2vh'} alignContent={'center'} alignItems={'center'}>

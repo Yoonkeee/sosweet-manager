@@ -72,7 +72,7 @@ export default function ChangeCheckInTime({isOpen, onClose, id, name, in_or_out}
   return (<>
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay/>
-      <ModalContent>
+      <ModalContent top={'30vh'}>
         <ModalHeader>댕댕이 체크{in_or_out === 'in' ? '인' : '아웃'} 시간 수정!</ModalHeader>
         <ModalCloseButton/>
         <ModalBody as={'form'} onSubmit={handleSubmit(onSubmit)}>

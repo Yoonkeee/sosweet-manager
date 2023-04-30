@@ -52,9 +52,9 @@ export default function Timetable() {
         dispatch(setToday());
         queryClient.refetchQueries('notOut')
     }, []);
-    useEffect(() => {
-        // console.log('checkoutData: ', checkoutData);
-    }, [checkoutData]);
+    // useEffect(() => {
+    //     // console.log('checkoutData: ', checkoutData);
+    // }, [checkoutData]);
 
     return (
         <VStack w={'100%'} mt={'2vh'} mb={'10vh'} minH={'80vh'}>

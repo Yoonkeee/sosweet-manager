@@ -41,7 +41,7 @@ export default function NewDog({isOpen, onClose}) {
   }
   return (<Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay/>
-      <ModalContent>
+      <ModalContent top={'25vh'}>
         <ModalHeader>댕댕이 등록~</ModalHeader>
         <ModalCloseButton/>
         <ModalBody as={'form'} onSubmit={handleSubmit(onSubmit)}>

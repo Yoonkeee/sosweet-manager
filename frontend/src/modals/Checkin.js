@@ -89,7 +89,7 @@ export default function Checkin({isOpen, onClose}) {
     {/*</Button>*/}
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay/>
-      <ModalContent>
+      <ModalContent top={'30vh'}>
         <ModalHeader>댕댕이 체크인!</ModalHeader>
         <ModalCloseButton/>
         <ModalBody as={'form'} onSubmit={handleSubmit(onSubmit)}>
