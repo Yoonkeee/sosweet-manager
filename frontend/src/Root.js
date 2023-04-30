@@ -3,7 +3,7 @@ import {Box, Flex, Img, Text} from "@chakra-ui/react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import {Helmet} from "react-helmet"
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {makeTemporal, setStatusBarHeight} from "./store";
 import {useDispatch, useSelector} from "react-redux";
 import {mainColor} from "./api";
@@ -16,49 +16,69 @@ export default function Root() {
             // running as a standalone PWA on iOS and the viewport height doesn't match the device height
             const height = window.outerHeight - window.innerHeight;
             dispatch(setStatusBarHeight(height))
-            console.log('!');
-            console.log(height)
-            console.log('@');
         }
     }, []);
-    // let statusBarHeight;
     if (window.innerWidth < 500) {
         dispatch(setStatusBarHeight('env(safe-area-inset-top)'))
     } else {
         dispatch(setStatusBarHeight('0px'))
     }
-    // log it if current location(pwd) is changed
     let statusBarHeight = useSelector(state => state.statusBarHeight)
     let location = useLocation().pathname;
-
-    // useEffect(() => {
-    //     console.log('statusBarHeight : ' + (window.outerHeight - window.innerHeight) + 'px');
-    //     console.log('inner Height : ' + window.innerHeight + 'px');
-    //     console.log('20vh : ' + parseInt(window.innerHeight * 0.2) + 'px');
-    //     console.log('current location : ' + location);
-    // }, [location]);
-    useEffect(() => {
-        console.log('#');
-        console.log(statusBarHeight)
-        console.log('$');
-    }, [statusBarHeight]);
-// @font-face {
-//         font-family: 'GmarketSansMedium';
-//         src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
-//         font-weight: normal;
-//         font-style: normal;
-//     }
     window.pulltorefresh = true;
     const { pathname } = useLocation();
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [pathname]);
+
+    const div = useRef(null);
+    const loading = useRef(null);
+    const touchStartY = useRef(0);
+    const loadingHeight = useRef(0);
+    const handleRefresh = useRef(() => {window.location.reload()});
+    const MAX_HEIGHT = 80;
+    function handleTouchStart(e) {
+        if (!div.current || div.current.scrollTop !== 0) return;
+        touchStartY.current = e.changedTouches[0].screenY;
+        const el = document.createElement('div');
+        // el.classList.add('loading-element'); // 스타일을 지정해주자.
+        div.current.prepend(el); // 스크롤되는 요소의 최상단에 추가해준다.
+        loading.current = el;
+    }
+    function handleTouchMove(e) {
+        // 만약 로딩 요소가 생성되었다면
+        if (loading.current) {
+            const screenY = e.changedTouches[0].screenY;
+            const height = Math.floor((screenY - touchStartY.current));
+            // const height = Math.floor((screenY - touchStartY.current) * 0.3);
+            // height 가 0 보다 크다면
+            if (height >= 0) {
+            //     loading.current.style.height = `${height}px`;
+                loadingHeight.current = height;
+            }
+        }
+    }
+    function handleTouchEnd() {
+        // 로딩 요소의 높이가 MAX_HEIGHT 보다 크다면
+        if (loading.current && loadingHeight.current >= MAX_HEIGHT) {
+            console.log(loadingHeight.current)
+            // 새로고침 함수를 실행한다.
+            handleRefresh.current();
+            // div.current.removeChild(loading.current); // 로딩 요소를 제거
+            // loading.current = null;
+            loadingHeight.current = 0;
+            touchStartY.current = 0;
+        } else {
+            console.log(loadingHeight.current)
+            touchStartY.current = 0;
+        }
+    }
+    document.addEventListener('touchstart', handleTouchStart, { passive: true })
+    document.addEventListener('touchmove', handleTouchMove, { passive: true })
+    document.addEventListener('touchend', handleTouchEnd, { passive: true })
     return (
         <>
             <Helmet>
-                {/*<link rel="preconnect" href="https://fonts.googleapis.com"/>*/}
-                {/*<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin/>*/}
-                {/*<link href='https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff' rel="stylesheet"/>*/}
                 <title>쏘스윗 매니저</title>
                 <meta name="viewport"
                       content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
@@ -171,75 +191,28 @@ export default function Root() {
                       media="screen and (device-width: 744px) and (device-height: 1133px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
                       href="splash_screens/8.3__iPad_Mini_portrait.png"/>
             </Helmet>
-            {/*<Box m={'0'} overflow={'hidden'}>*/}
-            {/*    <Box w={'100%'} h={'10vh'} top={0}>*/}
-            {/*        /!*<Box position="fixed" w={'100%'} top={0}>*!/*/}
-            {/*        /!*<Box position="fixed" top={0} left={`calc((100% - ${mainWidth})/2)`} w={mainWidth}>*!/*/}
-            {/*        <Header/>*/}
-            {/*    </Box>*/}
-            {/*    <Box overflow={'hidden'}>*/}
-            {/*        /!*<Image src={'app_icon.png'} />*!/*/}
-            {/*        <Outlet overflow={'hidden'} h={'100%'}/>*/}
-            {/*    </Box>*/}
-            {/*    <Box position="fixed" bottom={0} w={'100%'}>*/}
-            {/*        /!*<Box position="fixed" bottom={0} left={`calc((100% - ${mainWidth})/2)`} w={mainWidth}>*!/*/}
-            {/*        <Footer/>*/}
-            {/*    </Box>*/}
-            {/*</Box>*/}
-            <Box m={'0'} overflow={'hidden'} style={{fontFamily: "GmarketSans"}} bgColor={mainColor}>
+            <Box m={'0'} overflow={'hidden'} style={{fontFamily: "GmarketSans"}} bgColor={mainColor} ref={div}>
                 <Box w={'100%'} h={'10vh'} top={0} position="fixed" zIndex={1} bgColor={mainColor}>
                 <Box h={statusBarHeight} bgColor={mainColor} textAlign={'center'} justifyContent={'center'} zIndex={55} />
-                {/*<Box w={'100%'} h={`calc(10vh + ${window.outerHeight - window.innerHeight}px)`} top={0} position="fixed" zIndex={1}>*/}
-                {/*<Box w={'100%'} h={'10vh'} top={0} mt={statusBarHeight} position="fixed" zIndex={1}>*/}
-                    {/*<Box position="fixed" w={'100%'} top={0}>*/}
-                    {/*<Box position="fixed" top={0} left={`calc((100% - ${mainWidth})/2)`} w={mainWidth}>*/}
                     <Header/>
                 </Box>
-                {/*<Flex overflowX={'hidden'}>*/}
                 <Box overflowX={'hidden'} bgColor={'white'} zIndex={54}
-                     // overscrollBehavior={'contain'}
                 >
-                {/*<Box overflowX={'hidden'} h={`calc(80vh - ${statusBarHeight}px)`}>*/}
                     <Box
                         h={`calc(10vh + ${statusBarHeight})`} display={'flex'} bgColor={mainColor}
                         justifyContent={'center'} alignItems={'flex-end'} zIndex={55}>
                         <Img src={'refresh_icon.png'} w={'50vw'}/>
+                        {/*window.location.reload()*/}
                         {/*<Text color={'white'}>*/}
                         {/*    새로고침*/}
                         {/*</Text>*/}
                     </Box>
                     <Outlet overflowX={'hidden'} h={`calc(80vh + ${statusBarHeight})`} zIndex={56}/>
-                    {/*<Outlet overflowX={'hidden'} mb={'10vh'} h={`calc(80vh + ${statusBarHeight})`} zIndex={56}/>*/}
-                    {/*<Box*/}
-                    {/*    h={`calc(10vh + ${statusBarHeight})`} display={'flex'} bgColor={mainColor}*/}
-                    {/*>*/}
-                    {/*</Box>*/}
-                    {/*<Outlet overflowX={'hidden'} h={'80vh'}/>*/}
-                    {/*<Box h={'10vh'} bgColor={'gray.200'}/>*/}
                 </Box>
-                {/*</Flex>*/}
                 <Box position="fixed" bottom={0} w={'100%'} h={'10vh'} zIndex={0}>
-                {/*<Box position="fixed" bottom={0} h={'10vh'} w={'100%'}>*/}
-                    {/*<Box position="fixed" bottom={0} left={`calc((100% - ${mainWidth})/2)`} w={mainWidth}>*/}
                     <Footer/>
                 </Box>
             </Box>
         </>
     )
 }
-
-// <Box w={mainWidth} m={'0 auto'} overflow={'hidden'} position={'fixed'} sx={{ overflowX: 'auto' }}>
-//     <Box position="fixed" top={0} left={`calc((100% - ${mainWidth})/2)`} w={mainWidth} sx={{ overflowX: 'auto' }}>
-//         <Header/>
-//     </Box>
-//     <Flex my={'10vh'} w={mainWidth} overflow={'hidden'} position={'fixed'} left={`calc((100% - ${mainWidth})/2)`}>
-//         <Outlet overflow={'hidden'} />
-//     </Flex>
-//     <Box position="fixed" bottom={0} left={`calc((100% - ${mainWidth})/2)`} w={mainWidth}>
-//         <Footer/>
-//     </Box>
-// </Box>
-// </>
-// )
-// }
-// const mainWidth = '100vw'

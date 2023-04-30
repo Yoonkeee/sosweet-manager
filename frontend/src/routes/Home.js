@@ -24,7 +24,6 @@ function getHomePaddingTop() {
     // console.log(window.outerHeight - window.innerHeight);
     // console.log(result);
     // console.log(unitVh);
-    console.log(statusBarHeight);
     // console.log(result * unitVh);
     return result + 'vh';
 }
