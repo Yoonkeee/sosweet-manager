@@ -113,7 +113,7 @@ export default function ModifyDog({isOpen, onClose}) {
     }
     return (<Modal isOpen={isOpen} onClose={onCloseFn}>
         <ModalOverlay/>
-        <ModalContent top={'30vh'}>
+        <ModalContent top={'10vh'}>
             <ModalHeader>🐶{(data !== undefined && data.length !== 0) ? name : '댕댕이'}🥰 정보</ModalHeader>
             <ModalCloseButton/>
             <ModalBody as={'form'} onSubmit={handleSubmit(onSubmit)}>

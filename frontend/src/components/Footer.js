@@ -86,7 +86,7 @@ const FooterButtonModal = (props) => {
 }
 const FooterButtonLink = (props) => {
     return (
-        <Box onClick={props.onClick}>
+        <Box onClick={props.onClick} h={'100%'}>
             <Link to={props.link} w={'100%'} h={'100%'}>
                 <Button bgColor={'transparent'} h={'100%'} paddingTop={'1vh'} w={'10vw'}>
                     <VStack m={0} p={0} h={'100%'} w={'100%'}>
