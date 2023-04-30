@@ -40,7 +40,7 @@ export default function DogsListRow(props) {
                             {data.note}
                         </Text>
                     </Box>
-                    <Box w={'30%'}>
+                    <Box w={'30%'} borderLeft={data.weight ? '1px solid' : ''}>
                         <Text
                             textColor={'darkgreen'}>{data.weight ? '   ' + data.weight + (data.weight.includes('kg') ? '' : 'kg') : ''}</Text>
                     </Box>

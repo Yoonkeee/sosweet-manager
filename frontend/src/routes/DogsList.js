@@ -36,7 +36,7 @@ export default function DogsList() {
               {showGender && <Th textAlign={'center'} w={'6vw'} px={0} fontSize={'xl'}>성별</Th>}
               {showPhone && <Th textAlign={'center'} w={'20vw'} px={0} fontSize={'xl'}>전화번호</Th>}
               {showWeight && <Th textAlign={'center'} w={'8vw'} px={0} fontSize={'xl'}>몸무게</Th>}
-              <Th textAlign={'center'} w={remainingWidth} px={0} fontSize={'xl'}>남은시간</Th>
+              <Th textAlign={'center'} w={remainingWidth} px={0} fontSize={'md'}>남은시간</Th>
             </Tr>
           </Thead>
           <Tbody>
