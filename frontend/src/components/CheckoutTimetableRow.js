@@ -74,7 +74,7 @@ export default function CheckoutTimetableRow(props) {
     }, [props.data.remaining_minutes]);
     return (<>
         <Tr textAlign={'center'}>
-            <Td px={0}>
+            <Td px={0} textAlign={'center'}>
                 <Button fontSize={'xl'} px={0} w={'80%'} fontWeight={'bold'} textColor={nameColor} colorScheme={'white'}
                         onClick={dogInfoModOnOpen}
                         size={buttonSize}>
@@ -108,7 +108,7 @@ export default function CheckoutTimetableRow(props) {
                                 _hover={{
                                     textDecoration: 'none', color: 'white', rounded: 'xl', transform: 'scale(1.2)'
                                 }}>
-                            삭제하기
+                            삭제
                         </Button>
                     </PopoverTrigger>
                     <Portal>
@@ -126,7 +126,7 @@ export default function CheckoutTimetableRow(props) {
                     </Portal>
                 </Popover>
             </Td>
-            <Td>
+            <Td p={0} textAlign={'center'} fontSize={'lg'} fontWeight={'extrabold'}>
                 {belts > 0 ? belts : ''}
             </Td>
         </Tr>

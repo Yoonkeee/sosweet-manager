@@ -67,7 +67,7 @@ export default function MakeMessage({isOpen, onClose, checked}) {
     }
     return (<Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay/>
-        <ModalContent ref={ref}>
+        <ModalContent top={'30vh'} ref={ref}>
             <ModalHeader>댕댕이 시간 계산하기~</ModalHeader>
             <ModalCloseButton/>
             <ModalBody as={'form'}>

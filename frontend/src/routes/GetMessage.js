@@ -19,24 +19,14 @@ import {useEffect, useState} from "react";
 import MakeMessage from "../modals/MakeMessage";
 
 export default function GetMessage() {
-    // const toast = useToast();
     const {isOpen, onOpen, onClose} = useDisclosure();
     const queryClient = useQueryClient();
     const {isLoading: selectIsLoading, data: selectData} = useQuery(["unchecked-dogs-list"], uncheckedDogsList);
     const [name, setName] = useState('');
-    // const [data, setData] = useState('');
     const {isLoading, data} = useQuery(["history", name, 'getMessage'], getHistory);
     const options = selectData?.map(item => ({
         value: item.name, label: item.name,
     }));
-    // if Select option is changed, set mutation
-    // useEffect(() => {
-    //   queryClient.removeQueries('history')
-    //   setChecked([])
-    //   if (name) {
-    //     queryClient.refetchQueries(["history", name, 'getMessage']);
-    //   }
-    // }, [name]);
     const [checked, setChecked] = useState([]);
     const [selected, setSelected] = useState(false);
     const showInTime = useBreakpointValue({base: false, md: true});
@@ -79,7 +69,7 @@ export default function GetMessage() {
                                 w={'100%'}
                                 p={0}
                                 mr={5}
-                                placeholder={"댕댕이 선택"}
+                                placeholder={"메세지 보낼 댕댕이"}
                                 required={true}
                                 position={'inherit'}
                                 id={'name'}
@@ -97,19 +87,19 @@ export default function GetMessage() {
                         {showOutTime && <Th textAlign={'center'} px={0} fontSize={'xl'} w={'10vw'}>퇴장시간</Th>}
                         <Th textAlign={'center'} fontSize={'xl'} px={0} w={'10vw'}>이용시간</Th>
                         {showBelt && <Th textAlign={'center'} px={0} fontSize={'xl'} w={'10vw'}>매너벨트</Th>}
-                        <Th p={0} textAlign={'center'} fontSize={'xl'} w={'10vw'}>
-                            <Button onClick={onOpen} position={'inherit'} bg={'#1a2a52'} color={'white'} rounded={'xl'}
-                                    _hover={{
-                                        textDecoration: 'none',
-                                        color: 'white',
-                                        bg: '#526491',
-                                        rounded: 'xl',
-                                        transform: 'scale(1.2)'
-                                    }}>
-                                메세지생성</Button>
-                            <MakeMessage isOpen={isOpen} onClose={onCloseFn}
-                                         checked={checked}/>
-                        </Th>
+                        {/*<Th p={0} textAlign={'center'} fontSize={'xl'} w={'10vw'}>*/}
+                        {/*    <Button onClick={onOpen} position={'inherit'} bg={'#1a2a52'} color={'white'} rounded={'xl'}*/}
+                        {/*            _hover={{*/}
+                        {/*                textDecoration: 'none',*/}
+                        {/*                color: 'white',*/}
+                        {/*                bg: '#526491',*/}
+                        {/*                rounded: 'xl',*/}
+                        {/*                transform: 'scale(1.2)'*/}
+                        {/*            }}>*/}
+                        {/*        메세지생성</Button>*/}
+                        {/*</Th>*/}
+                        <MakeMessage isOpen={isOpen} onClose={onCloseFn}
+                                     checked={checked}/>
                     </Tr>
                 </Thead>
                 <Tbody>

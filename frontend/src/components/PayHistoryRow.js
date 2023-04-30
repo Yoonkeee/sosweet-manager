@@ -10,7 +10,7 @@ export default function PayHistoryRow(props) {
   };
   const {isOpen, onClose, onOpen} = useDisclosure()
   return (<>
-    <Tr>
+    <Tr onClick={onOpen}>
       <Td>
         <Text textAlign={'center'} fontSize='xl' fontWeight='bold' textColor='#1a2a52'>
           {name}
@@ -26,15 +26,7 @@ export default function PayHistoryRow(props) {
           {formatDate(date)}
         </Text>
       </Td>
-      <Td px={0} py={2} textAlign={'center'}>
-        <Button position={'inherit'} onClick={onOpen} bg={'#1a2a52'} color={'white'}
-                fontSize={'md'}
-                _hover={{
-                  textDecoration: 'none', color: 'white', bg: '#526491', transform: 'scale(1.2)'
-                }}>
-          수정하기</Button>
         <ModifyPay isOpen={isOpen} onClose={onClose} data={props.data}/>
-      </Td>
     </Tr>
   </>)
 }

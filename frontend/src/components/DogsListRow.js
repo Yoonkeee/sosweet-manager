@@ -3,7 +3,7 @@ import {
     Td,
     HStack,
     Text,
-    useBreakpointValue,
+    useBreakpointValue, Box,
 } from '@chakra-ui/react'
 import {useEffect, useState} from "react";
 import {formatMinuteToTime} from "../api";
@@ -34,11 +34,16 @@ export default function DogsListRow(props) {
                 </Text>
             </Td>
             <Td borderRight="1px solid" borderColor="gray.300" textAlign={'center'} p={2}>
-                <HStack fontSize={'md'}  justifyContent={'center'} fontWeight={'semibold'} whiteSpace={'pre-line'}>
-                    <Text textColor={'#1a2a52'}>
-                        {data.note}
-                    </Text>
-                        <Text textColor={'darkgreen'}>{data.weight ? '   ' + data.weight + (data.weight.includes('kg') ? '' : 'kg') : ''}</Text>
+                <HStack fontSize={'md'} justifyContent={'center'} fontWeight={'semibold'} whiteSpace={'pre-line'}>
+                    <Box w={data.weight ? '70%' : '100%'}>
+                        <Text textColor={'#1a2a52'}>
+                            {data.note}
+                        </Text>
+                    </Box>
+                    <Box w={'30%'}>
+                        <Text
+                            textColor={'darkgreen'}>{data.weight ? '   ' + data.weight + (data.weight.includes('kg') ? '' : 'kg') : ''}</Text>
+                    </Box>
                 </HStack>
             </Td>
             {showBreed && <Td borderRight="1px solid" borderColor="gray.300" textAlign={'center'} p={0}>

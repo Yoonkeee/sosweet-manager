@@ -163,7 +163,7 @@ export default function ModifyHistory(props) {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay/>
-      <ModalContent ref={ref}>
+      <ModalContent top={'30vh'} ref={ref}>
         <ModalHeader>{name} 사용내역 수정</ModalHeader>
         <ModalCloseButton/>
         <ModalBody as={'form'} onSubmit={handleSubmit(onSubmit)}>

@@ -66,19 +66,19 @@ export default function GetMessageRow(props) {
           {belts > 0 ? <Text fontSize='lg'>{belts}</Text> : ''}
         </Text>
       </Td>}
-      <Td px={0}>
-        <Text textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>
-          <Checkbox size={'lg'} borderColor={'black'} position={'inherit'}
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        setChecked([...checked, id]);
-                      } else {
-                        setChecked(checked.filter((rowId) => rowId !== id));
-                      }
-                    }
-                    }/>
-        </Text>
-      </Td>
+      {/*<Td px={0}>*/}
+      {/*  <Text textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>*/}
+      {/*    <Checkbox size={'lg'} borderColor={'black'} position={'inherit'}*/}
+      {/*              onChange={(e) => {*/}
+      {/*                if (e.target.checked) {*/}
+      {/*                  setChecked([...checked, id]);*/}
+      {/*                } else {*/}
+      {/*                  setChecked(checked.filter((rowId) => rowId !== id));*/}
+      {/*                }*/}
+      {/*              }*/}
+      {/*              }/>*/}
+      {/*  </Text>*/}
+      {/*</Td>*/}
     </Tr>
   </>)
 }

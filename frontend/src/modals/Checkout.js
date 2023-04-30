@@ -160,7 +160,7 @@ export default function Checkout({isOpen, onClose, id, name, in_time, belts}) {
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay/>
-            <ModalContent ref={ref}>
+            <ModalContent top={'30vh'} ref={ref}>
                 <ModalHeader>{name}🥰 체크아웃!</ModalHeader>
                 <ModalCloseButton/>
                 <ModalBody as={'form'} onSubmit={handleSubmit(onSubmit)}>

@@ -59,7 +59,6 @@ export default function PayHistory() {
               <Th textAlign={'center'} fontSize={'xl'} px={0} w={'10vw'}>댕댕이</Th>
               <Th textAlign={'center'} w={'10vw'} px={0} fontSize={'xl'}>결제시간</Th>
               <Th textAlign={'center'} w={''} px={0} fontSize={'xl'}>결제일</Th>
-              <Th textAlign={'center'} w={''} px={0} fontSize={'xl'}>수정</Th>
             </Tr>
           </Thead>
           <Tbody>

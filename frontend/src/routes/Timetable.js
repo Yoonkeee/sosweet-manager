@@ -103,10 +103,10 @@ export default function Timetable() {
                     <Thead w={'100%'} borderBottomColor={'black'} borderBottomWidth={5} textAlign={'center'}>
                         <Tr textAlign={'center'}>
                             <Td textAlign={'center'} px={0} fontSize={'xl'} w={'20vw'}>이름</Td>
-                            <Th textAlign={'center'} px={0} fontSize={'xl'} w={'15vw'}>입장시간</Th>
-                            <Th textAlign={'center'} px={0} fontSize={'xl'} w={'15vw'}>퇴장하기</Th>
-                            <Th textAlign={'center'} px={0} fontSize={'xl'} w={'15vw'}>매너벨트</Th>
-                            <Th textAlign={'center'} px={0} fontSize={'xl'} w={'10vw'}>갯수</Th>
+                            <Th textAlign={'center'} px={0} fontSize={'xl'} w={'13vw'}>입장</Th>
+                            <Th textAlign={'center'} px={0} fontSize={'xl'} w={'13vw'}>퇴장</Th>
+                            <Th textAlign={'center'} px={0} fontSize={'xl'} w={'15vw'}>벨트</Th>
+                            <Th textAlign={'center'} px={0} fontSize={'xl'} w={'7vw'}>갯수</Th>
                         </Tr>
                     </Thead>
                     <Tbody>

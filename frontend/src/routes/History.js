@@ -63,7 +63,7 @@ export default function History() {
         <Table variant='striped' colorScheme='blue' layout={'fixed'}>
           <Thead w={'100%'} borderBottomColor={'black'} borderBottomWidth={5} alignItems={'center'}>
             <Tr textAlign={'center'}>
-              <Th textAlign={'center'} fontSize={'xl'} px={0} w={'15vw'}>
+              <Th textAlign={'center'} fontSize={'xl'} px={0} w={'25vw'}>
                 {selectIsLoading ? <Text>Loading options...</Text> :
                   (
                     <Select
@@ -94,13 +94,13 @@ export default function History() {
                 {/*<SelectDog setter={setName}/>*/}
               {/*</Button>*/}
             </Th>
-            <Th textAlign={'center'} w={'20vw'} px={0} fontSize={'xl'}>이용내역</Th>
+            <Th textAlign={'center'} w={'35vw'} px={0} fontSize={'xl'}>이용내역</Th>
             {/*<Th textAlign={'center'} fontSize={'xl'}>입장시간</Th>*/}
             {/*<Th textAlign={'center'} fontSize={'xl'}>퇴장시간</Th>*/}
               {showUsedTime && <Th textAlign={'center'} w={'9vw'} px={0} fontSize={'xl'}>이용시간</Th>}
-            <Th textAlign={'center'} w={'12vw'} px={0} fontSize={'xl'}>매너벨트</Th>
+            <Th textAlign={'center'} w={'12vw'} px={0} fontSize={'xl'}>벨트</Th>
             {/*<Th textAlign={'center'} w={'12vw'} px={0} fontSize={'xl'}>전송날짜</Th>*/}
-            <Th textAlign={'center'} w={'12vw'} px={0} fontSize={'xl'}>수정</Th>
+            {/*<Th textAlign={'center'} w={'12vw'} px={0} fontSize={'xl'}>수정</Th>*/}
           </Tr>
         </Thead>
         <Tbody>

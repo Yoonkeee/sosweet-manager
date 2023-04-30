@@ -49,7 +49,7 @@ export default function TimetableRow(props) {
     const {isOpen: dogInfoModIsOpen, onClose: dogInfoModOnClose, onOpen: dogInfoModOnOpen} = useDisclosure();
     return (<>
         <Tr textAlign={'center'}>
-            <Td px={0}>
+            <Td px={0} textAlign={'center'}>
                 <Button fontSize={'xl'} px={0} w={'80%'} fontWeight={'bold'} textColor={nameColor} colorScheme={'white'}
                         onClick={dogInfoModOnOpen}
                         size={buttonSize}>
@@ -65,21 +65,23 @@ export default function TimetableRow(props) {
                                        id={id} name={name} in_time={in_time} in_or_out={'in'}/>
                 </Button>
             </Td>
-            <Td px={0} textAlign={'center'}>
+            <Td p={0} textAlign={'center'} h={'100%'}>
                 <Button position={'inherit'} onClick={onOutOpen} bg={'#1a2a52'} color={'white'}
                         fontSize={'md'}
+                        h={'4vh'}
+                        w={'80%'}
                         size={buttonSize}
 
                         _hover={{
                             textDecoration: 'none', color: 'white', bg: '#526491', transform: 'scale(1.2)'
                         }}>
-                    체크아웃</Button>
+                    퇴장</Button>
             </Td>
             <Td textAlign={'center'} px={0}>
                 <HStack justifyContent={'center'}>
                     {/*<Text>{() => { if (belts > 0) {return belts}}}</Text>*/}
                     <IconButton
-                        mr={'1vw'}
+                        mr={'0.5vw'}
                         size={beltButtonSize}
                         position={'inherit'}
                         onClick={() => {
@@ -108,7 +110,7 @@ export default function TimetableRow(props) {
                     />
                 </HStack>
             </Td>
-            <Td textAlign={'center'} fontSize={'lg'}>
+            <Td textAlign={'center'} fontSize={'lg'} fontWeight={'extrabold'} p={0}>
                 {belts > 0 ? <Text>{belts}</Text> : ''}
             </Td>
         </Tr>

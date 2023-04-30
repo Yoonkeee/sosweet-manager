@@ -116,7 +116,7 @@ export default function ModifyPay(props) {
   }
   return (<Modal isOpen={isOpen} onClose={onCloseReset}>
     <ModalOverlay/>
-    <ModalContent ref={ref}>
+    <ModalContent top={'30vh'} ref={ref}>
       <ModalHeader>{name} 결제 내역 수정</ModalHeader>
       <ModalCloseButton/>
       <ModalBody as={'form'} onSubmit={handleSubmit(onSubmit)}>
