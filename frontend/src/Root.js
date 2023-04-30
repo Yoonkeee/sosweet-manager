@@ -36,7 +36,7 @@ export default function Root() {
     const touchStartY = useRef(0);
     const loadingHeight = useRef(0);
     const handleRefresh = useRef(() => {window.location.reload()});
-    const MAX_HEIGHT = 80;
+    const MAX_HEIGHT = 100;
     function handleTouchStart(e) {
         if (!div.current || div.current.scrollTop !== 0) return;
         touchStartY.current = e.changedTouches[0].screenY;
