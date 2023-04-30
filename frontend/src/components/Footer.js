@@ -15,10 +15,12 @@ import AddPay from "../modals/AddPay";
 import NewDog from "../modals/NewDog";
 import {setToday} from "../store";
 import {useDispatch} from "react-redux";
+import {useQueryClient} from "react-query";
 
 export default function Footer() {
     const location = useLocation().pathname;
     const dispatch = useDispatch();
+    const queryClient = useQueryClient();
     return (
         <HStack
             display={'flex'}
@@ -55,6 +57,8 @@ export default function Footer() {
                 text={'시간표'}
                 onClick={() => {
                     dispatch(setToday())
+                    queryClient.refetchQueries('timetable')
+                    queryClient.refetchQueries('checkoutTimetable')
                 }}
             />
             <FooterButtonModal
