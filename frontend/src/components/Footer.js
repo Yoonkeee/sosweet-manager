@@ -13,9 +13,12 @@ import {AddIcon, TimeIcon} from "@chakra-ui/icons";
 import {FaDog, FaWonSign} from "react-icons/fa";
 import AddPay from "../modals/AddPay";
 import NewDog from "../modals/NewDog";
+import {setToday} from "../store";
+import {useDispatch} from "react-redux";
 
 export default function Footer() {
     const location = useLocation().pathname;
+    const dispatch = useDispatch();
     return (
         <HStack
             display={'flex'}
@@ -50,6 +53,9 @@ export default function Footer() {
                 icon={TimeIcon}
                 link={'/timetable'}
                 text={'시간표'}
+                onClick={() => {
+                    dispatch(setToday())
+                }}
             />
             <FooterButtonModal
                 icon={AddIcon}
@@ -76,13 +82,15 @@ const FooterButtonModal = (props) => {
 }
 const FooterButtonLink = (props) => {
     return (
-                <Link to={props.link} w={'100%'} h={'100%'}>
-        <Button bgColor={'transparent'} h={'100%'} paddingTop={'1vh'} w={'10vw'}>
-            <VStack m={0} p={0} h={'100%'} w={'100%'}>
-                    <Icon as={props.icon} boxSize={7}/>
-                    <Text marginY={0} p={0} fontSize={'sm'}>{props.text}</Text>
-            </VStack>
-        </Button>
-                </Link>
+        <Box onClick={props.onClick}>
+            <Link to={props.link} w={'100%'} h={'100%'}>
+                <Button bgColor={'transparent'} h={'100%'} paddingTop={'1vh'} w={'10vw'}>
+                    <VStack m={0} p={0} h={'100%'} w={'100%'}>
+                        <Icon as={props.icon} boxSize={7}/>
+                        <Text marginY={0} p={0} fontSize={'sm'}>{props.text}</Text>
+                    </VStack>
+                </Button>
+            </Link>
+        </Box>
     )
 }
