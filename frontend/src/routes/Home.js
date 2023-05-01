@@ -56,7 +56,7 @@ export default function Home() {
                     <HomeSquareBox
                         link={'/hotelling'}
                         title={'호텔링'}
-                        image={'박프로.webp'}
+                        image={'./logo/박프로.webp'}
                         letterColor={'#752D2A'}
                     />
                     <Box vw={homeBoxBetweenMargin}/>
@@ -64,7 +64,7 @@ export default function Home() {
                     <HomeSquareBox
                         link={'/timetable'}
                         title={'놀이방'}
-                        image={'박하로.webp'}
+                        image={'./logo/박하로.webp'}
                         letterColor={'#ffffff'}
                     />
                 </HStack>
@@ -80,7 +80,7 @@ export default function Home() {
                     <HomeSquareBox
                         link={'/dogs-list'}
                         title={'🐶 목록'}
-                        image={'프로4.png'}
+                        image={'./logo/프로4.png'}
                         bgColor={'#FEBE8C'}
                         letterColor={'#1F7480'}
                     />
@@ -89,7 +89,7 @@ export default function Home() {
                     <HomeSquareBox
                         link={'/get-message'}
                         title={'메세지'}
-                        image={'프로3.png'}
+                        image={'./logo/프로3.png'}
                         letterColor={'white'}
                         bgColor={'#95BDFF'}
                         // letterColor={'#95BDFF'}
@@ -108,7 +108,7 @@ export default function Home() {
                     <HomeRectBoxTwoByOne
                         link={'/history'}
                         title={'이용 내역'}
-                        image={'프로1.png'}
+                        image={'./logo/프로1.png'}
                         bgColor={'#DFFFD8'}
                         letterColor={mainColor}
                     />
@@ -116,7 +116,7 @@ export default function Home() {
                     <HomeRectBoxTwoByOne
                         link={'/pay-history'}
                         title={'결제 내역'}
-                        image={'프로2.png'}
+                        image={'./logo/프로2.png'}
                         bgColor={'#F7C8E0'}
                         letterColor={'white'}
                     />
@@ -135,7 +135,7 @@ export default function Home() {
                         // link={''}
                         component={ModifyDog}
                         title={'🐶 수정'}
-                        image={'프로6.png'}
+                        image={'./logo/프로6.png'}
                         bgColor={'#FFF6BD'}
                         letterColor={'#4B437D'}
                     />
@@ -143,7 +143,7 @@ export default function Home() {
                     <HomeRectBoxTwoByOne
                         link={'/'}
                         title={'남는버튼'}
-                        image={'프로5.png'}
+                        image={'./logo/프로5.png'}
                         bgColor={mainColor}
                         letterColor={'white'}
                     />

@@ -46,7 +46,8 @@ export default function Root() {
         if (!div.current || div.current.scrollTop !== 0) return;
         touchStartY.current = e.changedTouches[0].screenY;
         const el = document.createElement('div');
-        el.style.cssText = 'background-color: "#1a2a52; transition: height 0s';
+        // el.style.cssText = 'background-color: "red"; transition: height 0s';
+        el.style.cssText = 'background-color: #1a2a52; transition: height 0s';
         // el.style.cssText = '';
         // el.style.cssText = 'background-color: red; transition: height 0.3s ease-in-out;';
         // el.style.backgroundColor = 'red';
@@ -67,13 +68,14 @@ export default function Root() {
                 loading.current.style.height = `${height}px`;
                 loadingHeight.current = height;
             }
-            loading.current.style.cssText = 'transition: height 0.3s; height: 0px';
+            loading.current.style.cssText = 'background-color: #1a2a52; transition: height 0.3s; height: 0px';
         }
     }
 
     function handleTouchEnd() {
         // 로딩 요소의 높이가 MAX_HEIGHT 보다 크다면
         if (loading.current && loadingHeight.current >= MAX_HEIGHT) {
+            document.documentElement.style.backgroundColor = mainColor;
             console.log(loadingHeight.current)
             // 새로고침 함수를 실행한다.
             handleRefresh.current();
@@ -224,7 +226,7 @@ export default function Root() {
                                 lineHeight={'1.1em'}
                                 fontSize={'small'} fontWeight={'extrabold'} fontFamily={'SingleDay'} color={'white'}
                             >새<br/>로<br/>고<br/>침</Text>
-                            <Img src={'refresh_icon.png'} w={'50vw'}/>
+                            <Img src={'./logo/refresh_icon.png'} w={'50vw'}/>
                         </HStack>
                         {/*window.location.reload()*/}
                         {/*<Text color={'white'}>*/}

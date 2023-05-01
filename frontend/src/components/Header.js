@@ -54,7 +54,7 @@ export default function Header() {
                 <Image
                     h={'7vh'}
                     mt={'1.2vh'}
-                    src={'logo_word.png'}
+                    src={'./logo/logo_word.png'}
                     filter={'invert(1)'}
                 />
             </Link>

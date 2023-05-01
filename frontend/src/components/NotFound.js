@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 export default function NotFound() {
   return (
     <VStack bg={"gray.100"} minH={"100vh"}>
-        <Image mt={'5vh'} h={'30vh'} src={'프로티콘.png'} rounded={'2xl'}/>
+        <Image mt={'5vh'} h={'30vh'} src={'./logo/프로티콘.png'} rounded={'2xl'}/>
         <VStack textAlign={'center'}>
           <Heading>헉 여기는 에러 페이지에요😭</Heading>
           <Text>여기가 어디죠..?ㅜㅜ</Text>

@@ -47,7 +47,7 @@ export default function Footer() {
                 <Link to={'/'}>
                     <Image
                         h={'8vh'}
-                        src={'logo_dog_btn.png'}
+                        src={'./logo/logo_dog_btn.png'}
                     />
                 </Link>
             </Box>

@@ -20,7 +20,7 @@ import { extendTheme } from '@chakra-ui/react'
 // export default theme
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const queryClient = new QueryClient();
-document.documentElement.style.backgroundColor = "white";
+document.documentElement.style.backgroundColor = "#1a2a52";
 root.render(// <React.StrictMode>
   <QueryClientProvider client={queryClient}>
     <ChakraProvider>
