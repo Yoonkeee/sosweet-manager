@@ -10,7 +10,7 @@ import {
     Portal,
     PopoverContent,
     PopoverArrow,
-    PopoverCloseButton, PopoverBody, Heading, Popover,
+    PopoverCloseButton, PopoverBody, Heading, Popover, Avatar, AvatarBadge, Text, HStack,
 } from '@chakra-ui/react'
 import {useEffect, useRef, useState} from "react";
 // import "react-icons/all";
@@ -72,14 +72,52 @@ export default function CheckoutTimetableRow(props) {
             setNameColor('#ff7f50')
         }
     }, [props.data.remaining_minutes]);
+
+    // text name resize hook
+    const textRef = useRef(null);
+    // const handleResize = () => {
+    //     const text = textRef.current;
+    //     const container = text.parentNode;
+    //     const containerWidth = container.offsetWidth;
+    //     console.log(text.scrollWidth, containerWidth);
+    //     if (text.scrollWidth > containerWidth) {
+    //         text.style.fontSize = "0.9rem"; // adjust this value as needed
+    //     } else {
+    //         text.style.fontSize = "xl";
+    //     }
+    // };
+    // useEffect(() => {
+    //     const text = textRef.current;
+    //     const container = text.parentNode;
+    //     container.addEventListener("resize", handleResize);
+    //     return () => {
+    //         container.removeEventListener("resize", handleResize);
+    //     };
+    // }, []);
+    // useEffect(() => {
+    //     handleResize();
+    // }, [textRef.current?.textContent]);
     return (<>
         <Tr textAlign={'center'}>
-            <Td px={0} textAlign={'center'}>
-                <Button fontSize={'xl'} px={0} w={'80%'} fontWeight={'bold'} textColor={nameColor} colorScheme={'white'}
-                        onClick={dogInfoModOnOpen}
-                        size={buttonSize}>
-                    {name}
-                </Button>
+            <Td p={0} textAlign={'center'}>
+                <HStack>
+                    <Avatar h={'5vh'} w={'5vh'}
+                            bgColor={'transparent'}
+                            src={`/profile/${name.replace(' ', '')}.png`}
+                            icon={<Text fontSize={'3xl'}>🐶</Text>}
+                    />
+                    <Button fontSize={'xl'} px={0} w={'80%'} fontWeight={'bold'} textColor={nameColor}
+                            colorScheme={'white'}
+                            justifyContent={'flex-start'} alignItems={'center'}
+                            onClick={dogInfoModOnOpen}
+                            size={buttonSize}>
+                        {/*<Text isTruncated={true} fontSize={'lg'}>*/}
+                        {/*<Text fontSize={'xl'} style={{ fontSize: "clamp(12px, 2vw, 24px)", overflow: "hidden", textOverflow: "ellipsis"}}>*/}
+                        <Text fontSize="xl" isTruncated={true} ref={textRef}>
+                            {name}
+                        </Text>
+                    </Button>
+                </HStack>
             </Td>
             <Td px={0} textAlign={'center'}>
                 <Button fontSize={'xl'} px={0} w={'80%'} fontWeight={'bold'} textColor={nameColor} colorScheme={'white'}
@@ -100,38 +138,61 @@ export default function CheckoutTimetableRow(props) {
                     {/*                   id={id} name={name} in_time={out_time} in_or_out={'out'}/>*/}
                 </Button>
             </Td>
-            <Td px={0} textAlign={'center'}>
-                <Popover placement='left' isOpen={deleteIsOpen} onClose={deleteOnClose}>
-                    <PopoverTrigger>
-                        <Button colorScheme='yellow' rounded={'xl'}
-                                onClick={deleteOnOpen}
-                                _hover={{
-                                    textDecoration: 'none', color: 'white', rounded: 'xl', transform: 'scale(1.2)'
-                                }}>
-                            삭제
-                        </Button>
-                    </PopoverTrigger>
-                    <Portal>
-                        <PopoverContent bg={'gray.200'} w={'100%'}>
-                            <PopoverArrow/>
-                            <PopoverCloseButton/>
-                            <PopoverBody textAlign={'center'}>
-                                <Heading fontSize={'2xl'} my={'3vh'}>내역을 삭제할까요?</Heading>
-                                <Button colorScheme='yellow' onClick={() => {
-                                    cancel()
-                                    deleteOnClose()
-                                }}>삭제할게요!</Button>
-                            </PopoverBody>
-                        </PopoverContent>
-                    </Portal>
-                </Popover>
+            <Td p={0} h={'100%'} textAlign={'center'}>
+                <Avatar
+                    bgColor={'transparent'}
+                    icon={
+                        <Popover placement='left' isOpen={deleteIsOpen} onClose={deleteOnClose}>
+                            <PopoverTrigger>
+                                <Button colorScheme='yellow' rounded={'xl'}
+                                        h={'80%'}
+                                        onClick={deleteOnOpen}
+                                        _hover={{
+                                            textDecoration: 'none',
+                                            color: 'white',
+                                            rounded: 'xl',
+                                            transform: 'scale(1.2)'
+                                        }}>
+                                    삭제
+                                </Button>
+                            </PopoverTrigger>
+                            <Portal>
+                                <PopoverContent bg={'gray.200'} w={'100%'}>
+                                    <PopoverArrow/>
+                                    <PopoverCloseButton/>
+                                    <PopoverBody textAlign={'center'}>
+                                        <Heading fontSize={'2xl'} my={'3vh'}>내역을 삭제할까요?</Heading>
+                                        <Button colorScheme='yellow' onClick={() => {
+                                            cancel()
+                                            deleteOnClose()
+                                        }}>삭제할게요!</Button>
+                                    </PopoverBody>
+                                </PopoverContent>
+                            </Portal>
+                        </Popover>
+                    }>
+
+                    {/*<AvatarBadge boxSize='1.5em' bg={beltBadgeColor}>*/}
+                    {/*    {belts > 0 ?*/}
+                    {/*        <Text fontSize={'0.8em'} fontWeight={'black'}>{belts}</Text>*/}
+                    {/*        : ''}*/}
+                    {/*</AvatarBadge>*/}
+                    {belts > 0 ?
+                        <AvatarBadge boxSize='1.5em'
+                                     fontSize={'xl'}
+                                     bg='orange.500'>
+                            <Text fontSize={'0.8em'} fontWeight={'black'}>{belts}</Text>
+                        </AvatarBadge>
+                        : ''}
+                </Avatar>
+
             </Td>
-            <Td p={0} textAlign={'center'} fontSize={'lg'} fontWeight={'extrabold'}>
-                {belts > 0 ? belts : ''}
-            </Td>
+            {/*<Td p={0} textAlign={'center'} fontSize={'lg'} fontWeight={'extrabold'}>*/}
+            {/*    {belts > 0 ? belts : ''}*/}
+            {/*</Td>*/}
         </Tr>
 
         {dogInfoModISOpen ? <DogInfo isOpen={dogInfoModISOpen} onClose={dogInfoModOnClose}
-                 name={name}/> : ''}
+                                     name={name}/> : ''}
     </>)
 }

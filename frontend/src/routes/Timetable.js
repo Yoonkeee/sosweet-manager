@@ -20,7 +20,7 @@ import {Temporal} from "@js-temporal/polyfill";
 export default function Timetable() {
     let date = makeTemporal(useSelector((state) => state.currentDate))
     const dispatch = useDispatch();
-    let formattedDate = date.toLocaleString('ko-KR', { month: 'long', day: 'numeric', weekday: 'long' });
+    let formattedDate = date.toLocaleString('ko-KR', {month: 'long', day: 'numeric', weekday: 'long'});
     const {isLoading, data} = useQuery(["timetable", date], getTimeTable);
     const {
         isLoading: checkoutIsLoading,
@@ -102,11 +102,11 @@ export default function Timetable() {
                 <Table variant='striped' colorScheme='blue' layout={'fixed'}>
                     <Thead w={'100%'} borderBottomColor={'black'} borderBottomWidth={5} textAlign={'center'}>
                         <Tr textAlign={'center'}>
-                            <Td textAlign={'center'} px={0} fontSize={'xl'} w={'20vw'}>이름</Td>
-                            <Th textAlign={'center'} px={0} fontSize={'xl'} w={'13vw'}>입장</Th>
-                            <Th textAlign={'center'} px={0} fontSize={'xl'} w={'13vw'}>퇴장</Th>
-                            <Th textAlign={'center'} px={0} fontSize={'xl'} w={'15vw'}>벨트</Th>
-                            <Th textAlign={'center'} px={0} fontSize={'xl'} w={'7vw'}>갯수</Th>
+                            <Td textAlign={'center'} px={0} fontSize={'xl'} w={'40%'}>이름</Td>
+                            <Th textAlign={'center'} px={0} fontSize={'xl'} w={'20%'}>입장</Th>
+                            <Th textAlign={'center'} px={0} fontSize={'xl'} w={'20%'}>퇴장</Th>
+                            <Th textAlign={'center'} px={0} fontSize={'xl'} w={'20%'}>벨트</Th>
+                            {/*<Th textAlign={'center'} px={0} fontSize={'xl'} w={'7vw'}>갯수</Th>*/}
                         </Tr>
                     </Thead>
                     <Tbody>
@@ -118,10 +118,10 @@ export default function Timetable() {
                             />
                         ))}
                         {data && data.length !== 0 && checkoutData && checkoutData.length !== 0 &&
-                            <Tr borderY="2px solid"><Td p={'3vh'}/><Td p={'3vh'}/><Td p={'3vh'}/><Td p={'3vh'}/><Td
+                            <Tr borderY="2px solid"><Td p={'3vh'}/><Td p={'3vh'}/><Td p={'3vh'}/><Td
                                 p={'3vh'}/></Tr>}
                         {checkoutData && checkoutData.map((item) => (
-                        // {checkoutData && checkoutData.length !== 0 && checkoutData.map((item) => (
+                            // {checkoutData && checkoutData.length !== 0 && checkoutData.map((item) => (
                             <CheckoutTimetableRow
                                 data={item}
                                 key={item.id}
