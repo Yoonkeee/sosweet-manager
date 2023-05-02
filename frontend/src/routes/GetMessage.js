@@ -55,7 +55,7 @@ export default function GetMessage() {
             setSelected(false);
         })
     };
-    return (<VStack w={'100%'} mt={'2vh'} mb={'10vh'}>
+    return (<VStack w={'100%'} mt={'2vh'} mb={'10vh'} minH={'80vh'}>
         <TableContainer w={'100%'}>
             <Table variant='striped' colorScheme='blue' layout={'fixed'}>
                 <Thead w={'100%'} borderBottomColor={'black'} borderBottomWidth={5} alignItems={'center'}>

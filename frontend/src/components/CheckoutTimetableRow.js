@@ -103,7 +103,7 @@ export default function CheckoutTimetableRow(props) {
                 <HStack>
                     <Avatar h={'5vh'} w={'5vh'}
                             bgColor={'transparent'}
-                            src={`/profile/${name.replace(' ', '')}.png`}
+                            src={`/profiles/${name.replace(' ', '')}.png`}
                             icon={<Text fontSize={'3xl'}>🐶</Text>}
                     />
                     <Button fontSize={'xl'} px={0} w={'80%'} fontWeight={'bold'} textColor={nameColor}
