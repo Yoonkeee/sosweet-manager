@@ -1,7 +1,12 @@
+import os
+import shutil
 import time
-from fastapi import FastAPI, Request, Response, status, BackgroundTasks
+from fastapi import FastAPI, Request, Response, status, BackgroundTasks, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from datetime import datetime, timedelta
+
+from starlette.responses import FileResponse
+
 import db_interface
 from pydantic import BaseModel
 from typing import Optional
@@ -79,6 +84,33 @@ class ArrayModel(BaseModel):
 
 class StringModel(BaseModel):
     data: str
+
+
+@app.post("/api/post/add-profile/{name}")
+async def add_profile(file: UploadFile = File(...), name: str = None):
+    print(file)
+    name = name.replace(" ", "")
+    file_location = f"profiles/{name}.png"
+    with open(file_location, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+    return {"filename": name}
+
+
+@app.get("/api/get/profile/{name}")
+async def get_profile(name: str):
+    print('in get_profile', name)
+    name = name.replace(" ", "")
+    # look for directory if profiles/{name} exists
+    path = f"profiles/{name}"
+    if os.path.exists(path):
+        print('exist')
+        # response = f"http://127.0.0.1:8000/profiles/{name}"
+        response = FileResponse(f"profiles/{name}", media_type="image/png")
+    else:
+        print('not exist')
+        response = ''
+    print(response)
+    return response
 
 
 @app.post("/api/post/add-new-dog")
