@@ -97,8 +97,11 @@ export default function TimetableRow(props) {
     // }, [textRef.current?.textContent]);
     const [profileUrl, setProfileUrl] = useState('')
     const [randomNumber, setRandomNumber] = useState();
+    const rootUrl = window.location.origin.replace(`:${window.location.port}`, '');
     useEffect(() => {
-        setProfileUrl(`http://127.0.0.1:8000/api/get/profile/${name.replace(' ', '')}.png`)
+        console.log(rootUrl);
+        setProfileUrl(`${rootUrl}:8000/api/get/profile/${name.replace(' ', '')}.png`)
+        // setProfileUrl(`http://127.0.0.1:8000/api/get/profile/${name.replace(' ', '')}.png`)
     }, []);
         // setRandomNumber(Math.random())
     useEffect(() => {

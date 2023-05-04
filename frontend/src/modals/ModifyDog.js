@@ -113,8 +113,10 @@ export default function ModifyDog({isOpen, onClose}) {
     }
     const [randomNumber, setRandomNumber] = useState(Math.random());
 
+    const rootUrl = window.location.origin.replace(`:${window.location.port}`, '');
     useEffect(() => {
-        setProfileUrl(`http://127.0.0.1:8000/api/get/profile/${name.replace(' ', '')}.png`)
+        setProfileUrl(`${rootUrl}:8000/api/get/profile/${name.replace(' ', '')}.png`)
+        // setProfileUrl(`http://127.0.0.1:8000/api/get/profile/${name.replace(' ', '')}.png`)
         setRandomNumber(Math.random())
     }, [name]);
 

@@ -102,8 +102,10 @@ export default function DogInfo({isOpen, onClose, name, setRandomState}) {
     // image
     const [randomNumber, setRandomNumber] = useState(Math.random());
     const [profileUrl, setProfileUrl] = useState('')
+    const rootUrl = window.location.origin.replace(`:${window.location.port}`, '');
     useEffect(() => {
-        setProfileUrl(`http://127.0.0.1:8000/api/get/profile/${name.replace(' ', '')}.png`)
+        setProfileUrl(`${rootUrl}:8000/api/get/profile/${name.replace(' ', '')}.png`)
+        // setProfileUrl(`http://127.0.0.1:8000/api/get/profile/${name.replace(' ', '')}.png`)
         setRandomNumber(Math.random())
         setRandomState(Math.random())
     }, []);
