@@ -1,6 +1,7 @@
 import {
+    Avatar,
     Badge,
-    Button, HStack,
+    Button, Flex, HStack,
     Input,
     Modal,
     ModalBody,
@@ -14,11 +15,11 @@ import {
 } from "@chakra-ui/react";
 import {useForm} from "react-hook-form";
 import {useMutation, useQuery, useQueryClient} from "react-query";
-import {getDogInfo, modDog} from "../api";
-import {useEffect, useState} from "react";
+import {addProfile, getDogInfo, modDog} from "../api";
+import React, {useEffect, useRef, useState} from "react";
 import {formatMinuteToTime} from "../api";
 
-export default function DogInfo({isOpen, onClose, name}) {
+export default function DogInfo({isOpen, onClose, name, setRandomState}) {
     const {register, reset, handleSubmit, formState: {errors}} = useForm();
     const toast = useToast();
     const [info, setInfo] = useState('');
@@ -81,6 +82,11 @@ export default function DogInfo({isOpen, onClose, name}) {
             phone: '',
             dogWeight: '',
         })
+        setFile(null)
+        setProfileUrl('')
+        setIsUploaded(false)
+        setRandomNumber(Math.random())
+        setRandomState(Math.random())
     }
     const onCloseFn = () => {
         onClose();
@@ -92,11 +98,74 @@ export default function DogInfo({isOpen, onClose, name}) {
             setTimeColor('red')
         }
     }, [remainingTime]);
+
+    // image
+    const [randomNumber, setRandomNumber] = useState(Math.random());
+    const [profileUrl, setProfileUrl] = useState('')
+    useEffect(() => {
+        setProfileUrl(`http://127.0.0.1:8000/api/get/profile/${name.replace(' ', '')}.png`)
+        setRandomNumber(Math.random())
+        setRandomState(Math.random())
+    }, []);
+
+    // upload image
+    const [file, setFile] = useState(null);
+    const imageRef = useRef(null);
+    const onUploadImageButtonClick = (() => {
+        if (!imageRef.current) {
+            return;
+        }
+        imageRef.current.click();
+    })
+    useEffect(() => {
+        if (file)
+            setIsUploaded(true)
+        else
+            setIsUploaded(false)
+    }, [file]);
+    const onFileChange = (e) => {
+        const {target: {files}} = e;
+        const theFile = files[0];
+        setFile(theFile);
+    }
+    const [isUploaded, setIsUploaded] = useState(false);
+    const onUploadServerButtonClick = (() => {
+        if (file == null) return
+        const formData = new FormData();
+        formData.append('file', file);
+        // console.log(formData)
+        addProfile(formData, name).then((result) => {
+            if (result) {
+                toast({
+                    title: name + " 사진 업로드에 성공했어요~~",
+                    status: "success",
+                    position: "top",
+                    duration: 1000,
+                    isClosable: true,
+                });
+                queryClient.refetchQueries(['dog_info', name]);
+                onCloseFn();
+                setRandomState(Math.random())
+            }
+        })
+    })
+
     return (
         <Modal isOpen={isOpen} onClose={onCloseFn}>
             <ModalOverlay/>
             <ModalContent top={'10vh'}>
-                <ModalHeader>🐶{name}🥰 정보</ModalHeader>
+                <ModalHeader>
+                    <HStack>
+                        <Avatar h={'5vh'} w={'5vh'}
+                                bgColor={'transparent'}
+                                src={`${profileUrl}?${randomNumber}}`}
+                                icon={<Text fontSize={'3xl'}>🐶</Text>}
+                        />
+                        <Text>
+                            {name}🥰 정보
+                        </Text>
+                    </HStack>
+                </ModalHeader>
                 <ModalCloseButton/>
                 <ModalBody as={'form'} onSubmit={handleSubmit(onSubmit)}>
                     <VStack w={'100%'}>
@@ -154,34 +223,71 @@ export default function DogInfo({isOpen, onClose, name}) {
                                 placeholder={"몸무게(선택)"}
                                 {...register("dogWeight")}
                             />
-                                <Badge ml='1' fontSize='xl' colorScheme={timeColor}>
-                                    {remainingTime}
-                                </Badge>
+                            <Badge ml='1' fontSize='xl' colorScheme={timeColor}>
+                                {remainingTime}
+                            </Badge>
                             {/*<Text ml={1} w={'50%'}></Text>*/}
                         </HStack>
                         <HStack w={'100%'}>
                             <Text minW={'25%'}>최근방문</Text>
-                            <Badge ml='1' fontSize='xl' colorScheme={'telegram'}>
-                                {data && data.last_visited}
+                            <Badge ml='1' fontSize='xl' colorScheme={visitColor}>
+                                {lastVisited}
                             </Badge>
                         </HStack>
                     </VStack>
-                    <ModalFooter>
-                        <Button colorScheme='red' mr={3} onClick={onCloseFn}
-                                rounded={'xl'} _hover={{
-                            textDecoration: 'none', color: 'white', rounded: 'xl', transform: 'scale(1.2)'
-                        }}>
-                            취소
-                        </Button>
-                        <Button bg={'#1a2a52'} color={'white'} rounded={'xl'}
-                                type={'submit'}
-                                _hover={{
-                                    textDecoration: 'none',
-                                    color: 'white',
-                                    bg: '#526491',
-                                    rounded: 'xl',
-                                    transform: 'scale(1.2)'
-                                }}>수정~</Button>
+                    <ModalFooter mx={0} px={0}>
+                        <Flex w={'100%'} m={0} p={0} justifyContent={'flex-end'}
+                              marginInlineStart={0}
+                              css={{WebkitMarginStart: 0}}
+                        >
+                            {
+                                name ?
+                                    <>
+                                        <Input type={"file"} accept={"image/*"}
+                                               onChange={onFileChange} display={'none'} ref={imageRef}/>
+                                        {
+                                            isUploaded ?
+                                                <Button colorScheme='green' onClick={onUploadServerButtonClick}
+                                                        rounded={'xl'}
+                                                        _hover={{
+                                                            textDecoration: 'none',
+                                                            color: 'white',
+                                                            rounded: 'xl',
+                                                            transform: 'scale(1.2)'
+                                                        }}>
+                                                    업로드!
+                                                </Button>
+                                                :
+                                                <Button colorScheme='twitter' onClick={onUploadImageButtonClick}
+                                                        rounded={'xl'}
+                                                        _hover={{
+                                                            textDecoration: 'none',
+                                                            color: 'white',
+                                                            rounded: 'xl',
+                                                            transform: 'scale(1.2)'
+                                                        }}>
+                                                    사진등록
+                                                </Button>
+                                        }
+                                    </>
+                                    : <></>
+                            }
+                            <Button colorScheme='red' mx={3} onClick={onCloseFn}
+                                    rounded={'xl'} _hover={{
+                                textDecoration: 'none', color: 'white', rounded: 'xl', transform: 'scale(1.2)'
+                            }}>
+                                취소
+                            </Button>
+                            <Button bg={'#1a2a52'} color={'white'} rounded={'xl'}
+                                    type={'submit'}
+                                    _hover={{
+                                        textDecoration: 'none',
+                                        color: 'white',
+                                        bg: '#526491',
+                                        rounded: 'xl',
+                                        transform: 'scale(1.2)'
+                                    }}>수정~</Button>
+                        </Flex>
                     </ModalFooter>
                 </ModalBody>
             </ModalContent>

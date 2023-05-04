@@ -10,7 +10,7 @@ import {
 import TimetableRow from "../components/TimetableRow";
 import {ArrowBackIcon, ArrowForwardIcon} from "@chakra-ui/icons";
 import {useSelector, useDispatch} from "react-redux";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {useQuery, useQueryClient} from "react-query";
 import {getCheckoutTimetable, getTimeTable, notOutTimetable, strToLocaleWithoutWeekday} from "../api";
 import {tomorrow, yesterday, setToday, makeTemporal} from "../store";
@@ -55,7 +55,7 @@ export default function Timetable() {
     // useEffect(() => {
     //     // console.log('checkoutData: ', checkoutData);
     // }, [checkoutData]);
-
+    const [timetableRandomNumber ,setTimetableRandomNumber] = useState(0);
     return (
         <VStack w={'100%'} mt={'2vh'} mb={'10vh'} minH={'80vh'}>
             <HStack w={'100%'} justifyContent={'center'}>
@@ -114,6 +114,8 @@ export default function Timetable() {
                             <TimetableRow
                                 data={item}
                                 key={item.id}
+                                setTimetableRandomNumber={setTimetableRandomNumber}
+                                timetableRandomNumber={timetableRandomNumber}
                                 // len={data.length}
                             />
                         ))}
@@ -125,6 +127,8 @@ export default function Timetable() {
                             <CheckoutTimetableRow
                                 data={item}
                                 key={item.id}
+                                setTimetableRandomNumber={setTimetableRandomNumber}
+                                timetableRandomNumber={timetableRandomNumber}
                                 // len={checkoutData.length}
                             />
                         ))

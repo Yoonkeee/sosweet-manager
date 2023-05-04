@@ -1,6 +1,7 @@
 import {
-    Badge,
-    Button, HStack,
+    Avatar,
+    Badge, Box,
+    Button, Flex, FormControl, HStack,
     Input,
     Modal,
     ModalBody,
@@ -15,8 +16,8 @@ import {
 } from "@chakra-ui/react";
 import {useForm} from "react-hook-form";
 import {useMutation, useQuery, useQueryClient} from "react-query";
-import {dogsList, formatMinuteToTime, getDogInfo, modDog} from "../api";
-import {useEffect, useState} from "react";
+import {addProfile, dogsList, formatMinuteToTime, getDogInfo, getProfile, modDog} from "../api";
+import {useEffect, useRef, useState} from "react";
 
 export default function ModifyDog({isOpen, onClose}) {
     // const {isOpen, onOpen, onClose} = useDisclosure()
@@ -93,16 +94,15 @@ export default function ModifyDog({isOpen, onClose}) {
         setRemainingTime('')
         setLastVisited('')
         setBeltColor('green')
+        setFile(null)
+        setProfileUrl('')
+        setIsUploaded(false)
+        setRandomNumber(Math.random())
     }
     const onCloseFn = () => {
         onClose();
         onReset();
     }
-    // useEffect(() => {
-    //     if (data && data.remaining_minutes < 0) {
-    //         setTimeColor('red')
-    //     }
-    // }, [remainingTime]);
     const onNameChange = (e) => {
         if (e.target.value === '') {
             onReset();
@@ -111,6 +111,56 @@ export default function ModifyDog({isOpen, onClose}) {
             setName(prev => e.target.value);
         }
     }
+    const [randomNumber, setRandomNumber] = useState(Math.random());
+
+    useEffect(() => {
+        setProfileUrl(`http://127.0.0.1:8000/api/get/profile/${name.replace(' ', '')}.png`)
+        setRandomNumber(Math.random())
+    }, [name]);
+
+    const [profileUrl, setProfileUrl] = useState('')
+
+    // upload image
+    const [file, setFile] = useState(null);
+    const imageRef = useRef(null);
+    const onUploadImageButtonClick = (() => {
+        if (!imageRef.current) {
+            return;
+        }
+        imageRef.current.click();
+    })
+    useEffect(() => {
+        if (file)
+            setIsUploaded(true)
+        else
+            setIsUploaded(false)
+    }, [file]);
+    const onFileChange = (e) => {
+        const {target: {files}} = e;
+        const theFile = files[0];
+        setFile(theFile);
+    }
+    const [isUploaded, setIsUploaded] = useState(false);
+    const onUploadServerButtonClick = (() => {
+        if (file == null) return
+        const formData = new FormData();
+        formData.append('file', file);
+        // console.log(formData)
+        addProfile(formData, name).then((result) => {
+            if (result) {
+                toast({
+                    title: name + " 사진 업로드에 성공했어요~~",
+                    status: "success",
+                    position: "top",
+                    duration: 1000,
+                    isClosable: true,
+                });
+                queryClient.refetchQueries(['dog_info', name]);
+                onCloseFn();
+            }
+        })
+    })
+
     return (<Modal isOpen={isOpen} onClose={onCloseFn}>
         <ModalOverlay/>
         <ModalContent top={'10vh'}>
@@ -118,30 +168,36 @@ export default function ModifyDog({isOpen, onClose}) {
             <ModalCloseButton/>
             <ModalBody as={'form'} onSubmit={handleSubmit(onSubmit)}>
                 <VStack w={'100%'}>
-                    {selectIsLoading ? <Text>Loading options...</Text> : (<Select
-                        // w={'40%'}
-                        paddingInlineEnd={0}
-                        paddingInlineStart={0}
-                        css={{WebkitPaddingEnd: 0, WebkitPaddingStart: 10}}
-                        w={'100%'}
-                        px={0}
-                        placeholder={"댕댕이 선택"}
-                        icon={<></>}
-                        required={true}
-                        position={'inherit'}
-                        {...register("name")}
-                        id={'name'}
-                        onChange={(e) => onNameChange(e)}
-                        // (e) => {
-                        //         // console.log(e.target.value);
-                        //         document.getElementById('name').style.position = 'inherit'
-                        //         setName(prev => e.target.value);
-                        //       }}
-                    >
-                        {options && options.map((option) => (<option key={option.value} value={option.value}>
-                            {option.label}
-                        </option>))}
-                    </Select>)}
+                    {selectIsLoading ? <Text>Loading options...</Text> : (
+                        <HStack w={'100%'}>
+                            <Box w={'25%'} textAlign={'left'}>
+                                <Avatar h={'5vh'} w={'5vh'}
+                                        bgColor={'transparent'}
+                                        src={`${profileUrl}?${randomNumber}}`}
+                                        icon={<Text fontSize={'3xl'}>🐶</Text>}
+                                />
+                            </Box>
+                            <Select
+                                w={'75%'}
+                                paddingInlineEnd={0}
+                                paddingInlineStart={0}
+                                css={{WebkitPaddingEnd: 0, WebkitPaddingStart: 10}}
+                                // w={'100%'}
+                                px={0}
+                                placeholder={"댕댕이 선택"}
+                                icon={<></>}
+                                required={true}
+                                position={'inherit'}
+                                {...register("name")}
+                                id={'name'}
+                                onChange={(e) => onNameChange(e)}
+                            >
+                                {options && options.map((option) => (<option key={option.value} value={option.value}>
+                                    {option.label}
+                                </option>))}
+                            </Select>
+                        </HStack>
+                    )}
                     <HStack w={'100%'}>
                         <Text minW={'25%'}>공식 이름</Text>
                         <Input
@@ -162,6 +218,7 @@ export default function ModifyDog({isOpen, onClose}) {
                         <Text minW={'25%'}>견종&성별</Text>
                         <Input
                             mr={1}
+                            minW={'55%'}
                             variant={"filled"}
                             placeholder={"견종(선택)"}
                             {...register("dogBreed")}
@@ -208,125 +265,55 @@ export default function ModifyDog({isOpen, onClose}) {
                         </Badge>
                     </HStack>
                 </VStack>
-                <ModalFooter>
-                    <Button colorScheme='red' mr={3} onClick={onCloseFn}
-                            rounded={'xl'} _hover={{
-                        textDecoration: 'none', color: 'white', rounded: 'xl', transform: 'scale(1.2)'
-                    }}>
-                        취소
-                    </Button>
-                    <Button bg={'#1a2a52'} color={'white'} rounded={'xl'}
-                            type={'submit'}
-                            _hover={{
-                                textDecoration: 'none',
-                                color: 'white',
-                                bg: '#526491',
-                                rounded: 'xl',
-                                transform: 'scale(1.2)'
-                            }}>수정~</Button>
+                <ModalFooter mx={0} px={0}>
+                    <Flex w={'100%'} m={0} p={0} justifyContent={'flex-end'}
+                          marginInlineStart={0}
+                          css={{WebkitMarginStart: 0}}
+                    >
+                        {
+                            name ?
+                                <>
+                                    <Input type={"file"} accept={"image/*"}
+                                           onChange={onFileChange} display={'none'} ref={imageRef}/>
+                                    {
+                                        isUploaded ?
+                                            <Button colorScheme='green' onClick={onUploadServerButtonClick}
+                                                    rounded={'xl'}
+                                                    _hover={{
+                                                        textDecoration: 'none', color: 'white', rounded: 'xl', transform: 'scale(1.2)'
+                                                    }}>
+                                                업로드!
+                                            </Button>
+                                            :
+                                            <Button colorScheme='twitter' onClick={onUploadImageButtonClick}
+                                                    rounded={'xl'}
+                                                    _hover={{
+                                                        textDecoration: 'none', color: 'white', rounded: 'xl', transform: 'scale(1.2)'
+                                                    }}>
+                                                사진등록
+                                            </Button>
+                                    }
+                                </>
+                                : <></>
+                        }
+                        <Button colorScheme='red' mx={3} onClick={onCloseFn}
+                                rounded={'xl'} _hover={{
+                            textDecoration: 'none', color: 'white', rounded: 'xl', transform: 'scale(1.2)'
+                        }}>
+                            취소
+                        </Button>
+                        <Button bg={'#1a2a52'} color={'white'} rounded={'xl'}
+                                type={'submit'}
+                                _hover={{
+                                    textDecoration: 'none',
+                                    color: 'white',
+                                    bg: '#526491',
+                                    rounded: 'xl',
+                                    transform: 'scale(1.2)'
+                                }}>수정~</Button>
+                    </Flex>
                 </ModalFooter>
             </ModalBody>
         </ModalContent>
-        {/*<ModalContent>*/}
-        {/*  <ModalHeader>댕댕이 정보 수정~</ModalHeader>*/}
-        {/*  <ModalCloseButton/>*/}
-        {/*  <ModalBody as={'form'} onSubmit={handleSubmit(onSubmit)}>*/}
-        {/*    <VStack>*/}
-        {/*      {selectIsLoading ? <Text>Loading options...</Text> : (<Select*/}
-        {/*        // w={'40%'}*/}
-        {/*          paddingInlineEnd={0}*/}
-        {/*          paddingInlineStart={0}*/}
-        {/*          css={{WebkitPaddingEnd: 0, WebkitPaddingStart: 10}}*/}
-        {/*        w={'100%'}*/}
-        {/*        px={0}*/}
-        {/*        placeholder={"댕댕이 선택"}*/}
-        {/*        icon={<></>}*/}
-        {/*        required={true}*/}
-        {/*        position={'inherit'}*/}
-        {/*        {...register("name")}*/}
-        {/*        id={'name'}*/}
-        {/*        onChange={(e) => {*/}
-        {/*          // console.log(e.target.value);*/}
-        {/*          document.getElementById('name').style.position = 'inherit'*/}
-        {/*          setName(prev => e.target.value);*/}
-        {/*        }}*/}
-        {/*      >*/}
-        {/*        {options && options.map((option) => (<option key={option.value} value={option.value}>*/}
-        {/*          {option.label}*/}
-        {/*        </option>))}*/}
-        {/*      </Select>)}*/}
-        {/*      <Tooltip label='메세지에 보낼 댕댕이 이름(선택) 미입력시 이름과 동일'>*/}
-        {/*        <Input*/}
-        {/*          variant={"filled"}*/}
-        {/*          // value={officialName}*/}
-        {/*          placeholder={"메세지에 보낼 댕댕이 이름(선택) 미입력시 이름과 동일"}*/}
-        {/*          {...register("officialName")}*/}
-        {/*        />*/}
-        {/*      </Tooltip>*/}
-        {/*      <Tooltip label={'특이사항(선택)'}>*/}
-        {/*        <Input*/}
-        {/*          variant={"filled"}*/}
-        {/*          placeholder={"특이사항(선택)"}*/}
-        {/*          {...register("dogInfo")}*/}
-        {/*        />*/}
-        {/*      </Tooltip>*/}
-        {/*      <InputGroup>*/}
-        {/*        <Tooltip label={'견종(선택)'}>*/}
-        {/*          <Input*/}
-        {/*            mr={1}*/}
-        {/*            variant={"filled"}*/}
-        {/*            placeholder={"견종(선택)"}*/}
-        {/*            {...register("dogBreed")}*/}
-        {/*          />*/}
-        {/*        </Tooltip>*/}
-        {/*        <Tooltip label={'성별(선택)'}>*/}
-        {/*          <Input*/}
-        {/*            ml={1}*/}
-        {/*            variant={"filled"}*/}
-        {/*            placeholder={"성별(선택)"}*/}
-        {/*            {...register("dogGender")}*/}
-        {/*          />*/}
-        {/*        </Tooltip>*/}
-        {/*      </InputGroup>*/}
-        {/*      <InputGroup>*/}
-        {/*        <Tooltip label={'견주 전화번호(선택)'}>*/}
-        {/*          <Input*/}
-        {/*            mr={1}*/}
-        {/*            variant={"filled"}*/}
-        {/*            placeholder={"견주 전화번호(선택)"}*/}
-        {/*            {...register("phone")}*/}
-        {/*          />*/}
-        {/*        </Tooltip>*/}
-        {/*        <Tooltip label={'몸무게(선택)'}>*/}
-        {/*          <Input*/}
-        {/*            ml={1}*/}
-        {/*            variant={"filled"}*/}
-        {/*            // value={dogWeight}*/}
-        {/*            placeholder={"몸무게(선택)"}*/}
-        {/*            {...register("dogWeight")}*/}
-        {/*          />*/}
-        {/*        </Tooltip>*/}
-        {/*      </InputGroup>*/}
-        {/*    */}
-        {/*    </VStack>*/}
-        {/*    <ModalFooter>*/}
-        {/*      <Button colorScheme='red' mr={3} onClick={() => {*/}
-        {/*        reset()*/}
-        {/*        setName('')*/}
-        {/*        onClose()*/}
-        {/*      }}*/}
-        {/*              rounded={'xl'} _hover={{*/}
-        {/*        textDecoration: 'none', color: 'white', rounded: 'xl', transform: 'scale(1.2)'*/}
-        {/*      }}>*/}
-        {/*        취소*/}
-        {/*      </Button>*/}
-        {/*      <Button bg={'#1a2a52'} color={'white'} rounded={'xl'}*/}
-        {/*              type={'submit'}*/}
-        {/*              _hover={{*/}
-        {/*                textDecoration: 'none', color: 'white', bg: '#526491', rounded: 'xl', transform: 'scale(1.2)'*/}
-        {/*              }}>등록~</Button>*/}
-        {/*    </ModalFooter>*/}
-        {/*  </ModalBody>*/}
-        {/*</ModalContent>*/}
     </Modal>);
 };

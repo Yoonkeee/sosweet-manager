@@ -21,6 +21,8 @@ import ModifyHistory from "../modals/ModifyHistory";
 
 export default function CheckoutTimetableRow(props) {
     let {id, name, belts, in_time, out_time, date} = props.data;
+    const setTimetableRandomNumber = props.setTimetableRandomNumber
+    const timetableRandomNumber = props.timetableRandomNumber
     // var {id, name, in_time, out_time} = props.data
     const {
         isOpen: isOutOpen, onOpen: onOutOpen, onClose: onOutClose
@@ -97,13 +99,26 @@ export default function CheckoutTimetableRow(props) {
     // useEffect(() => {
     //     handleResize();
     // }, [textRef.current?.textContent]);
+    const [profileUrl, setProfileUrl] = useState('')
+    const [randomNumber, setRandomNumber] = useState();
+    useEffect(() => {
+        setProfileUrl(`http://127.0.0.1:8000/api/get/profile/${name.replace(' ', '')}.png`)
+        setRandomNumber(Math.random())
+    }, []);
+    useEffect(() => {
+        console.log('random number changed in CheckoutTimetableRow : ' + randomNumber)
+    }, [randomNumber]);
+    useEffect(() => {
+        setRandomNumber(Math.random())
+    }, [timetableRandomNumber]);
+
     return (<>
         <Tr textAlign={'center'}>
             <Td p={0} textAlign={'center'}>
                 <HStack>
                     <Avatar h={'5vh'} w={'5vh'}
                             bgColor={'transparent'}
-                            src={`/profiles/${name.replace(' ', '')}.png`}
+                            src={`${profileUrl}?${randomNumber}}`}
                             icon={<Text fontSize={'3xl'}>🐶</Text>}
                     />
                     <Button fontSize={'xl'} px={0} w={'80%'} fontWeight={'bold'} textColor={nameColor}
@@ -192,7 +207,7 @@ export default function CheckoutTimetableRow(props) {
             {/*</Td>*/}
         </Tr>
 
-        {dogInfoModISOpen ? <DogInfo isOpen={dogInfoModISOpen} onClose={dogInfoModOnClose}
-                                     name={name}/> : ''}
+        {dogInfoModISOpen ? <DogInfo isOpen={dogInfoModISOpen} onClose={dogInfoModOnClose} id={Date.now()}
+                                     setRandomState={setTimetableRandomNumber} name={name}/> : ''}
     </>)
 }
