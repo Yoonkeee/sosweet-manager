@@ -5,6 +5,9 @@ from fastapi import FastAPI, Request, Response, status, BackgroundTasks, File, U
 from fastapi.middleware.cors import CORSMiddleware
 from datetime import datetime, timedelta
 
+import environ
+from pathlib import Path
+import os
 from starlette.responses import FileResponse
 
 import db_interface
@@ -13,6 +16,8 @@ from typing import Optional
 import json
 import pytz
 from apscheduler.schedulers.background import BackgroundScheduler
+import requests
+
 
 app = FastAPI()
 
@@ -39,7 +44,10 @@ app.add_middleware(
 )
 
 db_interface = db_interface.Interface()
-
+env = environ.Env()
+BASE_DIR = Path(__file__).resolve().parent
+environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
+CF_ID, CF_TOKEN = env("CF_ID"), env("CF_TOKEN")
 
 @app.get("/")
 async def root():
@@ -86,31 +94,74 @@ class StringModel(BaseModel):
     data: str
 
 
-@app.post("/api/post/add-profile/{name}")
-async def add_profile(file: UploadFile = File(...), name: str = None):
-    print(file)
-    name = name.replace(" ", "")
-    file_location = f"profiles/{name}.png"
-    with open(file_location, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
-    return {"filename": name}
+class ProfileModel(BaseModel):
+    name: str
+    fileId: str
+
+
+@app.get('/api/get/profile/upload-url')
+async def get_upload_url():
+    # url = f'https://api.cloudflare.com/client/v4/accounts/{CF_ID}/images/v1'
+    url = f"https://api.cloudflare.com/client/v4/accounts/{CF_ID}/images/v2/direct_upload"
+    one_time_url = requests.post(
+        url, headers={"Authorization": f"Bearer {CF_TOKEN}"}
+    )
+    # return one_time_url
+    one_time_url = one_time_url.json()
+    result = one_time_url.get("result")
+    return result
+    # return Response({"id": result.get("id"), "uploadURL": result.get("uploadURL")})
+    # return Response({"uploadURL": result.get("uploadURL")})
+
+
+@app.post("/api/post/add-profile")
+async def add_profile(request: ProfileModel):
+    print('in add_profile', request.name, request.fileId)
+    name = request.name
+    file_id = request.fileId
+
+    if db_interface.add_profile(name, file_id):
+        return Response(status_code=status.HTTP_200_OK)
+    else:
+        return Response(status_code=status.HTTP_400_BAD_REQUEST)
 
 
 @app.get("/api/get/profile/{name}")
 async def get_profile(name: str):
+    result = db_interface.get_profile(name)
     print('in get_profile', name)
-    name = name.replace(" ", "")
-    # look for directory if profiles/{name} exists
-    path = f"profiles/{name}"
-    if os.path.exists(path):
-        print('exist')
-        # response = f"http://127.0.0.1:8000/profiles/{name}"
-        response = FileResponse(f"profiles/{name}", media_type="image/png")
+    print(result)
+    if result:
+        return result
     else:
-        print('not exist')
-        response = ''
-    print(response)
-    return response
+        return Response(status_code=status.HTTP_404_NOT_FOUND)
+
+
+# @app.post("/api/post/add-profile/{name}")
+# async def add_profile(file: UploadFile = File(...), name: str = None):
+#     print(file)
+#     name = name.replace(" ", "")
+#     file_location = f"profiles/{name}.png"
+#     with open(file_location, "wb") as buffer:
+#         shutil.copyfileobj(file.file, buffer)
+#     return {"filename": name}
+#
+#
+# @app.get("/api/get/profile/{name}")
+# async def get_profile(name: str):
+#     print('in get_profile', name)
+#     name = name.replace(" ", "")
+#     # look for directory if profiles/{name} exists
+#     path = f"profiles/{name}"
+#     if os.path.exists(path):
+#         print('exist')
+#         # response = f"http://127.0.0.1:8000/profiles/{name}"
+#         response = FileResponse(f"profiles/{name}", media_type="image/png")
+#     else:
+#         print('not exist')
+#         response = ''
+#     print(response)
+#     return response
 
 
 @app.post("/api/post/add-new-dog")
