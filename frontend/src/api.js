@@ -77,31 +77,69 @@ export const test = () => {
     }).then((response) => console.log(response.data));
 }
 
-export const addProfile = (formData, name) => {
-    return instance.post(`/post/add-profile/${name}`, formData)
-        .then((response) => {
-            return true
-        })
-        .catch((error) => {
-            console.error('Error uploading file:', error);
-        });
-};
+export const getUploadUrl = () => {
+    return instance.get('/get/profile/upload-url').then((response) => response.data);
+}
+
+export const uploadImage = (file, uploadURL) => {
+    console.log('in uploadImage');
+    console.log(file)
+    console.log(uploadURL)
+    console.log('end uploadImage');
+    const form = new FormData();
+    form.append('file', file);
+    console.log(form)
+    return axios.post(uploadURL, form, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    }).then((response) => response.data)
+}
+
+export const addProfile = (name, fileId) => {
+    return instance.post('/post/add-profile', {name, fileId}, {
+        headers: {
+            "X-CSRFToken": Cookies.get("csrftoken") || "",
+        },
+    }).then((response) => response.status=== 200);
+}
+
+export const getProfile = ({queryKey}) => {
+    const [_, name] = queryKey;
+    console.log('in getProfile : ' + name);
+    return instance.get(`/get/profile/${name}`).then((response) => {
+        if (response.status === 404) {
+            return null
+        }
+            return response.data
+    });
+}
+
+// export const addProfile = (formData, name) => {
+//     return instance.post(`/post/add-profile/${name}`, formData)
+//         .then((response) => {
+//             return true
+//         })
+//         .catch((error) => {
+//             console.error('Error uploading file:', error);
+//         });
+// };
 
 // get profile
 // export const getProfile = ({queryKey}) => {
-export const getProfile = (name) => {
-    // const [_, name] = queryKey;
-    if (name === undefined || name === null || name === '' || typeof name === "object")
-        return
-    console.log('in getProfile : ' + name);
-    return instance.get(`/get/profile/${name.replace(' ', '')}.png`, {
-        responseType: 'blob',
-    }).then((response) => {
-        console.log(response);
-        return response.data;
-    })
-    // return instance.get(`/get/profile/${name.replace(' ', '')}.png`).then((response) => response.data);
-}
+// export const getProfile = (name) => {
+//     // const [_, name] = queryKey;
+//     if (name === undefined || name === null || name === '' || typeof name === "object")
+//         return
+//     console.log('in getProfile : ' + name);
+//     return instance.get(`/get/profile/${name.replace(' ', '')}.png`, {
+//         responseType: 'blob',
+//     }).then((response) => {
+//         console.log(response);
+//         return response.data;
+//     })
+//     // return instance.get(`/get/profile/${name.replace(' ', '')}.png`).then((response) => response.data);
+// }
 
 export const getDogInfo = ({queryKey}) => {
     const [_, name] = queryKey;

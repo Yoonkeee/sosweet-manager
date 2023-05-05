@@ -1,5 +1,5 @@
 import {
-    Button,
+    Button, Editable, EditableInput, EditablePreview,
     Heading,
     Modal,
     ModalBody,
@@ -38,7 +38,7 @@ export default function MakeMessage({isOpen, onClose, checked}) {
     const sendButton = () => {
         onClose()
         checkUsedDate(checked).then((res) => {
-            // console.log(res)
+            console.log(res)
             if (res) {
                 toast({
                     title: "전송 완료 처리했어요~~", status: "success", position: "top", duration: 1500, isClosable: true,
@@ -71,6 +71,10 @@ export default function MakeMessage({isOpen, onClose, checked}) {
             <ModalHeader>댕댕이 시간 계산하기~</ModalHeader>
             <ModalCloseButton/>
             <ModalBody as={'form'}>
+                {/*<Editable whiteSpace={'pre-line'} value={text}>*/}
+                {/*    <EditablePreview />*/}
+                {/*    <EditableInput />*/}
+                {/*</Editable>*/}
                 <Text whiteSpace={'pre-line'}>
                     {text}
                 </Text>

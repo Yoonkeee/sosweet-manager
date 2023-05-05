@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react'
 import {useEffect, useRef, useState} from "react";
 // import "react-icons/all";
-import {cancelCheckin, cancelHistory, getHistory} from "../api";
+import {cancelCheckin, cancelHistory, getHistory, getProfile} from "../api";
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import DogInfo from "../modals/DogInfo";
 import ModifyHistory from "../modals/ModifyHistory";
@@ -99,20 +99,16 @@ export default function CheckoutTimetableRow(props) {
     // useEffect(() => {
     //     handleResize();
     // }, [textRef.current?.textContent]);
+
+    const {isLoading: isProfileLoading, data: profileData} = useQuery(['profile', name], getProfile);
     const [profileUrl, setProfileUrl] = useState('')
-    const [randomNumber, setRandomNumber] = useState();
-    const rootUrl = window.location.origin.replace(`:${window.location.port}`, '');
     useEffect(() => {
-        setProfileUrl(`${rootUrl}:8000/api/get/profile/${name.replace(' ', '')}.png`)
-        // setProfileUrl(`http://127.0.0.1:8000/api/get/profile/${name.replace(' ', '')}.png`)
-        setRandomNumber(Math.random())
-    }, []);
-    useEffect(() => {
-        console.log('random number changed in CheckoutTimetableRow : ' + randomNumber)
-    }, [randomNumber]);
-    useEffect(() => {
-        setRandomNumber(Math.random())
-    }, [timetableRandomNumber]);
+        if (profileData) {
+            setProfileUrl(profileData)
+        } else {
+            setProfileUrl('')
+        }
+    }, [profileData]);
 
     return (<>
         <Tr textAlign={'center'}>
@@ -120,7 +116,7 @@ export default function CheckoutTimetableRow(props) {
                 <HStack>
                     <Avatar h={'5vh'} w={'5vh'}
                             bgColor={'transparent'}
-                            src={`${profileUrl}?${randomNumber}}`}
+                            src={profileUrl}
                             icon={<Text fontSize={'3xl'}>🐶</Text>}
                     />
                     <Button fontSize={'xl'} px={0} w={'80%'} fontWeight={'bold'} textColor={nameColor}
@@ -210,6 +206,6 @@ export default function CheckoutTimetableRow(props) {
         </Tr>
 
         {dogInfoModISOpen ? <DogInfo isOpen={dogInfoModISOpen} onClose={dogInfoModOnClose} id={Date.now()}
-                                     setRandomState={setTimetableRandomNumber} name={name}/> : ''}
+                                     name={name}/> : ''}
     </>)
 }

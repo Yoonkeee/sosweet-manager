@@ -16,7 +16,16 @@ import {
 } from "@chakra-ui/react";
 import {useForm} from "react-hook-form";
 import {useMutation, useQuery, useQueryClient} from "react-query";
-import {addProfile, dogsList, formatMinuteToTime, getDogInfo, getProfile, modDog} from "../api";
+import {
+    addProfile,
+    dogsList,
+    formatMinuteToTime,
+    getDogInfo,
+    getProfile,
+    getUploadUrl,
+    modDog,
+    uploadImage
+} from "../api";
 import {useEffect, useRef, useState} from "react";
 
 export default function ModifyDog({isOpen, onClose}) {
@@ -96,8 +105,7 @@ export default function ModifyDog({isOpen, onClose}) {
         setBeltColor('green')
         setFile(null)
         setProfileUrl('')
-        setIsUploaded(false)
-        setRandomNumber(Math.random())
+        setIsUploaded(true)
     }
     const onCloseFn = () => {
         onClose();
@@ -111,18 +119,6 @@ export default function ModifyDog({isOpen, onClose}) {
             setName(prev => e.target.value);
         }
     }
-    const [randomNumber, setRandomNumber] = useState(Math.random());
-
-    const rootUrl = window.location.origin.replace(`:${window.location.port}`, '');
-    useEffect(() => {
-        setProfileUrl(`${rootUrl}:8000/api/get/profile/${name.replace(' ', '')}.png`)
-        // setProfileUrl(`http://127.0.0.1:8000/api/get/profile/${name.replace(' ', '')}.png`)
-        setRandomNumber(Math.random())
-    }, [name]);
-
-    const [profileUrl, setProfileUrl] = useState('')
-
-    // upload image
     const [file, setFile] = useState(null);
     const imageRef = useRef(null);
     const onUploadImageButtonClick = (() => {
@@ -133,35 +129,74 @@ export default function ModifyDog({isOpen, onClose}) {
     })
     useEffect(() => {
         if (file)
-            setIsUploaded(true)
+            setIsFileUploaded(true)
         else
-            setIsUploaded(false)
+            setIsFileUploaded(false)
     }, [file]);
     const onFileChange = (e) => {
         const {target: {files}} = e;
         const theFile = files[0];
         setFile(theFile);
     }
-    const [isUploaded, setIsUploaded] = useState(false);
+    const {isLoading: isProfileLoading, data: profileData} = useQuery(['profile', name], getProfile);
+    const [isFileUploaded, setIsFileUploaded] = useState(false);
+    const [uploadURL, setuploadURL] = useState('')
+    const [isUploaded, setIsUploaded] = useState(true)
+    const [profileUrl, setProfileUrl] = useState('')
+    useEffect(() => {
+        if (profileData) {
+            setProfileUrl(profileData)
+        } else {
+            setProfileUrl('')
+        }
+    }, [profileData]);
+
     const onUploadServerButtonClick = (() => {
         if (file == null) return
-        const formData = new FormData();
-        formData.append('file', file);
-        // console.log(formData)
-        addProfile(formData, name).then((result) => {
-            if (result) {
-                toast({
-                    title: name + " 사진 업로드에 성공했어요~~",
-                    status: "success",
-                    position: "top",
-                    duration: 1000,
-                    isClosable: true,
-                });
-                queryClient.refetchQueries(['dog_info', name]);
-                onCloseFn();
-            }
+        setIsUploaded(false)
+        getUploadUrl().then((res) => {
+            setuploadURL(res.uploadURL)
         })
     })
+    const [fileId, setFileId] = useState('')
+
+    useEffect(() => {
+        if (uploadURL === '') return
+        uploadImage(file, uploadURL).then((res) => {
+            setFileId(res.result.id)
+        })
+    }, [uploadURL]);
+
+    useEffect(() => {
+        if (fileId) {
+            addProfile(name, fileId).then((res) => {
+                if (res) {
+                    queryClient.refetchQueries(['dog_info', name]);
+                    queryClient.refetchQueries(['profile', name]);
+                    toast({
+                        title: name + " 사진 업로드에 성공했어요~~",
+                        status: "success",
+                        position: "top",
+                        duration: 1000,
+                        isClosable: true,
+                    });
+                } else {
+                    queryClient.refetchQueries(['dog_info', name]);
+                    queryClient.refetchQueries(['profile', name]);
+                    toast({
+                        title: name + " 사진 업로드에 실패했어요ㅜㅜ",
+                        status: "error",
+                        position: "top",
+                        duration: 1000,
+                        isClosable: true,
+                    });
+                }
+                setIsUploaded(true)
+                onCloseFn()
+            })
+        }
+    }, [fileId]);
+
 
     return (<Modal isOpen={isOpen} onClose={onCloseFn}>
         <ModalOverlay/>
@@ -175,7 +210,7 @@ export default function ModifyDog({isOpen, onClose}) {
                             <Box w={'25%'} textAlign={'left'}>
                                 <Avatar h={'5vh'} w={'5vh'}
                                         bgColor={'transparent'}
-                                        src={`${profileUrl}?${randomNumber}}`}
+                                        src={profileUrl}
                                         icon={<Text fontSize={'3xl'}>🐶</Text>}
                                 />
                             </Box>
@@ -278,8 +313,9 @@ export default function ModifyDog({isOpen, onClose}) {
                                     <Input type={"file"} accept={"image/*"}
                                            onChange={onFileChange} display={'none'} ref={imageRef}/>
                                     {
-                                        isUploaded ?
+                                        isFileUploaded ?
                                             <Button colorScheme='green' onClick={onUploadServerButtonClick}
+                                                    isLoading={!isUploaded}
                                                     rounded={'xl'}
                                                     _hover={{
                                                         textDecoration: 'none', color: 'white', rounded: 'xl', transform: 'scale(1.2)'

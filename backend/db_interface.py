@@ -60,6 +60,34 @@ class Interface:
                     writer.writerow(row)
         return f'backup done at {backup_dir}, tables : {tables}'
 
+    def add_profile(self, name, file_id):
+        update_query = f"""
+        UPDATE dogs
+        SET profile_id = '{file_id}'
+        WHERE name = '{name}'
+        """
+        print('add profile')
+        print(update_query)
+        self.setter.execute(update_query)
+        self.db.commit()
+        return True
+
+    def get_profile(self, name):
+        select_query = f"""
+        SELECT profile_id
+        FROM dogs
+        WHERE name = '{name}'
+        """
+        print('get profile')
+        print(select_query)
+        self.getter.execute(select_query)
+        file_id = self.getter.fetchone()[0]
+        print(file_id)
+        if file_id:
+            return f'https://imagedelivery.net/zD0Crtd4n6Z3fD7_la_iRQ/{file_id}/public'
+        else:
+            return None
+
     # dogs
     def add_dog_info(self, data):
         print(data)
@@ -703,7 +731,6 @@ class Interface:
             message += f'다음에 오시면 충전부탁드려요~ \n'
         message += f'감사합니다🐶❤ \n'
         print(message)
-
         return message
 
     def check_used_date(self, row_ids):

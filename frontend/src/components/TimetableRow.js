@@ -23,16 +23,14 @@ import {useEffect, useRef, useState} from "react";
 import {BiPlus} from "react-icons/bi";
 import Checkout from "../modals/Checkout";
 import ChangeCheckInTime from "../modals/ChangeCheckInTime";
-import {setBelt} from "../api";
+import {getProfile, setBelt} from "../api";
 import DogInfo from "../modals/DogInfo";
-import {useQueryClient} from "react-query";
+import {useQuery, useQueryClient} from "react-query";
 
 export default function TimetableRow(props) {
     // console.log('in timetable row')
     // console.log(props.data)
     const {id, name, in_time, out_time, belts: loaded_belts, date} = props.data
-    const setTimetableRandomNumber = props.setTimetableRandomNumber
-    const timetableRandomNumber = props.timetableRandomNumber
     const [belts, setBelts] = useState(loaded_belts)
     const {
         isOpen: isOutOpen, onOpen: onOutOpen, onClose: onOutClose
@@ -62,7 +60,6 @@ export default function TimetableRow(props) {
     const dogInfoModOnCloseFn = () => {
         dogInfoModOnClose()
         queryClient.refetchQueries(["timetable", date])
-        setRandomNumber(Math.random())
     }
     useEffect(() => {
         if (belts > 0)
@@ -95,26 +92,16 @@ export default function TimetableRow(props) {
     // useEffect(() => {
     //     handleResize();
     // }, [textRef.current?.textContent]);
+
+    const {isLoading: isProfileLoading, data: profileData} = useQuery(['profile', name], getProfile);
     const [profileUrl, setProfileUrl] = useState('')
-    const [randomNumber, setRandomNumber] = useState();
-    const rootUrl = window.location.origin.replace(`:${window.location.port}`, '');
     useEffect(() => {
-        console.log(rootUrl);
-        setProfileUrl(`${rootUrl}:8000/api/get/profile/${name.replace(' ', '')}.png`)
-        // setProfileUrl(`http://127.0.0.1:8000/api/get/profile/${name.replace(' ', '')}.png`)
-    }, []);
-        // setRandomNumber(Math.random())
-    useEffect(() => {
-        setRandomNumber(Math.random())
-    }, [dogInfoModIsOpen]);
-    useEffect(() => {
-        console.log('random number changed in TimetableRow : ' + randomNumber)
-    }, [randomNumber]);
-    useEffect(() => {
-        setRandomNumber(Math.random())
-    }, [timetableRandomNumber]);
-
-
+        if (profileData) {
+            setProfileUrl(profileData)
+        } else {
+            setProfileUrl('')
+        }
+    }, [profileData]);
 
     return (<>
         <Tr textAlign={'center'}>
@@ -122,7 +109,7 @@ export default function TimetableRow(props) {
                 <HStack>
                     <Avatar h={'5vh'} w={'5vh'}
                             bgColor={'transparent'}
-                            src={`${profileUrl}?${randomNumber}}`}
+                            src={profileUrl}
                             icon={<Text fontSize={'3xl'}>🐶</Text>}
                     />
                     <Button fontSize={'xl'} px={0} w={'80%'} fontWeight={'bold'} textColor={nameColor}
@@ -218,6 +205,6 @@ export default function TimetableRow(props) {
                   name={name} in_time={in_time} belts={belts}
         />
         {dogInfoModIsOpen ? <DogInfo isOpen={dogInfoModIsOpen} onClose={dogInfoModOnCloseFn} id={Date.now()}
-                                     setRandomState={setTimetableRandomNumber} name={name}/> : ''}
+                                      name={name}/> : ''}
     </>)
 }
