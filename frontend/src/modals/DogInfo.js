@@ -19,6 +19,7 @@ import {addProfile, getDogInfo, getProfile, getUploadUrl, modDog, uploadImage} f
 import React, {useEffect, useRef, useState} from "react";
 import {formatMinuteToTime} from "../api";
 import {HttpStatusCode} from "axios";
+import ProfileAvatar from "../components/ProfileAvatar";
 
 export default function DogInfo({isOpen, onClose, name, setRandomState}) {
     const {register, reset, handleSubmit, formState: {errors}} = useForm();
@@ -183,11 +184,7 @@ export default function DogInfo({isOpen, onClose, name, setRandomState}) {
             <ModalContent top={'10vh'}>
                 <ModalHeader>
                     <HStack>
-                        <Avatar h={'5vh'} w={'5vh'}
-                                bgColor={'transparent'}
-                                src={profileUrl}
-                                icon={<Text fontSize={'3xl'}>🐶</Text>}
-                        />
+                        <ProfileAvatar profileUrl={profileUrl} name={name} />
                         <Text>
                             {name}🥰 정보
                         </Text>

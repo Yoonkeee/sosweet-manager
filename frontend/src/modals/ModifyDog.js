@@ -27,6 +27,7 @@ import {
     uploadImage
 } from "../api";
 import {useEffect, useRef, useState} from "react";
+import ProfileAvatar from "../components/ProfileAvatar";
 
 export default function ModifyDog({isOpen, onClose}) {
     // const {isOpen, onOpen, onClose} = useDisclosure()
@@ -208,11 +209,7 @@ export default function ModifyDog({isOpen, onClose}) {
                     {selectIsLoading ? <Text>Loading options...</Text> : (
                         <HStack w={'100%'}>
                             <Box w={'25%'} textAlign={'left'}>
-                                <Avatar h={'5vh'} w={'5vh'}
-                                        bgColor={'transparent'}
-                                        src={profileUrl}
-                                        icon={<Text fontSize={'3xl'}>🐶</Text>}
-                                />
+                                <ProfileAvatar profileUrl={profileUrl} name={name} />
                             </Box>
                             <Select
                                 w={'75%'}

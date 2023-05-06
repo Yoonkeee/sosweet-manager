@@ -26,6 +26,7 @@ import ChangeCheckInTime from "../modals/ChangeCheckInTime";
 import {getProfile, setBelt} from "../api";
 import DogInfo from "../modals/DogInfo";
 import {useQuery, useQueryClient} from "react-query";
+import ProfileAvatar from "./ProfileAvatar";
 
 export default function TimetableRow(props) {
     // console.log('in timetable row')
@@ -107,11 +108,7 @@ export default function TimetableRow(props) {
         <Tr textAlign={'center'}>
             <Td p={0} textAlign={'center'}>
                 <HStack>
-                    <Avatar h={'5vh'} w={'5vh'}
-                            bgColor={'transparent'}
-                            src={profileUrl}
-                            icon={<Text fontSize={'3xl'}>🐶</Text>}
-                    />
+                    <ProfileAvatar profileUrl={profileUrl} name={name} />
                     <Button fontSize={'xl'} px={0} w={'80%'} fontWeight={'bold'} textColor={nameColor}
                             colorScheme={'white'}
                             justifyContent={'flex-start'} alignItems={'center'}
