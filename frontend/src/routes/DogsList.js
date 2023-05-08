@@ -17,8 +17,8 @@ export default function DogsList() {
   const showGender = useBreakpointValue({ base: false, md: true });
   const showPhone = useBreakpointValue({ base: false, md: true });
   const showWeight = useBreakpointValue({ base: false, md: true });
-  const nameWidth = useBreakpointValue({ base: '25vw', md: '10vw' });
-  const noteWidth = useBreakpointValue({ base: '60vw', md: '30vw' });
+  const nameWidth = useBreakpointValue({ base: '35vw', md: '10vw' });
+  const noteWidth = useBreakpointValue({ base: '50vw', md: '30vw' });
   const remainingWidth = useBreakpointValue({ base: '15vw', md: '10vw' });
   return (
     <VStack w={'100%'} mt={'2vh'} mb={'10vh'}>

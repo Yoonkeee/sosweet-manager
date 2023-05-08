@@ -134,7 +134,7 @@ async def get_profile(name: str):
     if result:
         return result
     else:
-        return Response(status_code=status.HTTP_404_NOT_FOUND)
+        return ''
 
 
 # @app.post("/api/post/add-profile/{name}")

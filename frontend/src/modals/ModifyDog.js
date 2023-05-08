@@ -209,7 +209,7 @@ export default function ModifyDog({isOpen, onClose}) {
                     {selectIsLoading ? <Text>Loading options...</Text> : (
                         <HStack w={'100%'}>
                             <Box w={'25%'} textAlign={'left'}>
-                                <ProfileAvatar profileUrl={profileUrl} name={name} />
+                                <ProfileAvatar name={name} />
                             </Box>
                             <Select
                                 w={'75%'}

@@ -1,6 +1,6 @@
 import {
     Button, Editable, EditableInput, EditablePreview,
-    Heading,
+    Heading, HStack,
     Modal,
     ModalBody,
     ModalCloseButton,
@@ -22,8 +22,9 @@ import {useEffect, useRef, useState} from "react";
 import {useQueryClient} from "react-query";
 import {checkUsedDate, makeMessage} from "../api";
 import copy from 'copy-to-clipboard';
+import ProfileAvatar from "../components/ProfileAvatar";
 
-export default function MakeMessage({isOpen, onClose, checked}) {
+export default function MakeMessage({isOpen, onClose, checked, name}) {
     const queryClient = useQueryClient()
     const toast = useToast()
     const [text, setText] = useState('')
@@ -68,7 +69,14 @@ export default function MakeMessage({isOpen, onClose, checked}) {
     return (<Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay/>
         <ModalContent top={'15vh'} ref={ref}>
-            <ModalHeader>댕댕이 시간 계산하기~</ModalHeader>
+            <ModalHeader>
+                <HStack>
+                    <ProfileAvatar name={name}/>
+                    <Text>
+                        {name} 시간 계산하기~
+                    </Text>
+                </HStack>
+            </ModalHeader>
             <ModalCloseButton/>
             <ModalBody as={'form'}>
                 {/*<Editable whiteSpace={'pre-line'} value={text}>*/}

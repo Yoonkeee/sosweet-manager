@@ -99,7 +99,7 @@ export default function GetMessage() {
                         {/*        메세지생성</Button>*/}
                         {/*</Th>*/}
                         <MakeMessage isOpen={isOpen} onClose={onCloseFn}
-                                     checked={checked}/>
+                                     checked={checked} name={name}/>
                     </Tr>
                 </Thead>
                 <Tbody>

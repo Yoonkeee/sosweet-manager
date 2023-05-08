@@ -71,7 +71,7 @@ export default function History() {
                 <Table variant='striped' colorScheme='blue' layout={'fixed'}>
                     <Thead w={'100%'} borderBottomColor={'black'} borderBottomWidth={5} alignItems={'center'}>
                         <Tr textAlign={'center'}>
-                            <Th textAlign={'center'} fontSize={'xl'} px={0} w={'25vw'}>
+                            <Th textAlign={'center'} fontSize={'xl'} px={0} w={'30vw'}>
                                 {selectIsLoading ? <Text>Loading options...</Text> :
                                     (
                                         <Select

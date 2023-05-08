@@ -1,20 +1,47 @@
-import {Button, Heading, Image, Text, VStack} from "@chakra-ui/react";
+import {Box, Button, Heading, Image, Text, VStack} from "@chakra-ui/react";
 import {Link} from "react-router-dom";
+import {Temporal} from "@js-temporal/polyfill";
+import FullCalendar from '@fullcalendar/react'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import interactionPlugin from '@fullcalendar/interaction';
+import {locale} from "moment";
+import {DayHeader} from "@fullcalendar/core/internal";
 
 export default function Hotelling() {
+    const createEvent = (scheduleData) => {
+        console.log(scheduleData);
+    };
+    const events = [
+        {title: 'Meeting', start: Temporal.Now.plainDateISO().toString()}
+    ]
+    const handleDateClick = (arg) => { // bind with an arrow function
+        alert(arg.dateStr)
+    }
+    console.log(Temporal.Now.plainDateISO().toString())
     return (
-        <VStack bg={"gray.100"} minH={"100vh"}>
-            <Image mt={'5vh'} h={'30vh'} src={'./logo/프로티콘.png'} rounded={'2xl'}/>
-            <VStack textAlign={'center'}>
-                <Heading>호텔링은 아직 미완성이에요😭</Heading>
-                <Text>그대신 귀여운 🥰프로🥰 사진을 보여드릴게요!</Text>
-                <Link to="/">
-                    <Button colorScheme={"twitter"} variant={"solid"}>
-                        &larr; 돌아가주세요...😢
-                    </Button>
-                </Link>
-            </VStack>
-            {/*<Image h={'80vh'} w={'100%'} src={'main_img2.jpeg'} objectFit={'cover'}></Image>*/}
+        <VStack bg={"gray.100"} minH={"100vh"} w={'100%'}>
+            <Box w={'100%'}>
+                <FullCalendar
+                    // headerToolbar={null}
+
+                    locale={'ko'}
+                    editable={true}
+                    plugins={[dayGridPlugin, interactionPlugin]}
+                    dateClick={handleDateClick}
+                    initialView='dayGridMonth'
+                    events={events}
+                    eventContent={renderEventContent}
+                />
+            </Box>
         </VStack>
     );
+}
+
+function renderEventContent(eventInfo) {
+    return (
+        <>
+            <b>{eventInfo.timeText}</b>
+            <i>{eventInfo.event.title}</i>
+        </>
+    )
 }

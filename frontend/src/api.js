@@ -82,10 +82,6 @@ export const getUploadUrl = () => {
 }
 
 export const uploadImage = (file, uploadURL) => {
-    console.log('in uploadImage');
-    console.log(file)
-    console.log(uploadURL)
-    console.log('end uploadImage');
     const form = new FormData();
     form.append('file', file);
     console.log(form)
@@ -106,7 +102,6 @@ export const addProfile = (name, fileId) => {
 
 export const getProfile = ({queryKey}) => {
     const [_, name] = queryKey;
-    console.log('in getProfile : ' + name);
     return instance.get(`/get/profile/${name}`).then((response) => {
         if (response.status === 404) {
             return null

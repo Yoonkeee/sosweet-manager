@@ -1,7 +1,8 @@
-import {Button, Td, Text, Tr, useBreakpointValue, useDisclosure,} from '@chakra-ui/react'
+import {Button, HStack, Td, Text, Tr, useBreakpointValue, useDisclosure,} from '@chakra-ui/react'
 import ModifyHistory from "../modals/ModifyHistory";
 import {strToLocaleWithoutWeekday} from "../api";
 import {Temporal} from "@js-temporal/polyfill";
+import ProfileAvatar from "./ProfileAvatar";
 
 export default function HistoryRow(props) {
     const formatDate = (dateStr) => {
@@ -22,24 +23,27 @@ export default function HistoryRow(props) {
     const showUsedTime = useBreakpointValue({base: false, md: true});
     return (<>
         <Tr onClick={onOpen} cursor={'pointer'}>
-            <Td>
-                <Text fontSize='xl' fontWeight='bold' textColor='#1a2a52'>
+            <Td px={0} py={'1vh'}>
+                <HStack>
+                    <ProfileAvatar name={name} />
+                <Text fontSize='sm' isTruncated={true} fontWeight='bold' textColor='#1a2a52'>
                     {name}
                 </Text>
+                </HStack>
             </Td>
-            <Td px={0} textAlign={'center'}>
-                <Text fontSize={'md'} textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>
+            <Td px={0} py={'1vh'} textAlign={'center'}>
+                <Text fontSize={'sm'} textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>
                     {formatDate(date) + ' ' + in_time + '~' + out_time}
                 </Text>
             </Td>
             {showUsedTime && <Td px={0} textAlign={'center'}>
-                <Text fontSize='lg' textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>
+                <Text fontSize='sm' textAlign={'center'} fontWeight={'bold'} textColor={'#1a2a52'}>
                     {formatTimeFromMinutes(used_minutes)}
                 </Text>
             </Td>}
-            <Td textAlign={'center'}>
-                <Text fontSize='lg' textAlign={'center'} fontWeight={'bold'} textColor={'red'}>
-                    {belts > 0 ? <Text fontSize='lg'>{belts}</Text> : ''}
+            <Td px={0} py={'1vh'} textAlign={'center'}>
+                <Text fontSize='sm' textAlign={'center'} fontWeight={'bold'} textColor={'red'}>
+                    {belts > 0 ? <Text fontSize='sm'>{belts}</Text> : ''}
                 </Text>
             </Td>
                 <ModifyHistory isOpen={isOpen} onClose={onClose} data={props.data}/>

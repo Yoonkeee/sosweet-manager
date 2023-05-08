@@ -115,7 +115,7 @@ export default function CheckoutTimetableRow(props) {
         <Tr textAlign={'center'}>
             <Td p={0} textAlign={'center'}>
                 <HStack>
-                    <ProfileAvatar profileUrl={profileUrl} name={name} />
+                    <ProfileAvatar name={name} />
                     <Button fontSize={'xl'} px={0} w={'80%'} fontWeight={'bold'} textColor={nameColor}
                             colorScheme={'white'}
                             justifyContent={'flex-start'} alignItems={'center'}

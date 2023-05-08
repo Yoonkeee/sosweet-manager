@@ -184,7 +184,7 @@ export default function DogInfo({isOpen, onClose, name, setRandomState}) {
             <ModalContent top={'10vh'}>
                 <ModalHeader>
                     <HStack>
-                        <ProfileAvatar profileUrl={profileUrl} name={name} />
+                        <ProfileAvatar name={name} />
                         <Text>
                             {name}🥰 정보
                         </Text>

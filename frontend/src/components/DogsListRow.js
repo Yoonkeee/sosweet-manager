@@ -8,6 +8,7 @@ import {
 import {useEffect, useState} from "react";
 import {formatMinuteToTime} from "../api";
 import DogInfo from "../modals/DogInfo";
+import ProfileAvatar from "./ProfileAvatar";
 
 export default function DogsListRow(props) {
     // console.log(props.data);
@@ -31,21 +32,27 @@ export default function DogsListRow(props) {
     return (<>
         <Tr textAlign={'center'} onClick={onOpen} cursor={'pointer'}>
             <Td borderRight="1px solid" borderColor="gray.300" textAlign={'center'} p={2}>
-                <Text fontSize={'md'} textAlign={'center'} fontWeight={'semibold'} textColor={'#1a2a52'}>
-                    {data.name}
-                </Text>
+                <HStack>
+                    <ProfileAvatar name={data.name}/>
+                    <Text fontSize={'sm'} textAlign={'center'} fontWeight={'semibold'}
+                          isTruncated={true} textColor={'#1a2a52'}>
+                        {data.name}
+                    </Text>
+                </HStack>
             </Td>
             <Td borderRight="1px solid" borderColor="gray.300" textAlign={'center'} p={2}>
-                <HStack fontSize={'md'} justifyContent={'center'} fontWeight={'semibold'} whiteSpace={'pre-line'}>
+                <HStack fontSize={'sm'} justifyContent={'center'} fontWeight={'semibold'} whiteSpace={'pre-line'}>
                     <Box w={data.weight ? '70%' : '100%'}>
                         <Text textColor={'#1a2a52'}>
                             {data.note}
                         </Text>
                     </Box>
+                    {data.weight ?
                     <Box w={'30%'} borderLeft={data.weight ? '1px solid' : ''}>
                         <Text
                             textColor={'darkgreen'}>{data.weight ? '   ' + data.weight + (data.weight.includes('kg') ? '' : 'kg') : ''}</Text>
-                    </Box>
+                    </Box> : ''}
+
                 </HStack>
             </Td>
             {showBreed && <Td borderRight="1px solid" borderColor="gray.300" textAlign={'center'} p={0}>
