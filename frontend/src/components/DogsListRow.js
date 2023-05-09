@@ -29,11 +29,12 @@ export default function DogsListRow(props) {
         }
     }, [remainingMinutes]);
     const {isOpen, onOpen, onClose} = useDisclosure()
+
     return (<>
         <Tr textAlign={'center'} onClick={onOpen} cursor={'pointer'}>
             <Td borderRight="1px solid" borderColor="gray.300" textAlign={'center'} p={2}>
                 <HStack>
-                    <ProfileAvatar name={data.name}/>
+                    <ProfileAvatar name={data.name} clickable={false}/>
                     <Text fontSize={'sm'} textAlign={'center'} fontWeight={'semibold'}
                           isTruncated={true} textColor={'#1a2a52'}>
                         {data.name}

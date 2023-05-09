@@ -14,7 +14,7 @@ export default function PayHistoryRow(props) {
         <Tr onClick={onOpen}>
             <Td px={0} py={'1vh'}>
                 <HStack>
-                    <ProfileAvatar name={name}/>
+                    <ProfileAvatar name={name} clickable={false}/>
                     <Text textAlign={'center'} fontSize='xl' fontWeight='bold' textColor='#1a2a52'>
                         {name}
                     </Text>

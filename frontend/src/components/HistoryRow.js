@@ -22,10 +22,11 @@ export default function HistoryRow(props) {
     const {isOpen, onClose, onOpen} = useDisclosure()
     const showUsedTime = useBreakpointValue({base: false, md: true});
     return (<>
+        {/*<Tr>*/}
         <Tr onClick={onOpen} cursor={'pointer'}>
             <Td px={0} py={'1vh'}>
                 <HStack>
-                    <ProfileAvatar name={name} />
+                    <ProfileAvatar name={name} clickable={false} />
                 <Text fontSize='sm' isTruncated={true} fontWeight='bold' textColor='#1a2a52'>
                     {name}
                 </Text>

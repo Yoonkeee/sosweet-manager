@@ -15,6 +15,7 @@ import {getProfile} from "../api";
 export default function ProfileAvatar(props) {
     const {isOpen, onOpen, onClose} = useDisclosure()
     const name = props.name
+    const clickable = props.hasOwnProperty('clickable') ? props.clickable : true;
     const {isLoading, data} = useQuery(['profile', name], getProfile)
     const [profileUrl, setProfileUrl] = useState('')
     useEffect(() => {
@@ -23,12 +24,18 @@ export default function ProfileAvatar(props) {
         }
     }, [data])
 
+    const imageClick = () => {
+        // e.event.preventDefault()
+        if (clickable)
+            onOpen()
+    }
     return (
         <>
             <Avatar h={'5vh'} w={'5vh'}
+                    cursor={'pointer'}
                     bgColor={'transparent'}
                     src={profileUrl}
-                    onClick={onOpen}
+                    onClick={imageClick}
                     icon={<Text fontSize={'3xl'}>🐶</Text>}
             />
             <Modal onClose={onClose} isOpen={isOpen} isCentered>
