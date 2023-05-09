@@ -21,8 +21,9 @@ import {
 import {useEffect, useRef, useState} from "react";
 import {useQueryClient} from "react-query";
 import {checkUsedDate, makeMessage} from "../api";
-import copy from 'copy-to-clipboard';
+import CopyToClipboard from 'react-copy-to-clipboard';
 import ProfileAvatar from "../components/ProfileAvatar";
+import {options} from "axios";
 
 export default function MakeMessage({isOpen, onClose, checked, name}) {
     const queryClient = useQueryClient()
@@ -55,17 +56,7 @@ export default function MakeMessage({isOpen, onClose, checked, name}) {
         queryClient.refetchQueries(["unchecked-dogs-list"]);
     }
     const ref = useRef(null)
-    const handleCopy = () => {
-        copy(text)
-        toast({
-            title: '복사되었습니다!',
-            description: "카톡으로 보내세용~~",
-            position: 'top',
-            status: 'success',
-            duration: 1000,
-            isClosable: true,
-        })
-    }
+
     return (<Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay/>
         <ModalContent top={'15vh'} ref={ref}>
@@ -87,11 +78,26 @@ export default function MakeMessage({isOpen, onClose, checked, name}) {
                     {text}
                 </Text>
                 <ModalFooter>
-                    <Button colorScheme='green' mr={3} onClick={handleCopy} rounded={'xl'} _hover={{
+                    <CopyToClipboard
+                        options={{format: "text/plain"}}
+                        text={text}
+                        onCopy={()=>{
+                            toast({
+                                title: '복사되었습니다!',
+                                description: "카톡으로 보내세용~~",
+                                position: 'top',
+                                status: 'success',
+                                duration: 1000,
+                                isClosable: true,
+                            })
+                        }}
+                    >
+                    <Button colorScheme='green' mr={3} rounded={'xl'} _hover={{
                         textDecoration: 'none', color: 'white', rounded: 'xl', transform: 'scale(1.2)'
                     }}>
                         복사!
                     </Button>
+                    </CopyToClipboard>
                     <Button colorScheme='red' mr={3} onClick={onClose} rounded={'xl'} _hover={{
                         textDecoration: 'none', color: 'white', rounded: 'xl', transform: 'scale(1.2)'
                     }}>
