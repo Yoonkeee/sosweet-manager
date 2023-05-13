@@ -50,7 +50,7 @@ export default function ProfileAvatar(props) {
                         }
                     </ModalBody>
                     <ModalFooter py={'2vh'}>
-                        <Text fontFamily={'Single Day'} fontSize={'3xl'} fontWeight={'bold'}>{props.name}❤️</Text>
+                        <Text fontFamily={'SingleDay'} fontSize={'3xl'} fontWeight={'bold'}>{props.name}❤️</Text>
                         {/*<Button h={'5vh'} bgColor={'#1a2a52'} color={'white'} onClick={onClose}>닫기</Button>*/}
                     </ModalFooter>
                 </ModalContent>
