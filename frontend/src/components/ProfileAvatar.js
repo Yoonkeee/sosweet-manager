@@ -40,14 +40,18 @@ export default function ProfileAvatar(props) {
             />
             <Modal onClose={onClose} isOpen={isOpen} isCentered>
                 <ModalOverlay/>
-                <ModalContent w={'70%'} p={0} m={0}>
-                    <ModalHeader>{props.name}</ModalHeader>
-                    <ModalCloseButton  p={0} m={0}/>
+                <ModalContent w={'70%'} px={'5vw'} paddingTop={'5vw'}>
+                    {/*<ModalHeader>{props.name}</ModalHeader>*/}
                     <ModalBody p={0} m={0} display={'flex'} alignContent={'center'} justifyContent={'center'}>
-                        {profileUrl === '' ? <Text fontSize={'9xl'}>🐶</Text> : <Image src={profileUrl}/>}
+                        {profileUrl === '' ? <Text fontSize={'9xl'}>🐶</Text> :
+                            <Box border={'5px solid lightgray'}>
+                                <Image src={profileUrl}/>
+                            </Box>
+                        }
                     </ModalBody>
-                    <ModalFooter py={'1.5vh'}>
-                        <Button h={'5vh'} bgColor={'#1a2a52'} color={'white'} onClick={onClose}>닫기</Button>
+                    <ModalFooter py={'2vh'}>
+                        <Text fontFamily={'Single Day'} fontSize={'3xl'} fontWeight={'bold'}>{props.name}❤️</Text>
+                        {/*<Button h={'5vh'} bgColor={'#1a2a52'} color={'white'} onClick={onClose}>닫기</Button>*/}
                     </ModalFooter>
                 </ModalContent>
             </Modal>
