@@ -28,7 +28,7 @@ export default function AddPay({isOpen, onClose}) {
     const {register, reset, handleSubmit, formState: {errors}} = useForm();
     const toast = useToast();
     const {isLoading, data} = useQuery(["dogs-list"], dogsList);
-    const [name, setName] = useState(0);
+    const [name, setName] = useState('');
     const [belts, setBelts] = useState();
     const [nowDate, setNowDate] = useState(Temporal.Now.plainDateISO());
     const [formattedDate, setFormattedDate] = useState();
