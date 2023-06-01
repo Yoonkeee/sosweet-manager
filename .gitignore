@@ -10,3 +10,11 @@ backend/.env
 .DS_Store
 
 backup/
+!/frontend/package-lock.json
+!/node_modules/
+!/frontend/.idea/
+!/backend/poetry.lock
+!/backend/.env
+!/backend/venv/
+!/backend/.idea/
+!/node_modules/.package-lock.json
