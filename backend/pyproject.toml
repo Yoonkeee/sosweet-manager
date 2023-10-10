@@ -17,6 +17,7 @@ schedule = "^1.1.0"
 arrow = "^1.2.3"
 apscheduler = "^3.10.1"
 requests = "^2.30.0"
+python-multipart = "^0.0.6"
 
 
 [build-system]
