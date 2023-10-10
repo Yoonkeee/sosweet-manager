@@ -1,5 +1,6 @@
 import { configureStore, createSlice } from '@reduxjs/toolkit';
-import { Temporal } from '@js-temporal/polyfill';
+import { Temporal } from 'temporal-polyfill';
+// import { Temporal } from '@js-temporal/polyfill';
 
 let today = Temporal.Now.plainDateISO().toString()
 export let makeTemporal = function (date) {
