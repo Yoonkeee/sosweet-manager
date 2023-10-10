@@ -17,6 +17,11 @@ import json
 import pytz
 from apscheduler.schedulers.background import BackgroundScheduler
 import requests
+import logging
+
+logger = logging.getLogger(__name__)
+
+
 
 
 app = FastAPI()
@@ -48,6 +53,17 @@ env = environ.Env()
 BASE_DIR = Path(__file__).resolve().parent
 environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 CF_ID, CF_TOKEN = env("CF_ID"), env("CF_TOKEN")
+
+
+@app.middleware("http")
+async def log_date_time(request: Request, call_next):
+    current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    user_agent = request.headers.get("User-Agent", "unknown")
+    print(f"Request user: {user_agent}")
+    print(f"Request time: {current_time}")
+    response = await call_next(request)
+    return response
+
 
 @app.get("/")
 async def root():

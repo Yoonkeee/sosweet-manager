@@ -641,6 +641,7 @@ class Interface:
         # (select sum(minutes) as remaining_minutes from paid where name = '{name}' and valid = 'Y') as paid,
         # (select sum(used_minutes) as used_minutes from used_table where name = '{name}' and valid = 'Y' and checked = 0) as used_table;
         # """
+        print(query)
         self.getter.execute(query)
         remaining_minutes = self.getter.fetchone()[0]
         if not remaining_minutes:
