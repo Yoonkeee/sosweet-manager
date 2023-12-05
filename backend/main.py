@@ -293,6 +293,7 @@ async def get_history_nonchecked():
     return result
 
 
+# TODO: 놀이방 시간표에 존재하는 강아지들이 이 쿼리로 조회됨. 확인 필요
 # get data from used_table table with input name
 @app.get('/api/get/history/{name}')
 async def get_history(name: str):

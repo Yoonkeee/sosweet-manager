@@ -37,7 +37,7 @@ export default function CheckoutTimetableRow(props) {
     const {isOpen: deleteIsOpen, onOpen: deleteOnOpen, onClose: deleteOnClose} = useDisclosure()
     const {isOpen: modHistoryIsOpen, onOpen: modHistoryOnOpen, onClose: modHistoryOnClose} = useDisclosure()
     const {isOpen: dogInfoModISOpen, onClose: dogInfoModOnClose, onOpen: dogInfoModOnOpen} = useDisclosure();
-    const {isLoading, data} = useQuery(["history", name], getHistory);
+    // const {isLoading, data} = useQuery(["history", name], getHistory);
     const toast = useToast();
     const breakpoint = useBreakpoint({ssr: false})
     const buttonSize = useBreakpointValue({base: 'xs', md: 'md'}, {ssr: false})

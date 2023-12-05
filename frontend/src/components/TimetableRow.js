@@ -94,7 +94,7 @@ export default function TimetableRow(props) {
     //     handleResize();
     // }, [textRef.current?.textContent]);
 
-    const {isLoading: isProfileLoading, data: profileData} = useQuery(['profile', name], getProfile);
+    const {isLoading: isProfileLoading, data: profileData} = useQuery(['profile', name, date], getProfile);
     const [profileUrl, setProfileUrl] = useState('')
     useEffect(() => {
         if (profileData) {

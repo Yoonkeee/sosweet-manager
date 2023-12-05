@@ -30,7 +30,7 @@ export default function AddPay({isOpen, onClose}) {
     const {isLoading, data} = useQuery(["dogs-list"], dogsList);
     const [name, setName] = useState('');
     const [belts, setBelts] = useState();
-    const [nowDate, setNowDate] = useState(Temporal.Now.plainDateISO());
+    const [nowDate, setNowDate] = useState(Temporal.Now.plainDateISO('Asia/Seoul'));
     const [formattedDate, setFormattedDate] = useState();
     const [isSwitchOn, setIsSwitchOn] = useState(false);
     const queryClient = useQueryClient();

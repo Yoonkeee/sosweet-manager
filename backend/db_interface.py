@@ -296,7 +296,7 @@ class Interface:
             converted_row = {}
             for key, value in row.items():
                 if key == 'in_time' or key == 'out_time':
-                    print(value)
+                    # print(value)
                     converted_row[key] = self.convert_to_hhmm(value)
                 else:
                     converted_row[key] = value

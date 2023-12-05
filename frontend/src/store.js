@@ -2,7 +2,7 @@ import { configureStore, createSlice } from '@reduxjs/toolkit';
 import { Temporal } from 'temporal-polyfill';
 // import { Temporal } from '@js-temporal/polyfill';
 
-let today = Temporal.Now.plainDateISO().toString()
+let today = Temporal.Now.plainDateISO('Asia/Seoul').toString()
 export let makeTemporal = function (date) {
   return Temporal.PlainDate.from(date);
 }
@@ -13,7 +13,7 @@ let currentDate = createSlice({
   // initialState: makeTemporal(today),
   reducers: {
     setToday: () => {
-      today = Temporal.Now.plainDateISO().toString()
+      today = Temporal.Now.plainDateISO('Asia/Seoul').toString()
       return today;
     },
     getTemporal: state => {

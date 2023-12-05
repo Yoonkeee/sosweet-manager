@@ -12,12 +12,12 @@ export default function Hotelling() {
         console.log(scheduleData);
     };
     const events = [
-        {title: 'Meeting', start: Temporal.Now.plainDateISO().toString()}
+        {title: 'Meeting', start: Temporal.Now.plainDateISO('Asia/Seoul').toString()}
     ]
     const handleDateClick = (arg) => { // bind with an arrow function
         alert(arg.dateStr)
     }
-    console.log(Temporal.Now.plainDateISO().toString())
+    console.log(Temporal.Now.plainDateISO('Asia/Seoul').toString())
     return (
         <VStack bg={"gray.100"} minH={"100vh"} w={'100%'}>
             <Box w={'100%'}>
