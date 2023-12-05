@@ -1,13 +1,13 @@
 import {
   Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
   TableContainer,
+  Tbody,
   Text,
-  VStack,
+  Th,
+  Thead,
+  Tr,
   useBreakpointValue,
+  VStack,
 } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
 import DogsListRow from '../components/DogsListRow';

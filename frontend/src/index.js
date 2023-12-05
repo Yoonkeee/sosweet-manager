@@ -1,14 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import {ChakraProvider} from "@chakra-ui/react";
-import {RouterProvider} from "react-router-dom";
-import router from "./router";
-import {QueryClient, QueryClientProvider} from "react-query";
-import {Provider} from "react-redux";
-import store from "./store";
-import { theme as chakraTheme } from '@chakra-ui/react'
-import { extendTheme } from '@chakra-ui/react'
+import { ChakraProvider } from '@chakra-ui/react';
+import { RouterProvider } from 'react-router-dom';
+import router from './router';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { Provider } from 'react-redux';
+import store from './store';
 // const theme = extendTheme({
 //     fonts: {
 //         ...chakraTheme.fonts,
@@ -20,16 +18,17 @@ import { extendTheme } from '@chakra-ui/react'
 // export default theme
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const queryClient = new QueryClient();
-document.documentElement.style.backgroundColor = "#1a2a52";
-root.render(// <React.StrictMode>
+document.documentElement.style.backgroundColor = '#1a2a52';
+root.render(
+  // <React.StrictMode>
   <QueryClientProvider client={queryClient}>
     <ChakraProvider>
-    {/*<ChakraProvider theme={theme}>*/}
+      {/*<ChakraProvider theme={theme}>*/}
       <Provider store={store}>
-        <RouterProvider router={router}/>
+        <RouterProvider router={router} />
       </Provider>
     </ChakraProvider>
-  </QueryClientProvider>
+  </QueryClientProvider>,
   // </React.StrictMode>
 );
 

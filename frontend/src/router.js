@@ -1,14 +1,13 @@
-import {createBrowserRouter} from "react-router-dom";
-import Root from "./Root";
-import {Image} from "@chakra-ui/react";
-import Timetable from "./routes/Timetable";
-import GetMessage from "./routes/GetMessage";
-import History from "./routes/History";
-import DogsList from "./routes/DogsList";
-import PayHistory from "./routes/PayHistory";
-import NotFound from "./components/NotFound";
-import Home from "./routes/Home";
-import Hotelling from "./routes/Hotelling";
+import { createBrowserRouter } from 'react-router-dom';
+import Root from './Root';
+import Timetable from './routes/Timetable';
+import GetMessage from './routes/GetMessage';
+import History from './routes/History';
+import DogsList from './routes/DogsList';
+import PayHistory from './routes/PayHistory';
+import NotFound from './components/NotFound';
+import Home from './routes/Home';
+import Hotelling from './routes/Hotelling';
 // import Home from "./routes/Home";
 // import Company from "./routes/Company";
 // import CompanyDetail from "./components/CompanyDetail";
@@ -18,44 +17,43 @@ import Hotelling from "./routes/Hotelling";
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <Root/>,
+    path: '/',
+    element: <Root />,
     // notFoundElement: <NotFound/>,
-    errorElement: <NotFound/>,
+    errorElement: <NotFound />,
     children: [
       {
         path: '',
-        element: <Home />
+        element: <Home />,
         // element: <Home />
         // element: <Image h={'80vh'} w={'100vw'} src={'main_img.jpeg'} objectFit={'cover'}></Image>
       },
       {
         path: 'hotelling',
-        element: <Hotelling/>
+        element: <Hotelling />,
       },
       {
         path: 'timetable',
-        element: <Timetable/>
+        element: <Timetable />,
       },
       {
         path: 'get-message',
-        element: <GetMessage/>
+        element: <GetMessage />,
       },
       {
         path: 'history',
-        element: <History />
+        element: <History />,
       },
       {
         path: 'pay-history',
-        element: <PayHistory />
+        element: <PayHistory />,
       },
       {
         path: 'dogs-list',
-        element: <DogsList/>
+        element: <DogsList />,
       },
-      
-    ]
-  }
-])
+    ],
+  },
+]);
 
 export default router;

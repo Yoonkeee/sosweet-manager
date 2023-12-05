@@ -1,29 +1,6 @@
-import {
-    Box,
-    Flex,
-    Text,
-    Button,
-    Stack,
-    // Link,
-    Popover,
-    PopoverTrigger,
-    PopoverContent,
-    useColorModeValue,
-    useDisclosure,
-    Image,
-    VStack,
-    useToast,
-} from '@chakra-ui/react';
-import {Link} from 'react-router-dom';
-import NewDog from "../modals/NewDog";
-import {useMutation} from "react-query";
-import {addNewDog, mainColor} from "../api";
-import ModifyDog from "../modals/ModifyDog";
-import AddPay from "../modals/AddPay";
-import Cookies from "js-cookie";
-import axios from "axios";
-import {useDispatch} from "react-redux";
-import {setToday} from "../store";
+import { Box, Image } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
+import { mainColor } from '../api';
 
 export default function Header() {
     let statusBarHeight;

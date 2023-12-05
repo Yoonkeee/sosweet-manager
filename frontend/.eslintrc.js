@@ -1,6 +1,25 @@
 module.exports = {
-  extends: ['airbnb', 'plugin:prettier/recommended'],
-  plugins: ['import'],
+  env: {
+    browser: true,
+    es2021: true,
+  },
+  extends: ['eslint:recommended', 'plugin:react/recommended', 'plugin:prettier/recommended'],
+  overrides: [
+    {
+      env: {
+        node: true,
+      },
+      files: ['.eslintrc.{js,cjs}'],
+      parserOptions: {
+        sourceType: 'script',
+      },
+    },
+  ],
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+  },
+  plugins: ['react', 'import'],
   rules: {
     'react/react-in-jsx-scope': 'off',
     'import/no-extraneous-dependencies': 0,
@@ -11,7 +30,7 @@ module.exports = {
       },
     ],
     'react/function-component-definition': [
-      2,
+      0,
       {
         namedComponents: 'arrow-function',
       },

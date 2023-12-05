@@ -1,5 +1,4 @@
 import {
-  Button,
   Select,
   Table,
   TableContainer,
@@ -134,9 +133,9 @@ export default function GetMessage() {
               data &&
               data.map(item => (
                 <GetMessageRow
-                  key={item.id}
                   data={item}
                   isEmpty={checked.length === 0}
+                  key={item.id}
                   keys={item.id}
                   selectedName={name}
                   state={[checked, setChecked]}

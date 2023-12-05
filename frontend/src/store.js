@@ -2,10 +2,10 @@ import { configureStore, createSlice } from '@reduxjs/toolkit';
 import { Temporal } from 'temporal-polyfill';
 // import { Temporal } from '@js-temporal/polyfill';
 
-let today = Temporal.Now.plainDateISO('Asia/Seoul').toString()
+let today = Temporal.Now.plainDateISO('Asia/Seoul').toString();
 export let makeTemporal = function (date) {
   return Temporal.PlainDate.from(date);
-}
+};
 // debugger;
 let currentDate = createSlice({
   name: 'date',
@@ -13,18 +13,18 @@ let currentDate = createSlice({
   // initialState: makeTemporal(today),
   reducers: {
     setToday: () => {
-      today = Temporal.Now.plainDateISO('Asia/Seoul').toString()
+      today = Temporal.Now.plainDateISO('Asia/Seoul').toString();
       return today;
     },
     getTemporal: state => {
-        return Temporal.PlainDate.from(state);
+      return Temporal.PlainDate.from(state);
     },
     tomorrow: state => {
-      let nextDate = Temporal.PlainDate.from(state).add({days: 1}).toString()
+      let nextDate = Temporal.PlainDate.from(state).add({ days: 1 }).toString();
       return nextDate;
     },
     yesterday: state => {
-      let prevDate = Temporal.PlainDate.from(state).subtract({days: 1}).toString()
+      let prevDate = Temporal.PlainDate.from(state).subtract({ days: 1 }).toString();
       return prevDate;
     },
     // setDate: (state, action) => {
@@ -46,8 +46,8 @@ const selectedDog = createSlice({
     setDog: (state, action) => {
       // console.log('setDog ' + action.payload.name);
       return action.payload.name;
-    }
-  }
+    },
+  },
 });
 
 const statusBarHeight = createSlice({
@@ -55,17 +55,18 @@ const statusBarHeight = createSlice({
   initialState: 0,
   reducers: {
     setStatusBarHeight: (state, action) => {
-        return action.payload;
-    }
-  }
+      return action.payload;
+    },
+  },
 });
 
 export default configureStore({
   reducer: {
     currentDate: currentDate.reducer,
     selectedDog: selectedDog.reducer,
-    statusBarHeight: statusBarHeight.reducer
-  }});
+    statusBarHeight: statusBarHeight.reducer,
+  },
+});
 
 export let { yesterday, getTemporal, tomorrow, setToday } = currentDate.actions;
 export let { setDog } = selectedDog.actions;
