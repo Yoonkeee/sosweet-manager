@@ -1,9 +1,10 @@
-node_modules
+frontend/node_modules/
 .DS_Store
 backend/__pycache__/
 backend/.env
 backup/
-.env
+/frontend/package-lock.json
+node_modules/
 .idea
 
 frontend/build/
