@@ -39,6 +39,7 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'react/jsx-sort-props': 1,
     'react/jsx-props-no-spreading': 'off',
+    'prettier/prettier': 0,
   },
   ignorePatterns: ['node_modules/', 'dist/'],
 };
