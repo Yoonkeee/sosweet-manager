@@ -1,7 +1,6 @@
-import axios from "axios";
-import Cookies from "js-cookie";
-import {Temporal} from "@js-temporal/polyfill";
-import {useSelector} from "react-redux";
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import { Temporal } from '@js-temporal/polyfill';
 
 const instance = axios.create({
     baseURL: "/api", withCredentials: true,
@@ -37,36 +36,31 @@ export const formatMinuteToTime = (minutes) => {
 export const temporalToLocale = (date: Temporal.PlainDate) => {
     // input : Temporal.PlainDate { year: 2023, month: 4, day: 25 }
     // output : 4월 25일 화요일
-    let formattedDate = date.toLocaleString('ko-KR', {month: 'long', day: 'numeric', weekday: 'long'})
-    return formattedDate
+  return date.toLocaleString('ko-KR', { month: 'long', day: 'numeric', weekday: 'long' })
 }
 
 export const temporalToLocaleWithoutWeekday = (date: Temporal.PlainDate) => {
     // input : Temporal.PlainDate { year: 2023, month: 4, day: 25 }
     // output : 4월 25일
-    let formattedDate = date.toLocaleString('ko-KR', {month: 'long', day: 'numeric'})
-    return formattedDate
+  return date.toLocaleString('ko-KR', { month: 'long', day: 'numeric' })
 }
 
 export const strToLocaleWithoutWeekday = (date: string) => {
     // input : 2023-04-25
     // output : 4월 25일
-    let formattedDate = dateStrToTemporal(date).toLocaleString('ko-KR', {month: 'long', day: 'numeric'})
-    return formattedDate
+  return dateStrToTemporal(date).toLocaleString('ko-KR', { month: 'long', day: 'numeric' })
 }
 
 export const temporalToStr = (date: Temporal.PlainDate) => {
     // input : Temporal.PlainDate { year: 2023, month: 4, day: 25 }
     // output : 2023-04-25
-    let formattedDate = date.toString()
-    return formattedDate
+  return date.toString()
 }
 
 export const dateStrToTemporal = (date: string) => {
     // input : 2023-04-25
     // output : Temporal.PlainDate { year: 2023, month: 4, day: 25 }
-    let temporalDate = Temporal.PlainDate.from(date)
-    return temporalDate
+  return Temporal.PlainDate.from(date)
 }
 
 export const test = () => {
@@ -357,15 +351,3 @@ export const notOutTimetable = (data) => {
 export const testAPI = (data) => {
     return data;
 }
-
-
-
-
-
-
-
-
-
-
-
-
