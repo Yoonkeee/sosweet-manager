@@ -26,10 +26,12 @@ export default function GetMessage() {
   );
   const [name, setName] = useState('');
   const { isLoading, data } = useQuery(['history', name, 'getMessage'], getHistory);
-  const options = selectData.map(item => ({
-    value: item.name,
-    label: item.name,
-  }));
+  const options =
+    selectData &&
+    selectData.map(item => ({
+      value: item.name,
+      label: item.name,
+    }));
   const [checked, setChecked] = useState([]);
   const [selected, setSelected] = useState(false);
   const showInTime = useBreakpointValue({ base: false, md: true });
@@ -39,7 +41,7 @@ export default function GetMessage() {
     // document.getElementById('name').style.position = 'inherit'
     const selectedName = e.target.value;
     const matchingRows = data.filter(row => row.name === selectedName);
-    const ids = matchingRows.map(row => row.id);
+    const ids = matchingRows && matchingRows.map(row => row.id);
     setChecked(ids);
     setName(e.target.value);
     setSelected(true);

@@ -41,10 +41,12 @@ export default function History() {
       // console.log(response);
     },
   });
-  const options = selectData?.map(item => ({
-    value: item.name,
-    label: item.name,
-  }));
+  const options =
+    selectData &&
+    selectData?.map(item => ({
+      value: item.name,
+      label: item.name,
+    }));
   // if Select option is changed, set mutation
   useEffect(() => {
     setName('ALL');

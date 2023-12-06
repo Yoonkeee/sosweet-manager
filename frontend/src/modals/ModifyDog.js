@@ -64,10 +64,12 @@ export default function ModifyDog({ isOpen, onClose }) {
   });
   const { isLoading: selectIsLoading, data: selectData } = useQuery(['dogs-list'], dogsList);
   const { isLoading, data } = useQuery(['dog_info', name], getDogInfo);
-  const options = selectData?.map(item => ({
-    value: item.name,
-    label: item.name,
-  }));
+  const options =
+    selectData &&
+    selectData?.map(item => ({
+      value: item.name,
+      label: item.name,
+    }));
   const onSubmit = res => {
     // console.log(res);
     mutation.mutate(res);

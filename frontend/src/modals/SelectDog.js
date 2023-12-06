@@ -57,10 +57,12 @@ export default function SelectDog({ setter }) {
     // navigate(`/history/${name.name}`)
     // mutation.mutate(name);
   };
-  const options = data?.map(item => ({
-    value: item.name,
-    label: item.name,
-  }));
+  const options =
+    data &&
+    data?.map(item => ({
+      value: item.name,
+      label: item.name,
+    }));
   return (
     <>
       <Button onClick={onOpen}>댕댕이 선택</Button>

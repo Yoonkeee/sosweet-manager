@@ -13,11 +13,7 @@ export default function Test() {
 
   return (
     <PullToRefresh onRefresh={handleRefresh}>
-      <ul>
-        {items.map(item => (
-          <li key={item}>{item}</li>
-        ))}
-      </ul>
+      <ul>{items && items.map(item => <li key={item}>{item}</li>)}</ul>
     </PullToRefresh>
   );
 }

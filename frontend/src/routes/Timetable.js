@@ -46,14 +46,16 @@ export default function Timetable() {
       toast({
         // id: toastId + Temporal.Now.instant.toString(),
         title: '체크아웃 하지 않은 댕댕이가 있습니다.',
-        description: notOutData.map(notOut => {
-          let notOutDate = strToLocaleWithoutWeekday(notOut.date);
-          return (
-            <Text>
-              {notOutDate} {notOut.name}
-            </Text>
-          );
-        }),
+        description:
+          notOutData &&
+          notOutData.map(notOut => {
+            let notOutDate = strToLocaleWithoutWeekday(notOut.date);
+            return (
+              <Text>
+                {notOutDate} {notOut.name}
+              </Text>
+            );
+          }),
         status: 'warning',
         duration: 700,
         isClosable: true,
@@ -150,13 +152,14 @@ export default function Timetable() {
               </Tr>
             </Thead>
             <Tbody>
-              {data?.map(item => (
-                <TimetableRow
-                  data={item}
-                  key={item.id}
-                  // len={data.length}
-                />
-              ))}
+              {data &&
+                data?.map(item => (
+                  <TimetableRow
+                    data={item}
+                    key={item.id}
+                    // len={data.length}
+                  />
+                ))}
               {data?.length !== 0 && checkoutData && checkoutData.length !== 0 && (
                 <Tr borderY="2px solid">
                   <Td p={'3vh'} />
@@ -165,14 +168,15 @@ export default function Timetable() {
                   <Td p={'3vh'} />
                 </Tr>
               )}
-              {checkoutData?.map(item => (
-                // {checkoutData && checkoutData.length !== 0 && checkoutData.map((item) => (
-                <CheckoutTimetableRow
-                  data={item}
-                  key={item.id}
-                  // len={checkoutData.length}
-                />
-              ))}
+              {checkoutData &&
+                checkoutData?.map(item => (
+                  // {checkoutData && checkoutData.length !== 0 && checkoutData.map((item) => (
+                  <CheckoutTimetableRow
+                    data={item}
+                    key={item.id}
+                    // len={checkoutData.length}
+                  />
+                ))}
             </Tbody>
           </Table>
         </TableContainer>

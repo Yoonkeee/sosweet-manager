@@ -81,10 +81,12 @@ export default function Checkin({ isOpen, onClose }) {
     // console.log(dogData)
     mutation.mutate(dogData);
   };
-  const options = data?.map(item => ({
-    value: item.name,
-    label: item.name,
-  }));
+  const options =
+    data &&
+    data.map(item => ({
+      value: item.name,
+      label: item.name,
+    }));
   return (
     <>
       {/*<Button*/}

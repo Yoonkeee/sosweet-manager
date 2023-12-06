@@ -62,10 +62,12 @@ export default function AddPay({ isOpen, onClose }) {
     register = { ...register, isSwitchOn };
     mutation.mutate(register);
   };
-  const options = data?.map(item => ({
-    value: item.name,
-    label: item.name,
-  }));
+  const options =
+    data &&
+    data?.map(item => ({
+      value: item.name,
+      label: item.name,
+    }));
   useEffect(() => {
     getUsedBelts(name)?.then(res => {
       // console.log(res);
