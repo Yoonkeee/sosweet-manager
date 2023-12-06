@@ -17,17 +17,17 @@ export default function Hotelling() {
   return (
     <VStack bg="gray.100" minH="100vh" w="100%">
       <Box w="100%">
-        <FullCalendar
-          // headerToolbar={null}
-
-          dateClick={handleDateClick}
-          editable
-          eventContent={renderEventContent}
-          events={events}
-          initialView="dayGridMonth"
-          locale="ko"
-          plugins={[dayGridPlugin, interactionPlugin]}
-        />
+        호텔링 서비스는 아직 준비중입니다.
+        {/*<FullCalendar*/}
+        {/*  // headerToolbar={null}*/}
+        {/*  dateClick={handleDateClick}*/}
+        {/*  editable*/}
+        {/*  eventContent={renderEventContent}*/}
+        {/*  events={events}*/}
+        {/*  initialView="dayGridMonth"*/}
+        {/*  locale="ko"*/}
+        {/*  plugins={[dayGridPlugin, interactionPlugin]}*/}
+        {/*/>*/}
       </Box>
     </VStack>
   );
