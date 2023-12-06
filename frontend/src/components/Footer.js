@@ -9,42 +9,53 @@ import NewDog from '../modals/NewDog';
 import { setToday } from '../store';
 import { useDispatch } from 'react-redux';
 import { useQueryClient } from 'react-query';
+import { ErrorBoundary } from 'react-error-boundary';
 
 export default function Footer() {
   const location = useLocation().pathname;
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
   return (
-    <HStack
-      alignContent={'center'}
-      alignItems={'flex-start'}
-      background={'#ffffff'}
-      borderTop={`3px solid ${mainColor}`}
-      display={'flex'}
-      h={'10vh'}
-      justifyContent={'space-between'}
-      paddingTop={'0.2vh'}
-      px={'10vw'}
-    >
-      <FooterButtonModal component={NewDog} icon={FaDog} text={'신규'} />
-      <FooterButtonModal component={AddPay} icon={FaWonSign} text={'결제'} />
-      <Box>
-        <Link to={'/'}>
-          <Image h={'8vh'} src={'./logo/logo_dog_btn.png'} />
-        </Link>
-      </Box>
-      <FooterButtonLink
-        icon={TimeIcon}
-        link={'/timetable'}
-        onClick={() => {
-          dispatch(setToday());
-          queryClient.refetchQueries('timetable');
-          queryClient.refetchQueries('checkoutTimetable');
-        }}
-        text={'시간표'}
-      />
-      <FooterButtonModal component={Checkin} icon={AddIcon} text={'체크인'} />
-    </HStack>
+    <ErrorBoundary>
+      <HStack
+        alignContent={'center'}
+        alignItems={'flex-start'}
+        background={'#ffffff'}
+        borderTop={`3px solid ${mainColor}`}
+        display={'flex'}
+        h={'10vh'}
+        justifyContent={'space-between'}
+        paddingTop={'0.2vh'}
+        px={'10vw'}
+      >
+        <ErrorBoundary>
+          <FooterButtonModal component={NewDog} icon={FaDog} text={'신규'} />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <FooterButtonModal component={AddPay} icon={FaWonSign} text={'결제'} />
+        </ErrorBoundary>
+        <Box>
+          <Link to={'/'}>
+            <Image h={'8vh'} src={'./logo/logo_dog_btn.png'} />
+          </Link>
+        </Box>
+        <ErrorBoundary>
+          <FooterButtonLink
+            icon={TimeIcon}
+            link={'/timetable'}
+            onClick={() => {
+              dispatch(setToday());
+              queryClient.refetchQueries('timetable');
+              queryClient.refetchQueries('checkoutTimetable');
+            }}
+            text={'시간표'}
+          />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <FooterButtonModal component={Checkin} icon={AddIcon} text={'체크인'} />
+        </ErrorBoundary>
+      </HStack>
+    </ErrorBoundary>
   );
 }
 const FooterButtonModal = props => {
