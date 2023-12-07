@@ -1,0 +1,11 @@
+{
+  "name": "sosweet-manager",
+  "version": "1.0.0",
+  "scripts": {
+    "fastapi-run": "cd backend && pip3 install poetry && poetry install && poetry run python -m uvicorn main:app --host 0.0.0.0 --reload",
+    "build": "concurrently \"cd frontend && npm run build\" \"npm run fastapi-run\""
+  },
+  "dependencies": {
+    "concurrently": "latest"
+  }
+}
