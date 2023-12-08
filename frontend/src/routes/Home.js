@@ -11,7 +11,6 @@ import {
 import { mainColor } from '../api';
 import { Link } from 'react-router-dom';
 import ModifyDog from '../modals/ModifyDog';
-import { Suspense } from 'react';
 
 let homeBoxWidth;
 let homePaddingX;
@@ -45,7 +44,7 @@ export default function Home() {
   homeBoxPadding = 3.56 * viewRatio + 'vw';
 
   return (
-    <Suspense>
+    <>
       <Box
         bgColor={'gray.200'}
         h={'100%'}
@@ -163,7 +162,7 @@ export default function Home() {
       </Box>
       {/*<Box h={'30vh'} bgColor={mainColor}/>*/}
       <Box bgColor={'gray.200'} h={'15vh'} />
-    </Suspense>
+    </>
   );
 }
 
