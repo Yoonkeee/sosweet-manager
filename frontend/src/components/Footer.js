@@ -10,13 +10,14 @@ import { setToday } from '../store';
 import { useDispatch } from 'react-redux';
 import { useQueryClient } from 'react-query';
 import { ErrorBoundary } from 'react-error-boundary';
+import { Suspense } from 'react';
 
 export default function Footer() {
   const location = useLocation().pathname;
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
   return (
-    <ErrorBoundary>
+    <Suspense>
       <HStack
         alignContent={'center'}
         alignItems={'flex-start'}
@@ -28,18 +29,18 @@ export default function Footer() {
         paddingTop={'0.2vh'}
         px={'10vw'}
       >
-        <ErrorBoundary>
+        <Suspense>
           <FooterButtonModal component={NewDog} icon={FaDog} text={'신규'} />
-        </ErrorBoundary>
-        <ErrorBoundary>
+        </Suspense>
+        <Suspense>
           <FooterButtonModal component={AddPay} icon={FaWonSign} text={'결제'} />
-        </ErrorBoundary>
+        </Suspense>
         <Box>
           <Link to={'/'}>
             <Image h={'8vh'} src={'./logo/logo_dog_btn.png'} />
           </Link>
         </Box>
-        <ErrorBoundary>
+        <Suspense>
           <FooterButtonLink
             icon={TimeIcon}
             link={'/timetable'}
@@ -50,12 +51,12 @@ export default function Footer() {
             }}
             text={'시간표'}
           />
-        </ErrorBoundary>
-        <ErrorBoundary>
+        </Suspense>
+        <Suspense>
           <FooterButtonModal component={Checkin} icon={AddIcon} text={'체크인'} />
-        </ErrorBoundary>
+        </Suspense>
       </HStack>
-    </ErrorBoundary>
+    </Suspense>
   );
 }
 const FooterButtonModal = props => {
