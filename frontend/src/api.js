@@ -3,7 +3,8 @@ import Cookies from 'js-cookie';
 import { Temporal } from '@js-temporal/polyfill';
 
 const instance = axios.create({
-    baseURL: "/api", withCredentials: true,
+  baseURL: "http://211.250.82.235:4314/api", withCredentials: true,
+    // baseURL: "/api", withCredentials: true,
 });
 export const mainColor = '#1a2a52'
 // export const homePaddingX = '3.41vw'
