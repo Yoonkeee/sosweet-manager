@@ -97,6 +97,7 @@ export default function Root() {
     <>
       <Helmet>
         <title>쏘스윗 매니저</title>
+        <meta content="upgrade-insecure-requests" httpEquiv="Content-Security-Policy" />
         <meta
           content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover"
           name="viewport"
