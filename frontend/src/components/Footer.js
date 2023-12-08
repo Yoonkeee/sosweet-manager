@@ -29,32 +29,32 @@ export default function Footer() {
         paddingTop={'0.2vh'}
         px={'10vw'}
       >
-        {/*<Suspense>*/}
-        {/*  <FooterButtonModal component={NewDog} icon={FaDog} text={'신규'} />*/}
-        {/*</Suspense>*/}
-        {/*<Suspense>*/}
-        {/*  <FooterButtonModal component={AddPay} icon={FaWonSign} text={'결제'} />*/}
-        {/*</Suspense>*/}
+        <Suspense>
+          <FooterButtonModal component={NewDog} icon={FaDog} text={'신규'} />
+        </Suspense>
+        <Suspense>
+          <FooterButtonModal component={AddPay} icon={FaWonSign} text={'결제'} />
+        </Suspense>
         <Box>
           <Link to={'/'}>
             <Image h={'8vh'} src={'./logo/logo_dog_btn.png'} />
           </Link>
         </Box>
-        {/*<Suspense>*/}
-        {/*  <FooterButtonLink*/}
-        {/*    icon={TimeIcon}*/}
-        {/*    link={'/timetable'}*/}
-        {/*    onClick={() => {*/}
-        {/*      dispatch(setToday());*/}
-        {/*      queryClient.refetchQueries('timetable');*/}
-        {/*      queryClient.refetchQueries('checkoutTimetable');*/}
-        {/*    }}*/}
-        {/*    text={'시간표'}*/}
-        {/*  />*/}
-        {/*</Suspense>*/}
-        {/*<Suspense>*/}
-        {/*  <FooterButtonModal component={Checkin} icon={AddIcon} text={'체크인'} />*/}
-        {/*</Suspense>*/}
+        <Suspense>
+          <FooterButtonLink
+            icon={TimeIcon}
+            link={'/timetable'}
+            onClick={() => {
+              dispatch(setToday());
+              queryClient.refetchQueries('timetable');
+              queryClient.refetchQueries('checkoutTimetable');
+            }}
+            text={'시간표'}
+          />
+        </Suspense>
+        <Suspense>
+          <FooterButtonModal component={Checkin} icon={AddIcon} text={'체크인'} />
+        </Suspense>
       </HStack>
     </Suspense>
   );
