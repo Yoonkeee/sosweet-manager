@@ -11,6 +11,7 @@ import {
 import { mainColor } from '../api';
 import { Link } from 'react-router-dom';
 import ModifyDog from '../modals/ModifyDog';
+import { Suspense } from 'react';
 
 let homeBoxWidth;
 let homePaddingX;
@@ -44,7 +45,7 @@ export default function Home() {
   homeBoxPadding = 3.56 * viewRatio + 'vw';
 
   return (
-    <>
+    <Suspense>
       <Box
         bgColor={'gray.200'}
         h={'100%'}
@@ -144,7 +145,7 @@ export default function Home() {
           <HomeRectBoxTwoByOneModal
             // link={''}
             bgColor={'#FFF6BD'}
-            // component={ModifyDog}
+            component={ModifyDog}
             image={'./logo/프로6.png'}
             letterColor={'#4B437D'}
             title={'🐶 수정'}
@@ -162,7 +163,7 @@ export default function Home() {
       </Box>
       {/*<Box h={'30vh'} bgColor={mainColor}/>*/}
       <Box bgColor={'gray.200'} h={'15vh'} />
-    </>
+    </Suspense>
   );
 }
 
