@@ -131,7 +131,7 @@ __[데모 페이지](http://211.250.82.235:55500/)에서 직접 시연해보실 
 - 삭제 여부
 - 프로필 사진 API ID
 
-### > 2. 결제 내역
+### 2. 결제 내역
 
 - 이름
 - 결제시간(분)
@@ -165,7 +165,7 @@ __[데모 페이지](http://211.250.82.235:55500/)에서 직접 시연해보실 
 
 <details>
 <summary style='font-size: xx-large; font-weight: bold; color: blue; cursor: pointer'>
-Live Version (2023. 04. 25 ~ Current) 열어서 살펴보기
+Live Version (2023. 04. 25 ~ Current) (열어서 살펴보기)
 </summary>
 
 ### 홈화면
