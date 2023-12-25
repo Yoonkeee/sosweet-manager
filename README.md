@@ -8,6 +8,10 @@
 
 ![main-image-2.png](./images/main-image-2.png)
 
+<br />  
+
+__[데모 페이지](http://211.250.82.235:55500/)에서 직접 시연해보실 수 있습니다.__  
+
 ## Tech Stacks
 - 코어 : React, Python
 - 상태 관리 : Redux, React-query
@@ -24,7 +28,7 @@
 
 <br/>
 <details>
-<summary style='font-size: 24px !important; font-weight: bold; color: blue; cursor: pointer'>구글 스프레드 시트에서 발생한 문제</summary>
+<summary style='font-size: 24px !important; font-weight: bold; color: blue; cursor: pointer'><span style="font-size:250%">구글 스프레드 시트에서 발생한 문제</span></summary>
 
 ### 기존의 쏘스윗 매니저의 한계
 
@@ -111,11 +115,11 @@
 <summary style='font-size: xx-large; font-weight: bold; color: blue; cursor: pointer'>기능 정의</summary>
 
 
-### > 0. 남은 시간
+### 0. 남은 시간
 
 - 기존에 사용하던 스프레드 시트에서 이관해온 잔여 시간 데이터
 
-### > 1. 강아지 등록 정보
+### 1. 강아지 등록 정보
 
 - 이름
 - 견종
@@ -134,7 +138,7 @@
 - 결제일
 - 삭제 여부
 
-### > 3. 시간표
+### 3. 시간표
 
 - 이름
 - 체크인 시간
@@ -143,7 +147,7 @@
 - 기저귀 사용량
 - 삭제 여부
 
-### > 4. 사용 내역
+### 4. 사용 내역
 
 - 이름
 - 이용 날짜
