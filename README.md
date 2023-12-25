@@ -1,8 +1,8 @@
-# 쏘스윗 매니저
+# 쏘스윗 매니저 Tech Spec.
 
-<img src="./images/main-image-1.png" style='max-width: 50%'  alt='main-page'/>
-
-## Tech spec
+<div style="justify-contnet: center" display='flex'>
+  <img src="./images/main-image-1.png" width=500  alt='main-page'/>
+</div>
 
 [쏘스윗 펫 카페&호텔](https://www.instagram.com/sosweet_coffee_pet_hotel/)에서 강아지들의 놀이방 사용을 관리하기 위한 모바일 기반의 웹 페이지에요.
 
@@ -17,14 +17,14 @@
 
 ## 정당성
 
-- 쏘스윗 애견 카페 사장님의 기존 업무 방식은 모든 기록을 수기로 작성하고 관리하셨어요.
-  하지만 관리해야 할 것들이 많고 복잡하여 실수가 잦고, 업무에 대한 피로가 높으셨어요. 결제 내역, 출입 기록, 이용 내역, 잔여 시간등을 기록하셨어요.
+- 쏘스윗 애견 카페 사장님의 기존 업무 방식은 모든 기록을 수기로 작성하고 관리하셨어요. 하지만 관리해야 할 것들이 많고 복잡하여 실수가 잦고, 
+업무에 대한 피로가 높으셨어요. 결제 내역, 출입 기록, 이용 내역, 잔여 시간등을 기록하셨어요.
 - 이 어려움을 해결하기 위해 저는 구글 스프레드 시트를 제작하여 2022년 6월부터 사용하여 해결할 수 있었어요.
   하지만 이 또한 여러가지 문제가 발생하여 아예 새로운 프로젝트로 진행하기로 생각했어요.
 
 <br/>
 <details>
-<summary style='font-size: xx-large; font-weight: bold; color: blue; cursor: pointer'>구글 스프레드 시트에서 발생한 문제</summary>
+<summary style='font-size: 24px !important; font-weight: bold; color: blue; cursor: pointer'>구글 스프레드 시트에서 발생한 문제</summary>
 
 ### 기존의 쏘스윗 매니저의 한계
 
