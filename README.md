@@ -28,7 +28,7 @@ __[데모 페이지](http://211.250.82.235:55500/)에서 직접 시연해보실 
 
 <br/>
 <details>
-<summary style='font-size: 24px !important; font-weight: bold; color: blue; cursor: pointer'><span style="font-size:250%">구글 스프레드 시트에서 발생한 문제</span></summary>
+<summary style='font-size: 24px !important; font-weight: bold; color: blue; cursor: pointer'><span style="font-size:250%">구글 스프레드 시트에서 발생한 문제 (열어서 살펴보기)</span></summary>
 
 ### 기존의 쏘스윗 매니저의 한계
 
@@ -40,7 +40,7 @@ __[데모 페이지](http://211.250.82.235:55500/)에서 직접 시연해보실 
 - 2022년 6월 개발 완료 후 사용 시작
 
 <details>
-<summary style='font-size: xx-large; font-weight: bold; color: blue; cursor: pointer'>기존의 쏘스윗 매니저 보기</summary>
+<summary style='font-size: xx-large; font-weight: bold; color: blue; cursor: pointer'>기존의 쏘스윗 매니저 보기 (열어서 살펴보기)</summary>
 
 #### 개발 내역
 
@@ -99,20 +99,20 @@ __[데모 페이지](http://211.250.82.235:55500/)에서 직접 시연해보실 
 - 강아지 목록과 특징, 견주 정보 등 등록 정보 확인
 
 ## 일정
-
-- 2023\. 03. 27 - 개발 시작
-- 2023\. 04. 10 - Data Migration
-- 2023\. 04. 13 - 프로토 타입 출시, 실 사용 시작
-- 2023\. 04. 21 - 호텔링 기능 추가 설계
-- 2023\. 04. 25 - 1차 디자인 업데이트 - Home, Header, Footer
-- 2023\. 05. 01 - 프로필 사진 업로드 업데이트
+### 2023년
+- 3월 27일 - 개발 시작
+- 4월 10일 - Data Migration
+- 4월 13일 - 프로토 타입 출시, 실 사용 시작
+- 4월 25일 - 1차 디자인 업데이트 - Home, Header, Footer
+- 4월 21일 - 호텔링 기능 추가 설계
+- 5월 1일 - 프로필 사진 업로드 업데이트
 
 ## Database Schema
 
 ![Untitled](./images/Untitled-19.png)
 
 <details>
-<summary style='font-size: xx-large; font-weight: bold; color: blue; cursor: pointer'>기능 정의</summary>
+<summary style='font-size: xx-large; font-weight: bold; color: blue; cursor: pointer'>기능 정의 (열어서 살펴보기)</summary>
 
 
 ### 0. 남은 시간
@@ -165,7 +165,7 @@ __[데모 페이지](http://211.250.82.235:55500/)에서 직접 시연해보실 
 
 <details>
 <summary style='font-size: xx-large; font-weight: bold; color: blue; cursor: pointer'>
-Live Version (2023. 04. 25 ~ Current)
+Live Version (2023. 04. 25 ~ Current) 열어서 살펴보기
 </summary>
 
 ### 홈화면
@@ -211,7 +211,7 @@ Live Version (2023. 04. 25 ~ Current)
 
 <details>
 <summary style='font-size: xx-large; font-weight: bold; color: blue; cursor: pointer'>
-Prototype (2023. 04. 13 ~ 2023. 04. 25)
+Prototype (2023. 04. 13 ~ 2023. 04. 25) (열어서 살펴보기)
 </summary>
 
 ### 1. 시간표
