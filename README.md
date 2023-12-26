@@ -102,7 +102,7 @@ __[데모 페이지](http://211.250.82.235:55500/)에서 직접 시연해보실 
 ![Untitled](./images/Untitled-19.png)
 
 <details>
-<summary style='font-size: xx-large; font-weight: bold; color: blue; cursor: pointer'>기능 정의 (열어서 살펴보기)</summary>
+<summary style='font-size: xx-large; font-weight: bold; color: blue; cursor: pointer'>DB 테이블 정의 (열어서 살펴보기)</summary>
 
 
 ### 0. 남은 시간
