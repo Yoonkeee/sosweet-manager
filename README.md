@@ -28,9 +28,7 @@ __[데모 페이지](http://211.250.82.235:55500/)에서 직접 시연해보실 
 
 <br/>
 <details>
-<summary style='font-size: 24px !important; font-weight: bold; color: blue; cursor: pointer'><span style="font-size:250%">구글 스프레드 시트에서 발생한 문제 (열어서 살펴보기)</span></summary>
-
-### 기존의 쏘스윗 매니저의 한계
+<summary style='font-size: 24px !important; font-weight: bold; color: blue; cursor: pointer'><span style="font-size:250%">기존의 쏘스윗 매니저(스프레드 시트)의 한계 (열어서 살펴보기)</span></summary>
 
 ### 스프레드 시트 설계
 
@@ -38,13 +36,6 @@ __[데모 페이지](http://211.250.82.235:55500/)에서 직접 시연해보실 
 - 고객에게 보낼 사용 내역 메세지를 자동으로 생성하여 주는 코드(IPython, Google Colaboratory) 개발
 - 연두색은 사용자의 입력이 허용되는 부분, 분홍색은 입력이 허용되지 않는 부분으로 사용자의 입력에 대한 계산 결과값을 보여주는 부분.
 - 2022년 6월 개발 완료 후 사용 시작
-
-<details>
-<summary style='font-size: xx-large; font-weight: bold; color: blue; cursor: pointer'>기존의 쏘스윗 매니저 보기 (열어서 살펴보기)</summary>
-
-#### 개발 내역
-
-![Untitled](./images/Untitled.png)
 
 #### 월별 사용 시트
 
@@ -84,7 +75,6 @@ __[데모 페이지](http://211.250.82.235:55500/)에서 직접 시연해보실 
 
 ![Untitled](./images/Untitled-10.png)
 
-</details>
 </details>
 
 ## 목표
