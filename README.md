@@ -160,11 +160,11 @@ Live Version (2023. 04. 25 ~ Current) (열어서 살펴보기)
 
 ### 홈화면
 
-![Simulator Screenshot - iPhone 14 Pro Max - 2023-05-30 at 14.31.png](./images/Simulator_Screenshot_-_iPhone_14_Pro_Max_-_2023-05-30_at_14.31.png)
+<img src='./images/Simulator_Screenshot_-_iPhone_14_Pro_Max_-_2023-05-30_at_14.31.png' width='380' />
 
 ### 당겨서 새로고침
 
-![스크린샷 2023-05-30 오후 2.37.png](./images/pull-to-refresh.png)
+<img src='./images/pull-to-refresh.png' width='380' />
 
 ### 시간표
 
@@ -182,7 +182,7 @@ Live Version (2023. 04. 25 ~ Current) (열어서 살펴보기)
 
 ### 메세지 예시
 
-![KakaoTalk_Snapshot_20230530_144000.png](./images/KakaoTalk_Snapshot_20230530_144000.png)
+<img src='./images/KakaoTalk_Snapshot_20230530_144000.png' width='380' />
 
 ### 강아지 등록 정보 수정
 
@@ -192,11 +192,12 @@ Live Version (2023. 04. 25 ~ Current) (열어서 살펴보기)
 
 ### 결제 내역
 
-![Simulator Screenshot - iPhone 14 Pro Max - 2023-05-30 at 14.41 (1).png](./images/Simulator_Screenshot_-_iPhone_14_Pro_Max_-_2023-05-30_at_14.41_(1).png)
+<img src='./images/Simulator_Screenshot_-_iPhone_14_Pro_Max_-_2023-05-30_at_14.41_(1).png' width='380' />
 
 ### 놀이방 이용 내역
 
-![Simulator Screenshot - iPhone 14 Pro Max - 2023-05-30 at 14.41.png](./images/Simulator_Screenshot_-_iPhone_14_Pro_Max_-_2023-05-30_at_14.41.png)
+<img src='./images/Simulator_Screenshot_-_iPhone_14_Pro_Max_-_2023-05-30_at_14.41.png' width='380' />
+
 </details>
 
 <details>
@@ -232,3 +233,33 @@ Prototype (2023. 04. 13 ~ 2023. 04. 25) (열어서 살펴보기)
 
 ![Untitled](./images/Untitled-27.png)
 </details>
+
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+
