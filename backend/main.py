@@ -5,7 +5,6 @@ from fastapi import FastAPI, Request, Response, status, BackgroundTasks, File, U
 from fastapi.middleware.cors import CORSMiddleware
 from datetime import datetime, timedelta
 
-import environ
 from pathlib import Path
 import os
 from starlette.responses import FileResponse
@@ -18,6 +17,13 @@ import pytz
 from apscheduler.schedulers.background import BackgroundScheduler
 import requests
 import logging
+# from dotenv import load_dotenv
+from dotenv import dotenv_values
+
+
+# load env variables. This replaces environ.
+# load_dotenv()
+env = dotenv_values(".env")
 
 logger = logging.getLogger(__name__)
 
@@ -49,10 +55,13 @@ app.add_middleware(
 )
 
 db_interface = db_interface.Interface()
-env = environ.Env()
-BASE_DIR = Path(__file__).resolve().parent
-environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
-CF_ID, CF_TOKEN = env("CF_ID"), env("CF_TOKEN")
+# env = environ.Env()
+# BASE_DIR = Path(__file__).resolve().parent
+# environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
+# CF_ID, CF_TOKEN = env("CF_ID"), env("CF_TOKEN")
+
+
+CF_ID, CF_TOKEN = env["CF_ID"], env["CF_TOKEN"]
 
 
 @app.middleware("http")
@@ -88,12 +97,16 @@ tz = pytz.timezone('Asia/Seoul')
 scheduler = BackgroundScheduler()
 # for test 2
 # scheduler.add_job(execute_keep_alive, 'interval', minutes=60)
+for h in range(10, 21):
+    for m in [1, 31]:
+        scheduler.add_job(set_backup, 'cron', hour=h, minute=m, timezone=tz)
+
 scheduler.add_job(execute_keep_alive, 'cron', minute='15', timezone=tz)
-scheduler.add_job(set_backup, 'cron', hour=9, minute=0, timezone=tz)
-scheduler.add_job(set_backup, 'cron', hour=12, minute=0, timezone=tz)
-scheduler.add_job(set_backup, 'cron', hour=15, minute=0, timezone=tz)
-scheduler.add_job(set_backup, 'cron', hour=18, minute=0, timezone=tz)
-scheduler.add_job(set_backup, 'cron', hour=21, minute=0, timezone=tz)
+# scheduler.add_job(set_backup, 'cron', hour=9, minute=0, timezone=tz)
+# scheduler.add_job(set_backup, 'cron', hour=12, minute=0, timezone=tz)
+# scheduler.add_job(set_backup, 'cron', hour=15, minute=0, timezone=tz)
+# scheduler.add_job(set_backup, 'cron', hour=18, minute=0, timezone=tz)
+# scheduler.add_job(set_backup, 'cron', hour=21, minute=0, timezone=tz)
 # scheduler.add_job(set_backup, 'interval', hours=12, next_run_time=datetime.now(tz) + timedelta(minutes=1))
 scheduler.start()
 
@@ -293,7 +306,7 @@ async def get_history_nonchecked():
     return result
 
 
-# TODO: ³îÀÌ¹æ ½Ã°£Ç¥¿¡ Á¸ÀçÇÏ´Â °­¾ÆÁöµéÀÌ ÀÌ Äõ¸®·Î Á¶È¸µÊ. È®ÀÎ ÇÊ¿ä
+# TODO: ë†€ì´ë°© ì‹œê°„í‘œì— ì¡´ì¬í•˜ëŠ” ê°•ì•„ì§€ë“¤ì´ ì´ ì¿¼ë¦¬ë¡œ ì¡°íšŒë¨. í™•ì¸ í•„ìš”
 # get data from used_table table with input name
 @app.get('/api/get/history/{name}')
 async def get_history(name: str):
@@ -446,13 +459,40 @@ async def get_id_info(row_id: int):
     print(result)
     return result
 
-# @app.get("/api/post/add-new-dog/")
-# async def add_new_dog():
-#     return {"message": "/api/post/add-new_dog/"}
-#     # data = await request.json()
-#     # db_interface.Interface().add_dog_info(data)
+# get allergy
+@app.get('/api/get/allergy/{name}')
+async def get_allergy(name: str):
+    print('in get_allergy')
+    # print(row_id)
+    result = db_interface.get_allergy(name)
+    # print(result)
+    return result
 
-#
-# @app.get('/api/get/list/all/')
-# async def get_list_all():
-#     return {"message": "/api/post/add-new_dog/"}
+
+@app.get('/api/get/switch-history-to-paid/{row_id}')
+async def switch_history_to_paid(row_id: str):
+    print('in switch_history_to_paid')
+    # print(row_id)
+    result = db_interface.switch_history_to_paid(row_id)
+    print(result)
+    if result:
+        return Response(status_code=status.HTTP_200_OK)
+    else:
+        return Response(status_code=status.HTTP_400_BAD_REQUEST)
+
+    # def get_dogs_not_paid_belts(self):
+    # def get_dogs_not_paid_minutes(self):
+
+
+@app.get('/api/get/pay-belts-required')
+async def get_pay_belts_required():
+    result = db_interface.get_pay_belts_required()
+    # print(result)
+    return result
+
+
+@app.get('/api/get/pay-time-required')
+async def get_pay_time_required():
+    result = db_interface.get_pay_time_required()
+    # print(result)
+    return result

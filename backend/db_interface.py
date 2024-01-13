@@ -1,11 +1,12 @@
 import pymysql
-import environ
+# import environ
 import os
 import csv
 from pathlib import Path
 from typing import *
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
+from dotenv import dotenv_values
 
 
 class Interface:
@@ -19,10 +20,17 @@ class Interface:
 
     def __init__(self):
         # database connection
-        env = environ.Env()
-        BASE_DIR = Path(__file__).resolve().parent
-        environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
-        HOST, PORT, SCHEMA, DB_USER, PASSWORD = env("HOST"), int(env("PORT")), env("SCHEMA"), env("DB_USER"), env("PASSWORD")
+        # env = environ.Env()
+        # BASE_DIR = Path(__file__).resolve().parent
+        # environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
+        # HOST, PORT, SCHEMA, DB_USER, PASSWORD = env("HOST"), int(env("PORT")), env("SCHEMA"), env("DB_USER"), env("PASSWORD")
+
+        # load env variables. This replaces environ.
+        env = dotenv_values(".env")
+        HOST, PORT, SCHEMA, DB_USER, PASSWORD = env["HOST"], int(env["PORT"]), "replica_sosweet", env["DB_USER"], env["PASSWORD"]
+        # HOST, PORT, SCHEMA, DB_USER, PASSWORD = env["HOST"], int(env["PORT"]), env["REPLICA_SCHEMA"], env["DB_USER"], env["PASSWORD"]
+        ORIGIN_SCHEMA = "sosweet"
+        # ORIGIN_SCHEMA = env["ORIGIN_SCHEMA"]
         self.db = pymysql.connect(host=HOST, port=PORT, user=DB_USER, password=PASSWORD, db=SCHEMA, charset="utf8")
         self.db.autocommit(True)
         self.setter = self.db.cursor()
@@ -59,6 +67,23 @@ class Interface:
                 for row in data:
                     writer.writerow(row)
         return f'backup done at {backup_dir}, tables : {tables}'
+
+
+
+    def get_allergy(self, name):
+        # name, allergy = data['name'], data['allergy']
+        # has_allergy = 1
+        # if not data['allergy']:
+        #     has_allergy = 0
+        select_query = f"""
+                select allergy 
+                from dogs
+                where name = '{name}'
+            """
+        self.getter.execute(select_query)
+        allergy = self.getter.fetchone()[0]
+
+        return allergy if allergy else ''
 
     def add_profile(self, name, file_id):
         update_query = f"""
@@ -99,8 +124,13 @@ class Interface:
         if self.getter.fetchone()[0] > 0:
             return False
 
+        if data['allergy']:
+            data['hasAllergy'] = 1
+        else:
+            data['hasAllergy'] = 0
+
         insert_query = f"""
-        INSERT INTO dogs (name, breed, note, gender, phone, weight, official_name)
+        INSERT INTO dogs (name, breed, note, gender, phone, weight, official_name, hasAllergy, allergy)
         VALUES (
         '{data['dogName']}',
         '{data['dogBreed']}',
@@ -108,7 +138,9 @@ class Interface:
         '{data['dogGender']}',
         '{data['phone']}',
         '{data['dogWeight']}',
-        '{data['officialName']}'
+        '{data['officialName']}',
+        {data['hasAllergy']},
+        '{data['allergy']}'
         )
         """
         self.setter.execute(insert_query)
@@ -185,6 +217,13 @@ class Interface:
 
     def mod_dog_info(self, data):
         # update table
+        print(data)
+
+        if data['allergy']:
+            data['hasAllergy'] = 1
+        else:
+            data['hasAllergy'] = 0
+
         update_query = f"""
         UPDATE dogs
         SET
@@ -193,7 +232,9 @@ class Interface:
         gender = '{data['dogGender']}',
         phone = '{data['phone']}',
         weight = '{data['dogWeight']}',
-        official_name = '{data['officialName']}'
+        official_name = '{data['officialName']}',
+        hasAllergy = {data['hasAllergy']},
+        allergy = '{data['allergy']}'
         WHERE name='{data['name']}'
         """
         print(update_query)
@@ -261,8 +302,46 @@ class Interface:
 
     # used_table
     def get_history_nonchecked(self):
-        select_query = f"SELECT * FROM used_table WHERE checked != 1 AND valid='Y' ORDER BY name, date"
-        print(select_query)
+        # select_query = f"SELECT * FROM used_table WHERE checked != 1 AND valid='Y' ORDER BY name, date"
+        # select_query = f"""SELECT
+        #                     name,
+        #                     COUNT(*) AS counts,
+        #                     GROUP_CONCAT(id) AS ids
+        #                     FROM used_table
+        #                     WHERE checked != 1 AND valid = 'Y'
+        #                     GROUP BY name
+        #                     ORDER BY name;
+        #                 """
+        select_query = f"""WITH UsedTableAgg AS (
+                            SELECT
+                            name,
+                            COUNT(*) AS counts,
+                            GROUP_CONCAT(id) AS ids
+                            FROM used_table
+                            WHERE checked != 1 AND valid = 'Y'
+                            GROUP BY name
+                            ),
+                            PaidUsedMinutes AS (
+                            SELECT
+                            d.name,
+                            IFNULL(SUM(p.minutes), 0) - IFNULL(SUM(u.used_minutes), 0) AS remaining_minutes
+                            FROM dogs d
+                            LEFT JOIN (SELECT name, SUM(minutes) as minutes FROM paid WHERE valid = 'Y' GROUP BY name) p ON d.name = p.name
+                            LEFT JOIN (SELECT name, SUM(used_minutes) as used_minutes FROM used_table WHERE valid = 'Y' GROUP BY name) u ON d.name = u.name
+                            GROUP BY d.name
+                            )
+                            SELECT
+                            d.name,
+                            uta.counts,
+                            uta.ids,
+                            pum.remaining_minutes
+                            FROM dogs d
+                            LEFT JOIN UsedTableAgg uta ON d.name = uta.name
+                            LEFT JOIN PaidUsedMinutes pum ON d.name = pum.name
+                            WHERE counts > 0
+                            ORDER BY d.name;
+                        """
+        # print(select_query)
         self.getter.execute(select_query)
         columns = [col[0] for col in self.getter.description]
         data = [dict(zip(columns, row)) for row in self.getter.fetchall()]
@@ -765,3 +844,71 @@ class Interface:
         data = [dict(zip(columns, row)) for row in self.getter.fetchall()]
         return data
 
+    def switch_history_to_paid(self, row_id):
+        insert_query = f"""
+        update used_table
+        set checked = 1,
+        used_minutes = 0,
+        checked_belts = 1
+        where id = {row_id};
+        """
+        # print(insert_query)
+        self.setter.execute(insert_query)
+        self.db.commit()
+        return True
+
+    def get_pay_belts_required(self):
+        query = f"""
+        SELECT name, SUM(belts) AS belts
+        FROM used_table
+        WHERE checked_belts is null
+        AND belts > 0
+        AND valid = 'Y'
+        GROUP BY name
+        ORDER BY belts DESC;
+        """
+        self.getter.execute(query)
+        columns = [col[0] for col in self.getter.description]
+        data = [dict(zip(columns, row)) for row in self.getter.fetchall()]
+        return data
+
+    def get_pay_time_required(self):
+        query = f"""
+        SELECT
+            subquery.name,
+            subquery.over_minutes,
+            DATE_FORMAT(MAX(u.date), '%y년 %c월 %e일') AS recent_visit_date
+        FROM (
+            SELECT
+                d.name,
+                ifnull(SUM(p.minutes), 0) - ifnull(SUM(u.used_minutes), 0) AS over_minutes
+            FROM
+                dogs d
+            LEFT JOIN (
+                SELECT name, SUM(minutes) AS minutes
+                FROM paid
+                WHERE valid = 'Y'
+                GROUP BY name
+            ) p ON d.name = p.name
+            LEFT JOIN (
+                SELECT name, SUM(used_minutes) AS used_minutes
+                FROM used_table
+                WHERE valid = 'Y'
+                GROUP BY name
+            ) u ON d.name = u.name
+            WHERE
+                d.name IN (SELECT name FROM dogs)
+            GROUP BY
+                d.name
+            HAVING
+                ifnull(SUM(p.minutes), 0) - ifnull(SUM(u.used_minutes), 0) < 0
+        ) AS subquery
+        LEFT JOIN used_table u ON subquery.name = u.name
+        WHERE u.date is not null
+        GROUP BY subquery.name
+        ORDER BY over_minutes;
+        """
+        self.getter.execute(query)
+        columns = [col[0] for col in self.getter.description]
+        data = [dict(zip(columns, row)) for row in self.getter.fetchall()]
+        return data
