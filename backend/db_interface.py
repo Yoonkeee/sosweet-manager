@@ -27,9 +27,9 @@ class Interface:
 
         # load env variables. This replaces environ.
         env = dotenv_values(".env")
-        HOST, PORT, SCHEMA, DB_USER, PASSWORD = env["HOST"], int(env["PORT"]), "replica_sosweet", env["DB_USER"], env["PASSWORD"]
+        HOST, PORT, SCHEMA, DB_USER, PASSWORD = env["HOST"], int(env["PORT"]), "sosweet", env["DB_USER"], env["PASSWORD"]
         # HOST, PORT, SCHEMA, DB_USER, PASSWORD = env["HOST"], int(env["PORT"]), env["REPLICA_SCHEMA"], env["DB_USER"], env["PASSWORD"]
-        ORIGIN_SCHEMA = "sosweet"
+        # ORIGIN_SCHEMA = "sosweet"
         # ORIGIN_SCHEMA = env["ORIGIN_SCHEMA"]
         self.db = pymysql.connect(host=HOST, port=PORT, user=DB_USER, password=PASSWORD, db=SCHEMA, charset="utf8")
         self.db.autocommit(True)
@@ -91,8 +91,8 @@ class Interface:
         SET profile_id = '{file_id}'
         WHERE name = '{name}'
         """
-        print('add profile')
-        print(update_query)
+        # print('add profile')
+        # print(update_query)
         self.setter.execute(update_query)
         self.db.commit()
         return True
@@ -103,11 +103,11 @@ class Interface:
         FROM dogs
         WHERE name = '{name}'
         """
-        print('get profile')
-        print(select_query)
+        # print('get profile')
+        # print(select_query)
         self.getter.execute(select_query)
         file_id = self.getter.fetchone()[0]
-        print(file_id)
+        # print(file_id)
         if file_id:
             return f'https://imagedelivery.net/zD0Crtd4n6Z3fD7_la_iRQ/{file_id}/public'
         else:
@@ -115,12 +115,12 @@ class Interface:
 
     # dogs
     def add_dog_info(self, data):
-        print(data)
+        # print(data)
         duplicate_check_query = f"select count(*) from dogs where name = '{data['dogName']}'"
         self.getter.execute(duplicate_check_query)
         # return False
         # print()
-        print(duplicate_check_query)
+        # print(duplicate_check_query)
         if self.getter.fetchone()[0] > 0:
             return False
 
@@ -171,7 +171,7 @@ class Interface:
             date = STR_TO_DATE('{data['date'].replace('-', '')}', '%Y%m%d') 
             WHERE id = {data['id']}
             """
-            print(update_query)
+            # print(update_query)
             self.setter.execute(update_query)
             self.db.commit()
         if self.reset_used_minutes(data['id']):
@@ -212,7 +212,7 @@ class Interface:
                 converted_row['used_belts'] = self.get_used_belts(converted_row['name'])
                 converted_row['last_visited'] = self.get_last_visited(converted_row['name'])
             converted_data.append(converted_row)
-            print(f'converted row of {name} : {converted_row}')
+            # print(f'converted row of {name} : {converted_row}')
         return converted_data[0]
 
     def mod_dog_info(self, data):
@@ -237,7 +237,7 @@ class Interface:
         allergy = '{data['allergy']}'
         WHERE name='{data['name']}'
         """
-        print(update_query)
+        # print(update_query)
         self.setter.execute(update_query)
         self.db.commit()
         return True
@@ -259,7 +259,7 @@ class Interface:
     # timetable
     def get_table(self, date):
         select_query = f"SELECT * FROM timetable WHERE date = '{date}' and out_time is NULL AND valid='Y' ORDER BY in_time"
-        print(select_query)
+        # print(select_query)
         self.getter.execute(select_query)
         columns = [col[0] for col in self.getter.description]  # Get column names
         data = [dict(zip(columns, row)) for row in self.getter.fetchall()]
@@ -281,11 +281,11 @@ class Interface:
     # timetable
     def get_checkout_timetable(self, date):
         select_query = f"SELECT * FROM timetable WHERE date = '{date}' AND out_time is not NULL AND valid='Y' ORDER BY in_time"
-        print(select_query)
+        # print(select_query)
         self.getter.execute(select_query)
         columns = [col[0] for col in self.getter.description]  # Get column names
         data = [dict(zip(columns, row)) for row in self.getter.fetchall()]
-        print(data)
+        # print(data)
         converted_data = []
         for row in data:
             converted_row = {}
@@ -365,11 +365,11 @@ class Interface:
             select_query = f"SELECT * FROM used_table WHERE valid='Y' ORDER BY date DESC LIMIT 30"
         else:
             select_query = f"SELECT * FROM used_table WHERE name = '{name}' AND valid='Y' ORDER BY date DESC"
-        print(select_query)
+        # print(select_query)
         self.getter.execute(select_query)
         columns = [col[0] for col in self.getter.description]
         data = [dict(zip(columns, row)) for row in self.getter.fetchall()]
-        print(data)
+        # print(data)
         converted_data = []
         for row in data:
             converted_row = {}
@@ -407,7 +407,7 @@ class Interface:
         0
         );
         """
-        print(insert_query)
+        # print(insert_query)
         self.setter.execute(insert_query)
         self.db.commit()
         return True
@@ -430,7 +430,7 @@ class Interface:
         '{date + ' ' + out_time}'
         );
         """
-        print(insert_query)
+        # print(insert_query)
         self.setter.execute(insert_query)
         self.db.commit()
         if check_today:
@@ -453,7 +453,7 @@ class Interface:
         , belts = {belts}
         where id = {row_id};
         """
-        print(update_query)
+        # print(update_query)
         self.setter.execute(update_query)
         self.db.commit()
 
@@ -469,7 +469,7 @@ class Interface:
         select_query = f"""
         SELECT * FROM used_table WHERE id = {row_id}
         """
-        print(select_query)
+        # print(select_query)
         self.getter.execute(select_query)
         columns = [col[0] for col in self.getter.description]
         data = [dict(zip(columns, row)) for row in self.getter.fetchall()]
@@ -482,7 +482,7 @@ class Interface:
         where name = '{name}'
         AND valid='Y' 
         """
-        print(select_query)
+        # print(select_query)
         self.getter.execute(select_query)
         columns = [col[0] for col in self.getter.description]
         data = [dict(zip(columns, row)) for row in self.getter.fetchall()]
@@ -495,7 +495,7 @@ class Interface:
         where name = '{name}'
         AND valid='Y' 
         """
-        print(select_query)
+        # print(select_query)
         self.getter.execute(select_query)
         columns = [col[0] for col in self.getter.description]
         data = [dict(zip(columns, row)) for row in self.getter.fetchall()]
@@ -514,7 +514,7 @@ class Interface:
         select_query = f"""
         SELECT * FROM timetable WHERE id = {row_id}
         """
-        print(select_query)
+        # print(select_query)
         self.getter.execute(select_query)
         columns = [col[0] for col in self.getter.description]
         data = [dict(zip(columns, row)) for row in self.getter.fetchall()]
@@ -538,7 +538,7 @@ class Interface:
         WHERE id = {row_id};
         ;
         """
-        print(timeset_query)
+        # print(timeset_query)
         self.setter.execute(timeset_query)
         self.db.commit()
 
@@ -557,7 +557,7 @@ class Interface:
             set {in_or_out}_time = '{in_time}'
             where id = {row_id};
             """
-            print(update_query)
+            # print(update_query)
             self.setter.execute(update_query)
             self.db.commit()
 
@@ -570,7 +570,7 @@ class Interface:
         set valid='N' 
         where id = {row_id};
         """
-        print(delete_query)
+        # print(delete_query)
         self.setter.execute(delete_query)
         self.db.commit()
         return True
@@ -583,7 +583,7 @@ class Interface:
             set valid='N' 
             where id = {row_id};
             """
-            print(delete_query)
+            # print(delete_query)
             self.setter.execute(delete_query)
             self.db.commit()
         return True
@@ -594,7 +594,7 @@ class Interface:
         set valid='N' 
         where id = {row_id};
         """
-        print(delete_query)
+        # print(delete_query)
         self.setter.execute(delete_query)
         self.db.commit()
         return True
@@ -612,7 +612,7 @@ class Interface:
         {int(hours) * 60}
         );
         """
-        print(insert_query)
+        # print(insert_query)
         self.setter.execute(insert_query)
         if self.add_remaining_time(data):
             self.db.commit()
@@ -627,7 +627,7 @@ class Interface:
         date = STR_TO_DATE('{data['date'].replace('-', '')}', '%Y%m%d')
         where id = {data['id']};
         """
-        print(update_query)
+        # print(update_query)
         self.setter.execute(update_query)
         self.db.commit()
         return True
@@ -640,7 +640,7 @@ class Interface:
         set minutes = minutes + {minutes}
         where name = '{name}';
         """
-        print(update_query)
+        # print(update_query)
         self.setter.execute(update_query)
         return True
 
@@ -663,7 +663,7 @@ class Interface:
         set belts = {belt}
         where id = {row_id};
         """
-        print(update_query)
+        # print(update_query)
         self.setter.execute(update_query)
         self.db.commit()
         return True
@@ -720,7 +720,7 @@ class Interface:
         # (select sum(minutes) as remaining_minutes from paid where name = '{name}' and valid = 'Y') as paid,
         # (select sum(used_minutes) as used_minutes from used_table where name = '{name}' and valid = 'Y' and checked = 0) as used_table;
         # """
-        print(query)
+        # print(query)
         self.getter.execute(query)
         remaining_minutes = self.getter.fetchone()[0]
         if not remaining_minutes:
@@ -740,7 +740,7 @@ class Interface:
         select name, date, in_time, out_time, used_minutes, belts from used_table
         where id in ({', '.join([str(row_id) for row_id in row_ids])});
         """
-        print(select_query)
+        # print(select_query)
         self.getter.execute(select_query)
         columns = [col[0] for col in self.getter.description]
         data = [dict(zip(columns, row)) for row in self.getter.fetchall()]
@@ -796,21 +796,21 @@ class Interface:
             message += f'{date} {in_time}-{out_time} ({used_time}) \n'
 
         total_used_minutes = sum([row['used_minutes'] for row in data])
-        print(total_used_minutes)
+        # print(total_used_minutes)
         duration = relativedelta(minutes=total_used_minutes)
-        print(duration)
+        # print(duration)
         message += f'\n총 사용시간 : {duration.days * 24 + duration.hours}시간 {duration.minutes}분 \n'
 
         remaining_minutes -= total_used_minutes
         duration = relativedelta(minutes=remaining_minutes)
-        print(duration)
+        # print(duration)
 
         # message += f'놀이방 남은 시간 : {"-" if remaining_minutes < 0 else ""}{abs(duration.days * 24 + duration.hours)}시간 {abs(duration.minutes)}분 \n\n'
         message += f'차감 후 남은 시간 : {"-" if remaining_minutes < 0 else ""}{abs(duration.days * 24 + duration.hours)}시간 {abs(duration.minutes)}분 입니다. \n'
         if remaining_minutes < 0:
             message += f'다음에 오시면 충전부탁드려요~ \n'
         message += f'감사합니다🐶❤ \n'
-        print(message)
+        # print(message)
         return message
 
     def check_used_date(self, row_ids):
@@ -823,7 +823,7 @@ class Interface:
         , checked_date = '{today}'
         where id in ({', '.join([str(row_id) for row_id in row_ids])});
         """
-        print(update_query)
+        # print(update_query)
         self.setter.execute(update_query)
         self.db.commit()
         return True
@@ -838,7 +838,7 @@ class Interface:
         date != '{today}'
         and valid='Y'
         """
-        print(select_query)
+        # print(select_query)
         self.getter.execute(select_query)
         columns = [col[0] for col in self.getter.description]
         data = [dict(zip(columns, row)) for row in self.getter.fetchall()]

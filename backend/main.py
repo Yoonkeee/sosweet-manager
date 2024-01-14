@@ -159,7 +159,7 @@ async def add_profile(request: ProfileModel):
 async def get_profile(name: str):
     result = db_interface.get_profile(name)
     print('in get_profile', name)
-    print(result)
+    # print(result)
     if result:
         return result
     else:
@@ -198,7 +198,7 @@ async def add_new_dog(request: DictModel):
     print('in add_new_dog')
     data = json.loads(request.json())
     response = db_interface.add_dog_info(*data.values())
-    print(response)
+    # print(response)
     if not response:
         return Response(status_code=status.HTTP_400_BAD_REQUEST)
     else:
@@ -210,7 +210,7 @@ async def mod_dog(request: DictModel):
     print('in mod_dog')
     data = json.loads(request.json())
     response = db_interface.mod_dog_info(*data.values())
-    print(response)
+    # print(response)
     if not response:
         return Response(status_code=status.HTTP_400_BAD_REQUEST)
     else:
@@ -223,7 +223,7 @@ async def mod_history(request: DictModel):
     print('in mod_history')
     data = json.loads(request.json())
     response = db_interface.mod_history(*data.values())
-    print(response)
+    # print(response)
     if not response:
         return Response(status_code=status.HTTP_400_BAD_REQUEST)
     else:
@@ -252,7 +252,7 @@ async def get_unchecked_used_list():
 async def check_in(request: DictModel):
     print('in check_in')
     data = json.loads(request.json())
-    print(*data.values())
+    # print(*data.values())
     response = db_interface.check_in(*data.values())
     return {"message": "check-in"}
 
@@ -261,7 +261,7 @@ async def check_in(request: DictModel):
 async def check_out(request: DictModel):
     print('in check_out')
     data = json.loads(request.json())
-    print(*data.values())
+    # print(*data.values())
     response = db_interface.check_out(*data.values())
     return {"message": "check-out"}
 
@@ -270,7 +270,7 @@ async def check_out(request: DictModel):
 @app.get("/api/get/used-row-info/{row_id}")
 async def get_used_row_info(row_id: int):
     print('in get_used_row_info')
-    print(row_id)
+    # print(row_id)
     return db_interface.get_used_row_info(row_id)
 
 
@@ -278,7 +278,7 @@ async def get_used_row_info(row_id: int):
 async def change_check_in(request: DictModel):
     print('in change_check_in')
     data = json.loads(request.json())
-    print(*data.values())
+    # print(*data.values())
     response = db_interface.change_check_in_time(*data.values())
     return {"message": "change-check-in"}
 
@@ -286,14 +286,14 @@ async def change_check_in(request: DictModel):
 @app.get('/api/get/timetable/{date}')
 async def get_table(date: str):
     print('in get_table')
-    print(date)
+    # print(date)
     return db_interface.get_table(date)
 
 
 @app.get('/api/get/checkout-timetable/{date}')
 async def get_checkout_timetable(date: str):
     print('in get_checkout_timetable')
-    print(date)
+    # print(date)
     return db_interface.get_checkout_timetable(date)
 
 
@@ -302,7 +302,7 @@ async def get_checkout_timetable(date: str):
 async def get_history_nonchecked():
     print('in get_history_nonchecked')
     result = db_interface.get_history_nonchecked()
-    print(result)
+    # print(result)
     return result
 
 
@@ -313,7 +313,7 @@ async def get_history(name: str):
     print('in get_history')
     print(name)
     result = db_interface.get_history(name, False)
-    print(result)
+    # print(result)
     return result
 
 
@@ -322,7 +322,7 @@ async def get_history(name: str):
     print('in get_history with message')
     print(name)
     result = db_interface.get_history(name, True)
-    print(result)
+    # print(result)
     return result
 
 
@@ -331,7 +331,7 @@ async def get_history(name: str):
 async def get_pay_history():
     print('in get_pay_history')
     result = db_interface.get_pay_history()
-    print(result)
+    # print(result)
     return result
 
 
@@ -340,7 +340,7 @@ async def get_pay_history():
 @app.get("/api/get/cancel-checkin/{row_id}")
 async def cancel_checkin(row_id: int):
     print('in cancel_checkin')
-    print('row_id' + str(row_id))
+    # print('row_id' + str(row_id))
     # data = json.loads(request.json())
     # print(*data.values())
     response = db_interface.cancel_checkin(row_id)
@@ -350,7 +350,7 @@ async def cancel_checkin(row_id: int):
 @app.get("/api/get/cancel-history/{row_id}")
 async def cancel_history(row_id: int):
     print('in cancel_history')
-    print('row_id' + str(row_id))
+    # print('row_id' + str(row_id))
     # data = json.loads(request.json())
     # print(*data.values())
     response = db_interface.cancel_history(row_id)
@@ -360,7 +360,7 @@ async def cancel_history(row_id: int):
 @app.get("/api/get/cancel-pay/{row_id}")
 async def cancel_checkin(row_id: int):
     print('in cancel_checkin')
-    print('row_id ' + str(row_id))
+    # print('row_id ' + str(row_id))
     response = db_interface.cancel_pay(row_id)
     return {"message": "cancel-pay"}
 
@@ -369,7 +369,7 @@ async def cancel_checkin(row_id: int):
 async def pay(request: DictModel):
     print('in pay')
     data = json.loads(request.json())
-    print(*data.values())
+    # print(*data.values())
     response = db_interface.pay(*data.values())
     return {"message": "pay"}
 
@@ -378,7 +378,7 @@ async def pay(request: DictModel):
 async def mod_pay(request: DictModel):
     print('in mod_pay')
     data = json.loads(request.json())
-    print(*data.values())
+    # print(*data.values())
     response = db_interface.mod_pay(*data.values())
     return {"message": "pay"}
 
@@ -387,9 +387,9 @@ async def mod_pay(request: DictModel):
 @app.get('/api/get/id-belt/{row_id}')
 async def get_id_belt(row_id: int):
     print('in get_id_belt')
-    print(row_id)
+    # print(row_id)
     result = db_interface.get_id_belt(row_id)
-    print(result)
+    # print(result)
     return result
 
 
@@ -397,18 +397,18 @@ async def get_id_belt(row_id: int):
 @app.get('/api/get/set-belt/{row_id}/{belts}')
 async def set_belt(row_id: int, belts: int):
     print('in set_belt')
-    print(row_id)
+    # print(row_id)
     result = db_interface.set_belt(row_id, belts)
-    print(result)
+    # print(result)
     return result
 
 
 @app.get('/api/get/get-used-belts/{name}')
 async def get_used_belts(name: str):
     print('in get_used_belts')
-    print(name)
+    # print(name)
     result = db_interface.get_used_belts(name)
-    print(result)
+    # print(result)
     return result
 
 
@@ -416,9 +416,9 @@ async def get_used_belts(name: str):
 @app.get('/api/get/check-used-belts/{name}')
 async def check_used_belts(name: str):
     print('in check_used_belts')
-    print(name)
+    # print(name)
     result = db_interface.check_used_belts(name)
-    print(result)
+    # print(result)
     return result
 
 
@@ -427,7 +427,7 @@ async def check_used_belts(name: str):
 async def make_message(request: ArrayModel):
     data = json.loads(request.json())
     print('in make_message')
-    print(*data.values())
+    # print(*data.values())
     response = db_interface.make_message(*data.values())
     return response
 
@@ -437,7 +437,7 @@ async def make_message(request: ArrayModel):
 async def check_used_date(request: ArrayModel):
     print('in check_used_date')
     data = json.loads(request.json())
-    print(*data.values())
+    # print(*data.values())
     response = db_interface.check_used_date(*data.values())
     return response
 
@@ -446,7 +446,7 @@ async def check_used_date(request: ArrayModel):
 async def not_out_timetable():
     print('in not_out_timetable')
     result = db_interface.not_out_timetable()
-    print(result)
+    # print(result)
     return result
 
 
@@ -454,9 +454,9 @@ async def not_out_timetable():
 @app.get('/api/get/id-info/{row_id}')
 async def get_id_info(row_id: int):
     print('in get_id_info')
-    print(row_id)
+    # print(row_id)
     result = db_interface.get_id_info(row_id)
-    print(result)
+    # print(result)
     return result
 
 # get allergy
