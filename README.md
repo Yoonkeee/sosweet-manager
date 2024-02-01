@@ -1,23 +1,18 @@
-# 쏘스윗 매니저 Tech Spec.
+# 쏘스윗 매니저
+
+__판교에 있는 [쏘스윗 펫 카페&호텔](https://www.instagram.com/sosweet_coffee_pet_hotel/)에서 강아지들의 놀이방 사용을 관리하기 위한 모바일 기반의 PWA에요.__
+
+__[데모 페이지](https://demo-sosweet.vercel.app/)에서 직접 시연해보실 수 있어요!__  
 
 <div style="justify-contnet: center" display='flex'>
   <img src="./images/main-image-1.png" width=400  alt='main-page'/>
 </div>
 
-[쏘스윗 펫 카페&호텔](https://www.instagram.com/sosweet_coffee_pet_hotel/)에서 강아지들의 놀이방 사용을 관리하기 위한 모바일 기반의 PWA에요.
-
 ![main-image-2.png](./images/main-image-2.png)
 
 <br />  
 
-__[데모 페이지](https://demo-sosweet.vercel.app/)에서 직접 시연해보실 수 있어요!__  
-
-## Tech Stacks
-- 코어 : React, Python
-- 상태 관리 : Redux, React-query v5
-- 스타일링 : Chakra UI
-- 백엔드 : FastAPI, CloudflareAPI
-- 데이터베이스 : MariaDB
+# Tech Spec
 
 ## 정당성
 
@@ -26,7 +21,6 @@ __[데모 페이지](https://demo-sosweet.vercel.app/)에서 직접 시연해보
 - 이 어려움을 해결하기 위해 저는 구글 스프레드 시트를 제작하여 2022년 6월부터 사용하여 해결할 수 있었어요.
   하지만 이 또한 여러가지 문제가 발생하여 아예 새로운 프로젝트로 진행하기로 생각했어요.
 
-<br/>
 <details>
 <summary style='font-size: 24px !important; font-weight: bold; color: blue; cursor: pointer'><span style="font-size:250%">기존의 쏘스윗 매니저(스프레드 시트)의 한계 (열어서 살펴보기)</span></summary>
 
@@ -76,6 +70,13 @@ __[데모 페이지](https://demo-sosweet.vercel.app/)에서 직접 시연해보
 ![Untitled](./images/Untitled-10.png)
 
 </details>
+
+## Tech Stacks
+- 코어 : React, Python
+- 상태 관리 : Redux, React-query v5
+- 스타일링 : Chakra UI
+- 백엔드 : FastAPI, CloudflareAPI
+- 데이터베이스 : MariaDB
 
 ## 목표
 
@@ -161,8 +162,14 @@ __[데모 페이지](https://demo-sosweet.vercel.app/)에서 직접 시연해보
 ## Product View
 
 <details>
+  <summary style='font-size: xx-large; font-weight: 900; color: blue; cursor: pointer'>
+    쏘스윗 매니저 2.0 (2024. 01. 22 ~ Current) (열어서 살펴보기)
+  </summary>
+</details>
+  
+<details>
 <summary style='font-size: xx-large; font-weight: bold; color: blue; cursor: pointer'>
-Live Version (2023. 04. 25 ~ Current) (열어서 살펴보기)
+쏘스윗 매니저 1.0 (2023. 04. 25 ~ 2024. 01. 21) (열어서 살펴보기)
 </summary>
 
 ### 홈화면
