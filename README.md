@@ -1,20 +1,20 @@
 # 쏘스윗 매니저 Tech Spec.
 
 <div style="justify-contnet: center" display='flex'>
-  <img src="./images/main-image-1.png" width=500  alt='main-page'/>
+  <img src="./images/main-image-1.png" width=400  alt='main-page'/>
 </div>
 
-[쏘스윗 펫 카페&호텔](https://www.instagram.com/sosweet_coffee_pet_hotel/)에서 강아지들의 놀이방 사용을 관리하기 위한 모바일 기반의 웹 페이지에요.
+[쏘스윗 펫 카페&호텔](https://www.instagram.com/sosweet_coffee_pet_hotel/)에서 강아지들의 놀이방 사용을 관리하기 위한 모바일 기반의 PWA에요.
 
 ![main-image-2.png](./images/main-image-2.png)
 
 <br />  
 
-__[데모 페이지](https://demo-sosweet.vercel.app/)에서 직접 시연해보실 수 있습니다.__  
+__[데모 페이지](https://demo-sosweet.vercel.app/)에서 직접 시연해보실 수 있어요!__  
 
 ## Tech Stacks
 - 코어 : React, Python
-- 상태 관리 : Redux, React-query
+- 상태 관리 : Redux, React-query v5
 - 스타일링 : Chakra UI
 - 백엔드 : FastAPI, CloudflareAPI
 - 데이터베이스 : MariaDB
