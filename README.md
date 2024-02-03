@@ -165,6 +165,52 @@ __[데모 페이지](https://demo-sosweet.vercel.app/)에서 직접 시연해보
   <summary style='font-size: xx-large; font-weight: 900; color: blue; cursor: pointer'>
     쏘스윗 매니저 2.0 (2024. 01. 22 ~ Current) (열어서 살펴보기)
   </summary>
+
+
+### 홈화면
+
+<img src='./images/sosweet-2.0-previews/1.png' />
+
+
+### 시간표
+
+<img src='./images/sosweet-2.0-previews/2.png' />
+
+####
+
+<img src='./images/sosweet-2.0-previews/3.png' />
+
+### 강아지 목록
+<img src='./images/sosweet-2.0-previews/4.png' />
+
+
+### 놀이방 이용 내역 전송
+
+<img src='./images/sosweet-2.0-previews/5.png' />
+
+### 메세지 예시
+
+<img src='./images/KakaoTalk_Snapshot_20230530_144000.png' width='380' />
+
+
+### 강아지 등록 정보 수정
+
+<img src='./images/sosweet-2.0-previews/6.png' />  
+####
+<img src='./images/sosweet-2.0-previews/7.png' />
+
+### 결제 및 이용 내역
+
+<img src='./images/sosweet-2.0-previews/8.png' />
+
+### 체크인
+
+<img src='./images/sosweet-2.0-previews/9.png' />
+
+### 결제 필요 강아지 목록
+
+<img src='./images/sosweet-2.0-previews/10.png' />
+
 </details>
   
 <details>
