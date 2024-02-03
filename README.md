@@ -107,7 +107,7 @@ __[데모 페이지](https://demo-sosweet.vercel.app/)에서 직접 시연해보
 
 ## Database Schema
 
-![Untitled](./images/Untitled-19.png)
+![image](https://github.com/Yoonkeee/sosweet-manager/assets/48908205/b7e5e244-3dd9-4308-a4f2-3b62e1fdb2e4)
 
 <details>
 <summary style='font-size: xx-large; font-weight: bold; color: blue; cursor: pointer'>DB 테이블 정의 (열어서 살펴보기)</summary>
@@ -128,6 +128,8 @@ __[데모 페이지](https://demo-sosweet.vercel.app/)에서 직접 시연해보
 - 사용 내역 메세지 생성에 사용될 강아지 이름
 - 삭제 여부
 - 프로필 사진 API ID
+- 알러지 유무
+- 알러지 내용
 
 ### 2. 결제 내역
 
@@ -157,6 +159,9 @@ __[데모 페이지](https://demo-sosweet.vercel.app/)에서 직접 시연해보
 - 메세지 전송일
 - 기저귀 결제 여부
 - 삭제 여부
+- 당일 결제 여부
+
+
 </details>
 
 ## Product View
@@ -176,7 +181,7 @@ __[데모 페이지](https://demo-sosweet.vercel.app/)에서 직접 시연해보
 
 <img src='./images/sosweet-2.0-previews/2.png' />
 
-####
+<br />
 
 <img src='./images/sosweet-2.0-previews/3.png' />
 
@@ -196,7 +201,7 @@ __[데모 페이지](https://demo-sosweet.vercel.app/)에서 직접 시연해보
 ### 강아지 등록 정보 수정
 
 <img src='./images/sosweet-2.0-previews/6.png' />  
-####
+<br />
 <img src='./images/sosweet-2.0-previews/7.png' />
 
 ### 결제 및 이용 내역
