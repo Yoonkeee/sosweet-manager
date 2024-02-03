@@ -4,11 +4,8 @@ __판교에 있는 [쏘스윗 펫 카페&호텔](https://www.instagram.com/soswe
 
 __[데모 페이지](https://demo-sosweet.vercel.app/)에서 직접 시연해보실 수 있어요!__  
 
-<div style="justify-contnet: center" display='flex'>
-  <img src="./images/main-image-1.png" width=400  alt='main-page'/>
-</div>
 
-![main-image-2.png](./images/main-image-2.png)
+![image](https://github.com/Yoonkeee/sosweet-manager/assets/48908205/cc46a3b0-46c0-4766-becd-cf15bbb47941)
 
 <br />  
 
@@ -104,6 +101,9 @@ __[데모 페이지](https://demo-sosweet.vercel.app/)에서 직접 시연해보
   - 비밀번호 인증 기능 추가
   - 강아지별 알러지 기록 기능 추가
   - 결제가 필요한 강아지들 목록을 볼 수 있도록 기능 추가
+- 2월 1일 - 쏘스윗 매니저 2.1
+  - 시간표에서 당일결제 확인 가능하도록 추가
+  - 시간표에 오늘 날짜로 이동하는 버튼과 새로고침 버튼 추가
 
 ## Database Schema
 
